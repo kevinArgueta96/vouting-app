@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="300" viewBox="0 0 200 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Cocktail Glass -->
+    <path d="M40 80L100 280L160 80H40Z" fill="#FF9ECD"/>
+    <!-- Glass Outline -->
+    <path d="M40 80L100 280L160 80H40Z" stroke="#333" stroke-width="4"/>
+    <!-- Liquid Surface -->
+    <path d="M45 90H155" stroke="#FF70B5" stroke-width="4"/>
+    <!-- Straw -->
+    <path d="M95 30C95 30 90 50 90 80C90 110 100 140 100 140" stroke="#FFE44D" stroke-width="6"/>
+    <!-- Ice Cubes -->
+    <rect x="70" y="100" width="20" height="20" fill="#E8F5FF" fill-opacity="0.8"/>
+    <rect x="110" y="120" width="20" height="20" fill="#E8F5FF" fill-opacity="0.8"/>
+    <!-- Cherry -->
+    <circle cx="100" cy="40" r="10" fill="#FF4444"/>
+    <!-- Cherry Stem -->
+    <path d="M100 30C100 30 110 20 120 25" stroke="#4F1F1F" stroke-width="2"/>
+</svg>

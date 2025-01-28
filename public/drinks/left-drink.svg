@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="150" height="200" viewBox="0 0 150 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Bottle -->
+    <path d="M60 20H90V50C90 50 120 70 120 100V180H30V100C30 70 60 50 60 50V20Z" fill="#87CEEB"/>
+    <!-- Bottle Outline -->
+    <path d="M60 20H90V50C90 50 120 70 120 100V180H30V100C30 70 60 50 60 50V20Z" stroke="#333" stroke-width="3"/>
+    <!-- Bottle Neck -->
+    <rect x="65" y="10" width="20" height="10" fill="#87CEEB" stroke="#333" stroke-width="3"/>
+    <!-- Label -->
+    <rect x="40" y="100" width="70" height="40" fill="#FFD700" stroke="#333" stroke-width="2"/>
+    <!-- Liquid Level -->
+    <path d="M31 140H119" stroke="#5F9EA0" stroke-width="4"/>
+    <!-- Bubbles -->
+    <circle cx="50" y="120" r="3" fill="#FFF"/>
+    <circle cx="70" y="110" r="3" fill="#FFF"/>
+    <circle cx="90" y="125" r="3" fill="#FFF"/>
+</svg>

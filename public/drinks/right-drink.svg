@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="150" height="200" viewBox="0 0 150 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Wine Glass -->
+    <path d="M50 180H100" stroke="#333" stroke-width="4"/>
+    <!-- Stem -->
+    <path d="M75 120V180" stroke="#333" stroke-width="4"/>
+    <!-- Bowl -->
+    <path d="M30 40C30 40 30 20 75 20C120 20 120 40 120 40C120 80 75 120 75 120C75 120 30 80 30 40Z" fill="#FF7F50"/>
+    <!-- Glass Outline -->
+    <path d="M30 40C30 40 30 20 75 20C120 20 120 40 120 40C120 80 75 120 75 120C75 120 30 80 30 40Z" stroke="#333" stroke-width="3" fill="none"/>
+    <!-- Highlights -->
+    <path d="M40 35C40 35 40 25 75 25" stroke="#FFA07A" stroke-width="2"/>
+    <!-- Bubbles -->
+    <circle cx="60" cy="50" r="3" fill="#FFF" fill-opacity="0.8"/>
+    <circle cx="80" cy="60" r="3" fill="#FFF" fill-opacity="0.8"/>
+    <circle cx="90" cy="45" r="3" fill="#FFF" fill-opacity="0.8"/>
+    <!-- Base -->
+    <path d="M50 180L75 190L100 180" fill="#333"/>
+</svg>
