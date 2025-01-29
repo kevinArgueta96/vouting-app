@@ -1,0 +1,25 @@
+{
+  "cocktails": [
+    {
+      "id": 1,
+      "name": "Margarita Clásica",
+      "brand": "Don Julio",
+      "description": "Margarita tradicional hecha con tequila premium, triple sec y jugo fresco de limón",
+      "ingredients": ["Tequila Don Julio", "Cointreau", "Limón fresco", "Sal de mar"]
+    },
+    {
+      "id": 2,
+      "name": "Mojito Especial",
+      "brand": "Bacardi",
+      "description": "Mojito cubano premium con ron añejo, hierba buena fresca y lima",
+      "ingredients": ["Ron Bacardi Añejo", "Hierba buena fresca", "Lima", "Azúcar moreno", "Agua mineral"]
+    },
+    {
+      "id": 3,
+      "name": "Piña Colada Tropical",
+      "brand": "Malibu",
+      "description": "Piña colada caribeña con ron de coco, piña fresca y crema de coco",
+      "ingredients": ["Ron Malibu", "Crema de coco", "Jugo de piña natural", "Piña fresca"]
+    }
+  ]
+}

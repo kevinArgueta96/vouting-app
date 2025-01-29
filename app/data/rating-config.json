@@ -1,0 +1,23 @@
+{
+  "characteristics": [
+    {
+      "id": "appearance",
+      "label": "Apariencia",
+      "description": "Evalúa la presentación visual del cóctel"
+    },
+    {
+      "id": "taste",
+      "label": "Sabor",
+      "description": "Evalúa el balance y sabor del cóctel"
+    },
+    {
+      "id": "innovativeness",
+      "label": "Innovación",
+      "description": "Evalúa qué tan original y creativo es el cóctel"
+    }
+  ],
+  "ratingScale": {
+    "min": 1,
+    "max": 5
+  }
+}
