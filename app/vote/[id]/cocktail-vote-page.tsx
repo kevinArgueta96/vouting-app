@@ -3,17 +3,16 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import CocktailDetail from './cocktail-detail'
-import cocktailsData from '../../data/cocktails.json'
+import { cocktailService, ratingService } from '../../services/supabase'
 import { Button } from '../../components/ui/button'
+import { Database } from '../../types/supabase'
 
-interface Rating {
-  appearance: number;
-  taste: number;
-  innovativeness: number;
-  wantRecipe: boolean;
-  email?: string;
-  [key: string]: number | boolean | string | undefined;
+type Rating = {
+  [key: string]: number | string | undefined;
+  user_email?: string;
 }
+
+type Cocktail = Database['public']['Tables']['cocktails']['Row']
 
 interface Props {
   id: string
@@ -21,31 +20,53 @@ interface Props {
 
 export default function CocktailVotePage({ id }: Props) {
   const router = useRouter()
-  const cocktail = cocktailsData.cocktails.find(
-    c => c.id === Number(id)
-  );
-  
+  const [cocktail, setCocktail] = useState<Cocktail | null>(null)
   const [votes, setVotes] = useState(0)
+  const [loading, setLoading] = useState(true)
   
   useEffect(() => {
-    const storedVotes = localStorage.getItem(`votes-${id}`)
-    if (storedVotes) {
-      setVotes(Number(storedVotes))
+    const loadCocktail = async () => {
+      try {
+        const cocktailData = await cocktailService.getCocktailById(Number(id))
+        const votesCount = await cocktailService.getCocktailVotes(Number(id))
+        setCocktail(cocktailData)
+        setVotes(votesCount)
+      } catch (error) {
+        console.error('Error loading cocktail:', error)
+      } finally {
+        setLoading(false)
+      }
     }
+    loadCocktail()
   }, [id])
 
-  const handleRatingSubmit = (ratings: Rating) => {
-    // Save ratings and recipe preference
-    localStorage.setItem(`ratings-${id}`, JSON.stringify(ratings))
-    localStorage.setItem(`wantRecipe-${id}`, ratings.wantRecipe.toString())
-    
-    // Increment votes
-    const newVotes = votes + 1
-    setVotes(newVotes)
-    localStorage.setItem(`votes-${id}`, newVotes.toString())
-    
-    // Navigate to thanks page only through submit
-    router.push('/thanks')
+  const handleRatingSubmit = async (ratings: Rating) => {
+    try {
+      // Submit rating to database
+      await ratingService.submitRating({
+        cocktail_id: Number(id),
+        appearance: ratings.appearance as number,
+        taste: ratings.taste as number,
+        innovativeness: ratings.innovativeness as number,
+        user_email: ratings.user_email || null,
+      })
+      
+      // Navigate to thanks page only through submit
+      router.push('/thanks')
+    } catch (error) {
+      console.error('Error submitting rating:', error)
+      alert('Error al enviar la votación. Por favor intente de nuevo.')
+    }
+  }
+
+  if (loading) {
+    return (
+      <main className="flex min-h-screen flex-col items-center p-6">
+        <div className="w-full max-w-2xl text-center">
+          Cargando...
+        </div>
+      </main>
+    )
   }
 
   if (!cocktail) {
@@ -65,22 +86,34 @@ export default function CocktailVotePage({ id }: Props) {
   }
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-6">
-      <div className="w-full max-w-2xl">
-        <Button 
-          onClick={() => router.push('/vote')}
-          className="mb-6"
-        >
-          ← Back
-        </Button>
-        
-        <CocktailDetail 
-          cocktail={cocktail} 
-          onSubmit={handleRatingSubmit}
-        />
-        
-        <div className="mt-4 text-center text-gray-500">
-          Current votes: {votes}
+    <main className="min-h-screen bg-gray-100">
+      {/* Overlay */}
+      <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm" />
+      
+      {/* Modal */}
+      <div className="relative min-h-screen flex items-center justify-center p-4">
+        <div className="bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-white px-6 py-4 border-b sticky top-0 z-10 flex items-center justify-between">
+            <Button 
+              onClick={() => router.push('/vote')}
+              variant="ghost"
+              className="hover:bg-gray-100"
+            >
+              ← Volver
+            </Button>
+            <div className="text-sm text-gray-500">
+              {votes} votos
+            </div>
+          </div>
+          
+          {/* Scrollable Content */}
+          <div className="max-h-[calc(100vh-8rem)] overflow-y-auto">
+            <CocktailDetail 
+              cocktail={cocktail} 
+              onSubmit={handleRatingSubmit}
+            />
+          </div>
         </div>
       </div>
     </main>

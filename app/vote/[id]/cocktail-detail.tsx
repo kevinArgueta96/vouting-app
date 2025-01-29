@@ -1,22 +1,15 @@
 'use client'
 
 import { Button } from "../../components/ui/button"
-import { useState } from 'react'
-import ratingConfig from '../../data/rating-config.json'
+import { useState, useEffect } from 'react'
+import { characteristicService } from '../../services/supabase'
+import { Database } from '../../types/supabase'
 
-type RatingCharacteristic = {
-  id: string;
-  label: string;
-  description: string;
-}
+type RatingCharacteristic = Database['public']['Tables']['rating_characteristics']['Row']
 
-interface Rating {
-  appearance: number;
-  taste: number;
-  innovativeness: number;
-  wantRecipe: boolean;
-  email?: string;
-  [key: string]: number | boolean | string | undefined;
+type Rating = {
+  [key: string]: number | string | undefined;
+  user_email?: string;
 }
 
 interface Cocktail {
@@ -24,7 +17,6 @@ interface Cocktail {
   name: string;
   brand: string;
   description: string;
-  ingredients: string[];
 }
 
 export default function CocktailDetail({ 
@@ -34,18 +26,31 @@ export default function CocktailDetail({
   cocktail: Cocktail;
   onSubmit: (ratings: Rating) => void;
 }) {
-  const initialRatings: Rating = {
-    appearance: 0,
-    taste: 0,
-    innovativeness: 0,
-    wantRecipe: false,
-    email: ''
-  };
-
-  const [ratings, setRatings] = useState<Rating>(initialRatings);
+  const [characteristics, setCharacteristics] = useState<RatingCharacteristic[]>([]);
+  const [ratings, setRatings] = useState<Rating>({});
   const [emailError, setEmailError] = useState('');
+  const [wantRecipe, setWantRecipe] = useState(false);
 
-  const handleRatingChange = (category: keyof Rating, value: number | boolean | string) => {
+  useEffect(() => {
+    const loadCharacteristics = async () => {
+      try {
+        const chars = await characteristicService.getAllCharacteristics();
+        setCharacteristics(chars);
+        // Initialize ratings with 0 for each characteristic
+        setRatings(
+          chars.reduce((acc, char) => ({
+            ...acc,
+            [char.id]: 0
+          }), {})
+        );
+      } catch (error) {
+        console.error('Error loading rating characteristics:', error);
+      }
+    };
+    loadCharacteristics();
+  }, []);
+
+  const handleRatingChange = (category: string, value: number | string) => {
     setRatings(prev => ({
       ...prev,
       [category]: value
@@ -58,18 +63,18 @@ export default function CocktailDetail({
   };
 
   const canSubmit = () => {
-    const hasAllRatings = ratingConfig.characteristics.every(
+    const hasAllRatings = characteristics.every(
       char => (ratings[char.id] as number) > 0
     );
-    if (!ratings.wantRecipe) {
+    if (!wantRecipe) {
       return hasAllRatings;
     }
-    return hasAllRatings && validateEmail(ratings.email || '');
+    return hasAllRatings && validateEmail(ratings.user_email || '');
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (ratings.wantRecipe && !validateEmail(ratings.email || '')) {
+    if (wantRecipe && !validateEmail(ratings.user_email || '')) {
       setEmailError('Por favor ingrese un email válido');
       return;
     }
@@ -82,27 +87,28 @@ export default function CocktailDetail({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-md p-6">
-          <h1 className="text-3xl font-bold mb-2">{cocktail.name}</h1>
-          <p className="text-sm text-gray-500 mb-4">por {cocktail.brand}</p>
-          <p className="text-gray-600 mb-4">{cocktail.description}</p>
-          <div className="text-sm text-gray-500 mb-8">
-            <strong>Ingredientes:</strong> {cocktail.ingredients.join(', ')}
+    <form onSubmit={handleSubmit} className="p-6">
+          <div className="space-y-4 mb-8">
+            <h1 className="text-3xl font-bold">{cocktail.name}</h1>
+            <p className="text-sm text-gray-500">por {cocktail.brand}</p>
+            <p className="text-gray-600 text-sm leading-relaxed">{cocktail.description}</p>
           </div>
 
-          <div className="grid gap-6">
-            {ratingConfig.characteristics.map((characteristic) => (
-              <div key={characteristic.id}>
-                <label className="block text-sm font-medium mb-2">
-                  {characteristic.label}
-                </label>
-                <p className="text-sm text-gray-500 mb-2">
-                  {characteristic.description}
-                </p>
+          <div className="space-y-8">
+            {characteristics.map((characteristic) => (
+              <div key={characteristic.id} className="bg-gray-50 rounded-lg p-4">
+                <div className="mb-4">
+                  <label className="block text-sm font-medium mb-1">
+                    {characteristic.label}
+                  </label>
+                  <p className="text-sm text-gray-500">
+                    {characteristic.description}
+                  </p>
+                </div>
                 <div className="flex gap-2">
                   {Array.from(
-                    { length: ratingConfig.ratingScale.max - ratingConfig.ratingScale.min + 1 },
-                    (_, i) => i + ratingConfig.ratingScale.min
+                    { length: characteristic.max_rating - characteristic.min_rating + 1 },
+                    (_, i) => i + characteristic.min_rating
                   ).map((value) => (
                     <button
                       key={value}
@@ -125,17 +131,17 @@ export default function CocktailDetail({
             ))}
           </div>
 
-          <div className="mt-6">
-            <div className="flex items-center">
+          <div className="mt-8 pt-6 border-t">
+            <div className="flex items-center bg-blue-50 rounded-lg p-4">
               <input
                 type="checkbox"
                 id="wantRecipe"
                 className="w-4 h-4 text-blue-500 border-gray-300 rounded focus:ring-blue-500"
-                checked={ratings.wantRecipe}
+                checked={wantRecipe}
                 onChange={(e) => {
-                  handleRatingChange('wantRecipe', e.target.checked);
+                  setWantRecipe(e.target.checked);
                   if (!e.target.checked) {
-                    handleRatingChange('email', '');
+                    handleRatingChange('user_email', '');
                     setEmailError('');
                   }
                 }}
@@ -145,8 +151,8 @@ export default function CocktailDetail({
               </label>
             </div>
 
-            {ratings.wantRecipe && (
-              <div className="mt-4">
+            {wantRecipe && (
+              <div className="mt-4 bg-gray-50 rounded-lg p-4">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                   Email
                 </label>
@@ -156,9 +162,9 @@ export default function CocktailDetail({
                   className={`mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 ${
                     emailError ? 'border-red-500' : ''
                   }`}
-                  value={ratings.email || ''}
+                  value={ratings.user_email || ''}
                   onChange={(e) => {
-                    handleRatingChange('email', e.target.value);
+                    handleRatingChange('user_email', e.target.value);
                     if (emailError) setEmailError('');
                   }}
                   placeholder="tu@email.com"
@@ -170,13 +176,15 @@ export default function CocktailDetail({
             )}
           </div>
 
-          <Button 
-            type="submit"
-            className="w-full mt-8"
-            disabled={!canSubmit()}
-          >
-            Enviar Votación
-          </Button>
+          <div className="sticky bottom-0 bg-white border-t p-4 mt-8">
+            <Button 
+              type="submit"
+              className="w-full"
+              disabled={!canSubmit()}
+            >
+              Enviar Votación
+            </Button>
+          </div>
     </form>
   )
 }
