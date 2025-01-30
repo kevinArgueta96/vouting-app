@@ -108,6 +108,55 @@ export default function CocktailVotePage({ id }: Props) {
         user_agent: userAgent,
       })
       
+      // Send email if user provided their email
+      if (ratings.user_email) {
+        try {
+          console.log('Sending email to:', ratings.user_email);
+          const emailResponse = await fetch('/api/send-email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              to: ratings.user_email as string,
+              subject: `${cocktail?.name} - Cocktail Details`,
+              text: `
+Thank you for rating ${cocktail?.name}!
+
+Cocktail Details:
+Name: ${cocktail?.name}
+Brand: ${cocktail?.brand}
+Description: ${cocktail?.description}
+
+We appreciate your participation!
+              `,
+              html: `
+<h2>Thank you for rating ${cocktail?.name}!</h2>
+
+<h3>Cocktail Details:</h3>
+<p><strong>Name:</strong> ${cocktail?.name}</p>
+<p><strong>Brand:</strong> ${cocktail?.brand}</p>
+<p><strong>Description:</strong> ${cocktail?.description}</p>
+
+<p>We appreciate your participation!</p>
+              `
+            }),
+          });
+
+          const emailResult = await emailResponse.json();
+          
+          if (!emailResponse.ok) {
+            console.error('Failed to send email:', emailResult.error);
+            alert('Failed to send email confirmation. Please check your email address.');
+            return;
+          }
+          
+          console.log('Email sent successfully');
+        } catch (error) {
+          console.error('Error sending email:', error);
+        }
+      }
+
       await router.push(getRoute(routes.thanks, locale))
     } catch (error: any) {
       console.error('Error submitting rating:', error)
