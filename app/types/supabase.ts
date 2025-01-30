@@ -36,7 +36,9 @@ export interface Database {
           appearance: number
           taste: number
           innovativeness: number
-          user_email: string | null
+          user_email: string | null,
+          ip_address: string | null,
+          user_agent: string | null
           created_at: string
         }
         Insert: {
@@ -45,7 +47,9 @@ export interface Database {
           appearance: number
           taste: number
           innovativeness: number
-          user_email?: string | null
+          user_email?: string | null,
+          ip_address?: string | null,
+          user_agent?: string | null
           created_at?: string
         }
         Update: {
@@ -54,7 +58,9 @@ export interface Database {
           appearance?: number
           taste?: number
           innovativeness?: number
-          user_email?: string | null
+          user_email?: string | null,
+          ip_address?: string | null,
+          user_agent?: string | null
           created_at?: string
         }
       }
@@ -79,6 +85,29 @@ export interface Database {
           description?: string | null
           min_rating?: number
           max_rating?: number
+        }
+      }
+      feature_flags: {
+        Row: {
+          id: string
+          is_enabled: boolean
+          description: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          is_enabled: boolean
+          description?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          is_enabled?: boolean
+          description?: string | null
+          created_at?: string
+          updated_at?: string
         }
       }
     }

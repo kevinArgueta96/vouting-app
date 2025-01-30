@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import CocktailDetail from './cocktail-detail'
-import { cocktailService, ratingService } from '../../services/supabase'
+import { cocktailService, ratingService, featureFlagService } from '../../services/supabase'
 import { Button } from '../../components/ui/button'
 import { Database } from '../../types/supabase'
 
@@ -23,12 +23,21 @@ export default function CocktailVotePage({ id }: Props) {
   const [cocktail, setCocktail] = useState<Cocktail | null>(null)
   const [votes, setVotes] = useState(0)
   const [loading, setLoading] = useState(true)
+  const [validationEnabled, setValidationEnabled] = useState<boolean | null>(null)
   
   useEffect(() => {
     const loadCocktail = async () => {
       try {
-        const cocktailData = await cocktailService.getCocktailById(Number(id))
-        const votesCount = await cocktailService.getCocktailVotes(Number(id))
+        const isValidationEnabled = await featureFlagService.isFeatureEnabled('VALIDATE_REPEAT_VOUTE')
+        setValidationEnabled(isValidationEnabled)
+      } catch (error) {
+        console.error('Error loading feature flag:', error)
+      }
+      try {
+        const [cocktailData, votesCount] = await Promise.all([
+          cocktailService.getCocktailById(Number(id)),
+          cocktailService.getCocktailVotes(Number(id))
+        ])
         setCocktail(cocktailData)
         setVotes(votesCount)
       } catch (error) {
@@ -42,20 +51,56 @@ export default function CocktailVotePage({ id }: Props) {
 
   const handleRatingSubmit = async (ratings: Rating) => {
     try {
-      // Submit rating to database
+      // Get user agent from browser
+      const userAgent = window.navigator.userAgent;
+      
+      // Get IP address from public API
+      const ipResponse = await fetch('https://api.ipify.org?format=json');
+      const { ip } = await ipResponse.json();
+
+      // Check if repeat vote validation is enabled
+      const validateRepeatVote = await featureFlagService.isFeatureEnabled('VALIDATE_REPEAT_VOUTE');
+      
+      if (validateRepeatVote) {
+        try {
+          // Check if vote exists
+          const hasVoted = await ratingService.checkExistingVote(
+            Number(id),
+            ip,
+            userAgent
+          );
+
+          if (hasVoted) {
+            alert('Ya has votado por este cóctel desde este dispositivo');
+            return;
+          }
+        } catch (error) {
+          console.error('Error checking existing vote:', error);
+          // Continue with submission if validation check fails
+        }
+      }
+
+      // If validation passed or is disabled, submit rating
       await ratingService.submitRating({
         cocktail_id: Number(id),
         appearance: ratings.appearance as number,
         taste: ratings.taste as number,
         innovativeness: ratings.innovativeness as number,
         user_email: ratings.user_email || null,
+        ip_address: ip,
+        user_agent: userAgent,
       })
       
-      // Navigate to thanks page only through submit
+      // Only navigate to thanks page if vote was successful
       router.push('/thanks')
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error submitting rating:', error)
-      alert('Error al enviar la votación. Por favor intente de nuevo.')
+      // Show more specific error message if it's a duplicate vote
+      if (error.message === 'Ya has votado por este cóctel desde este dispositivo') {
+        alert(error.message)
+      } else {
+        alert('Error al enviar la votación. Por favor intente de nuevo.')
+      }
     }
   }
 
@@ -102,8 +147,13 @@ export default function CocktailVotePage({ id }: Props) {
             >
               ← Volver
             </Button>
-            <div className="text-sm text-gray-500">
-              {votes} votos
+            <div className="flex items-center gap-4">
+              <div className="text-sm text-gray-500">
+                {votes} votos
+              </div>
+              <div className="text-sm text-gray-500">
+                | Validación: {validationEnabled === null ? '...' : validationEnabled ? 'Activada' : 'Desactivada'}
+              </div>
             </div>
           </div>
           

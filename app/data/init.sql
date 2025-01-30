@@ -13,8 +13,14 @@ CREATE TABLE IF NOT EXISTS public.cocktail_ratings (
   taste INT NOT NULL,
   innovativeness INT NOT NULL,
   user_email TEXT,
+  ip_address TEXT,
+  user_agent TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
+
+-- Create index for IP and user agent validation
+CREATE INDEX idx_cocktail_ratings_device 
+ON public.cocktail_ratings(cocktail_id, ip_address, user_agent);
 
 CREATE TABLE IF NOT EXISTS public.rating_characteristics (
   id TEXT PRIMARY KEY,
@@ -37,3 +43,16 @@ VALUES
   ('Margarita Clásica', 'Don Julio', 'Margarita tradicional hecha con tequila premium, triple sec y jugo fresco de limón'),
   ('Mojito Especial', 'Bacardi', 'Mojito cubano premium con ron añejo, hierba buena fresca y lima'),
   ('Piña Colada Tropical', 'Malibu', 'Piña colada caribeña con ron de coco, piña fresca y crema de coco');
+
+-- Create feature flags table
+CREATE TABLE IF NOT EXISTS public.feature_flags (
+  id TEXT PRIMARY KEY,               -- slug único, ej: "VALIDATE_REPEAT_VOTING"
+  is_enabled BOOLEAN NOT NULL,       -- indica si la feature está activa o no
+  description TEXT,                  -- breve explicación del propósito
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- Insert initial feature flag
+INSERT INTO public.feature_flags (id, is_enabled, description)
+VALUES ('VALIDATE_REPEAT_VOUTE', true, 'This allow only one vote per device');

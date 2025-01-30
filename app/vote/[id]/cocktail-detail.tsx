@@ -81,7 +81,6 @@ export default function CocktailDetail({
     setEmailError('');
     
     if (canSubmit()) {
-      alert('¡Gracias por tu votación!');
       onSubmit(ratings);
     }
   };

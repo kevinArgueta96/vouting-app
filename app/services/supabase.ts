@@ -39,7 +39,44 @@ export const cocktailService = {
   }
 }
 
+type FeatureFlag = Database['public']['Tables']['feature_flags']['Row']
+
+export const featureFlagService = {
+  async isFeatureEnabled(featureId: string) {
+    try {
+      const { data, error } = await supabase
+        .from('feature_flags')
+        .select('is_enabled')
+        .eq('id', featureId)
+        .single()
+
+      if (error) {
+        console.error('Error fetching feature flag:', error)
+        return false // Default to false if there's an error
+      }
+
+      return data?.is_enabled ?? false
+    } catch (error) {
+      console.error('Error in isFeatureEnabled:', error)
+      return false // Default to false on any error
+    }
+  }
+}
+
 export const ratingService = {
+  async checkExistingVote(cocktailId: number, ipAddress: string, userAgent: string) {
+    const { data, error } = await supabase
+      .from('cocktail_ratings')
+      .select('id')
+      .eq('cocktail_id', cocktailId)
+      .eq('ip_address', ipAddress)
+      .eq('user_agent', userAgent)
+      .single()
+
+    if (error && error.code !== 'PGRST116') throw error // PGRST116 means no rows returned
+    return !!data // returns true if a vote exists
+  },
+
   async submitRating(rating: CocktailRatingInsert) {
     const { data, error } = await supabase
       .from('cocktail_ratings')
