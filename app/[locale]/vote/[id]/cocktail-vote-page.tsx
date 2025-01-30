@@ -31,73 +31,75 @@ export default function CocktailVotePage({ id }: Props) {
   const [cocktail, setCocktail] = useState<Cocktail | null>(null)
   const [votes, setVotes] = useState(0)
   const [loading, setLoading] = useState(true)
-  const [validationEnabled, setValidationEnabled] = useState<boolean | null>(null)
+  const [validationEnabled, setValidationEnabled] = useState<boolean>(false)
   
   useEffect(() => {
-    const loadCocktail = async () => {
+    let mounted = true
+    
+    const loadData = async () => {
       try {
-        const isValidationEnabled = await featureFlagService.isFeatureEnabled('VALIDATE_REPEAT_VOUTE')
-        setValidationEnabled(isValidationEnabled)
-        console.log('Validation status loaded:', isValidationEnabled)
-      } catch (error) {
-        console.error('Error loading feature flag:', error)
-        setValidationEnabled(false) // Default to disabled on error
-      }
-      try {
-        const [cocktailData, votesCount] = await Promise.all([
+        const [cocktailData, votesCount, isValidationEnabled] = await Promise.all([
           cocktailService.getCocktailById(Number(id)),
-          cocktailService.getCocktailVotes(Number(id))
+          cocktailService.getCocktailVotes(Number(id)),
+          featureFlagService.isFeatureEnabled('VALIDATE_REPEAT_VOUTE')
         ])
-        setCocktail(cocktailData)
-        setVotes(votesCount)
+        
+        if (mounted) {
+          setCocktail(cocktailData)
+          setVotes(votesCount)
+          setValidationEnabled(isValidationEnabled)
+        }
       } catch (error) {
-        console.error('Error loading cocktail:', error)
+        console.error('Error loading data:', error)
       } finally {
-        setLoading(false)
+        if (mounted) {
+          setLoading(false)
+        }
       }
     }
-    loadCocktail()
+
+    loadData()
+    
+    return () => {
+      mounted = false
+    }
   }, [id])
 
   const handleRatingSubmit = async (ratings: Rating) => {
     try {
-      const userAgent = window.navigator.userAgent;
-      const ipResponse = await fetch('https://api.ipify.org?format=json');
-      const { ip } = await ipResponse.json();
+      // Get client-side information only when submitting
+      const userAgent = typeof window !== 'undefined' ? window.navigator.userAgent : ''
+      let ip = ''
       
       try {
-        // Get the validation flag status
-        const validateRepeatVote = await featureFlagService.isFeatureEnabled('VALIDATE_REPEAT_VOUTE');
-        console.log('Validation enabled:', validateRepeatVote);
-        
-        // Only proceed with validation if the flag is explicitly true
-        if (validateRepeatVote === true) {
-          try {
-            // Check for existing vote
-            const hasVoted = await ratingService.checkExistingVote(
-              Number(id),
-              ip,
-              userAgent
-            );
-            console.log('Has voted before:', hasVoted);
-
-            if (hasVoted) {
-              alert(t('alreadyVoted'));
-              return; // Exit early if already voted
-            }
-          } catch (error) {
-            console.error('Error checking existing vote:', error);
-            alert(t('submitError'));
-            return; // Exit if validation check fails
-          }
-        }
+        const ipResponse = await fetch('https://api.ipify.org?format=json')
+        const ipData = await ipResponse.json()
+        ip = ipData.ip
       } catch (error) {
-        console.error('Error checking validation flag:', error)
-        // Continue without validation on error
+        console.error('Error fetching IP:', error)
+        ip = '0.0.0.0' // Fallback IP
+      }
+
+      // Use the cached validation status
+      if (validationEnabled) {
+        try {
+          const hasVoted = await ratingService.checkExistingVote(
+            Number(id),
+            ip,
+            userAgent
+          )
+          
+          if (hasVoted) {
+            alert(t('alreadyVoted'))
+            return
+          }
+        } catch (error) {
+          console.error('Error checking existing vote:', error)
+          alert(t('submitError'))
+          return
+        }
       }
       
-      console.log('Proceeding with vote submission');
-
       await ratingService.submitRating({
         cocktail_id: Number(id),
         appearance: ratings.appearance as number,
@@ -109,9 +111,8 @@ export default function CocktailVotePage({ id }: Props) {
       })
       
       // Send email if user provided their email
-      if (ratings.user_email) {
+      if (ratings.user_email && cocktail) {
         try {
-          console.log('Sending email to:', ratings.user_email);
           const emailResponse = await fetch('/api/send-email', {
             method: 'POST',
             headers: {
@@ -119,41 +120,38 @@ export default function CocktailVotePage({ id }: Props) {
             },
             body: JSON.stringify({
               to: ratings.user_email as string,
-              subject: `${cocktail?.name} - Cocktail Details`,
+              subject: `${cocktail.name} - Cocktail Details`,
               text: `
-Thank you for rating ${cocktail?.name}!
+Thank you for rating ${cocktail.name}!
 
 Cocktail Details:
-Name: ${cocktail?.name}
-Brand: ${cocktail?.brand}
-Description: ${cocktail?.description}
+Name: ${cocktail.name}
+Brand: ${cocktail.brand}
+Description: ${cocktail.description}
 
 We appreciate your participation!
               `,
               html: `
-<h2>Thank you for rating ${cocktail?.name}!</h2>
+<h2>Thank you for rating ${cocktail.name}!</h2>
 
 <h3>Cocktail Details:</h3>
-<p><strong>Name:</strong> ${cocktail?.name}</p>
-<p><strong>Brand:</strong> ${cocktail?.brand}</p>
-<p><strong>Description:</strong> ${cocktail?.description}</p>
+<p><strong>Name:</strong> ${cocktail.name}</p>
+<p><strong>Brand:</strong> ${cocktail.brand}</p>
+<p><strong>Description:</strong> ${cocktail.description}</p>
 
 <p>We appreciate your participation!</p>
               `
             }),
-          });
+          })
 
-          const emailResult = await emailResponse.json();
-          
           if (!emailResponse.ok) {
-            console.error('Failed to send email:', emailResult.error);
-            alert('Failed to send email confirmation. Please check your email address.');
-            return;
+            const emailResult = await emailResponse.json()
+            console.error('Failed to send email:', emailResult.error)
+            alert('Failed to send email confirmation. Please check your email address.')
+            return
           }
-          
-          console.log('Email sent successfully');
         } catch (error) {
-          console.error('Error sending email:', error);
+          console.error('Error sending email:', error)
         }
       }
 
@@ -214,7 +212,7 @@ We appreciate your participation!
                 {votes} {t('votes')}
               </div>
               <div className="text-sm text-gray-500">
-                | {t('validation')}: {validationEnabled === null ? '...' : validationEnabled ? t('enabled') : t('disabled')}
+                | {t('validation')}: {validationEnabled ? t('enabled') : t('disabled')}
               </div>
             </div>
           </div>
