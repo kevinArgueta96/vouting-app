@@ -1,0 +1,37 @@
+{
+  "Index": {
+    "title": "Welcome to Cocktail Voting",
+    "description": "Rate and vote for your favorite cocktails",
+    "submit": "Start Voting"
+  },
+  "Vote": {
+    "title": "Vote for Cocktail",
+    "submit": "Submit Vote",
+    "thanks": "Thank you for voting!",
+    "loading": "Loading...",
+    "back": "Back",
+    "notFound": "Cocktail not found",
+    "votes": "votes",
+    "validation": "Validation",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "alreadyVoted": "You have already voted for this cocktail from this device",
+    "submitError": "Error submitting vote. Please try again.",
+    "by": "by",
+    "wantRecipe": "I would like to receive the recipe",
+    "email": "Email",
+    "emailPlaceholder": "your@email.com",
+    "invalidEmail": "Please enter a valid email",
+    "submitVote": "Submit Vote"
+  },
+  "CocktailDetail": {
+    "ingredients": "Ingredients",
+    "rating": "Rating",
+    "submitRating": "Submit Rating"
+  },
+  "Thanks": {
+    "title": "Thank You!",
+    "message": "Your vote has been recorded",
+    "backHome": "Back to Home"
+  }
+}

@@ -3,12 +3,18 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import CocktailDetail from './cocktail-detail'
-import { cocktailService, ratingService, featureFlagService } from '../../services/supabase'
-import { Button } from '../../components/ui/button'
-import { Database } from '../../types/supabase'
+import { cocktailService, ratingService, featureFlagService } from '../../../services/supabase'
+import { Button } from '../../../components/ui/button'
+import { Database } from '../../../types/supabase'
+import { useTranslations, useLocale } from 'next-intl'
+import LanguageSwitcher from '../../../components/language-switcher'
+import { routes, getRoute } from '../../../config/routes'
 
 type Rating = {
   [key: string]: number | string | undefined;
+  appearance?: number;
+  taste?: number;
+  innovativeness?: number;
   user_email?: string;
 }
 
@@ -20,6 +26,8 @@ interface Props {
 
 export default function CocktailVotePage({ id }: Props) {
   const router = useRouter()
+  const t = useTranslations('Vote')
+  const locale = useLocale()
   const [cocktail, setCocktail] = useState<Cocktail | null>(null)
   const [votes, setVotes] = useState(0)
   const [loading, setLoading] = useState(true)
@@ -30,8 +38,10 @@ export default function CocktailVotePage({ id }: Props) {
       try {
         const isValidationEnabled = await featureFlagService.isFeatureEnabled('VALIDATE_REPEAT_VOUTE')
         setValidationEnabled(isValidationEnabled)
+        console.log('Validation status loaded:', isValidationEnabled)
       } catch (error) {
         console.error('Error loading feature flag:', error)
+        setValidationEnabled(false) // Default to disabled on error
       }
       try {
         const [cocktailData, votesCount] = await Promise.all([
@@ -51,36 +61,43 @@ export default function CocktailVotePage({ id }: Props) {
 
   const handleRatingSubmit = async (ratings: Rating) => {
     try {
-      // Get user agent from browser
       const userAgent = window.navigator.userAgent;
-      
-      // Get IP address from public API
       const ipResponse = await fetch('https://api.ipify.org?format=json');
       const { ip } = await ipResponse.json();
-
-      // Check if repeat vote validation is enabled
-      const validateRepeatVote = await featureFlagService.isFeatureEnabled('VALIDATE_REPEAT_VOUTE');
       
-      if (validateRepeatVote) {
-        try {
-          // Check if vote exists
-          const hasVoted = await ratingService.checkExistingVote(
-            Number(id),
-            ip,
-            userAgent
-          );
+      try {
+        // Get the validation flag status
+        const validateRepeatVote = await featureFlagService.isFeatureEnabled('VALIDATE_REPEAT_VOUTE');
+        console.log('Validation enabled:', validateRepeatVote);
+        
+        // Only proceed with validation if the flag is explicitly true
+        if (validateRepeatVote === true) {
+          try {
+            // Check for existing vote
+            const hasVoted = await ratingService.checkExistingVote(
+              Number(id),
+              ip,
+              userAgent
+            );
+            console.log('Has voted before:', hasVoted);
 
-          if (hasVoted) {
-            alert('Ya has votado por este cóctel desde este dispositivo');
-            return;
+            if (hasVoted) {
+              alert(t('alreadyVoted'));
+              return; // Exit early if already voted
+            }
+          } catch (error) {
+            console.error('Error checking existing vote:', error);
+            alert(t('submitError'));
+            return; // Exit if validation check fails
           }
-        } catch (error) {
-          console.error('Error checking existing vote:', error);
-          // Continue with submission if validation check fails
         }
+      } catch (error) {
+        console.error('Error checking validation flag:', error)
+        // Continue without validation on error
       }
+      
+      console.log('Proceeding with vote submission');
 
-      // If validation passed or is disabled, submit rating
       await ratingService.submitRating({
         cocktail_id: Number(id),
         appearance: ratings.appearance as number,
@@ -91,15 +108,13 @@ export default function CocktailVotePage({ id }: Props) {
         user_agent: userAgent,
       })
       
-      // Only navigate to thanks page if vote was successful
-      router.push('/thanks')
+      await router.push(getRoute(routes.thanks, locale))
     } catch (error: any) {
       console.error('Error submitting rating:', error)
-      // Show more specific error message if it's a duplicate vote
-      if (error.message === 'Ya has votado por este cóctel desde este dispositivo') {
+      if (error.message === t('alreadyVoted')) {
         alert(error.message)
       } else {
-        alert('Error al enviar la votación. Por favor intente de nuevo.')
+        alert(t('submitError'))
       }
     }
   }
@@ -108,7 +123,7 @@ export default function CocktailVotePage({ id }: Props) {
     return (
       <main className="flex min-h-screen flex-col items-center p-6">
         <div className="w-full max-w-2xl text-center">
-          Cargando...
+          {t('loading')}
         </div>
       </main>
     )
@@ -119,12 +134,12 @@ export default function CocktailVotePage({ id }: Props) {
       <main className="flex min-h-screen flex-col items-center p-6">
         <div className="w-full max-w-2xl">
           <Button 
-            onClick={() => router.push('/vote')}
+            onClick={async () => await router.push(getRoute(routes.vote.list, locale))}
             className="mb-6"
           >
-            ← Back
+            ← {t('back')}
           </Button>
-          <div className="text-center">Cocktail not found</div>
+          <div className="text-center">{t('notFound')}</div>
         </div>
       </main>
     )
@@ -132,32 +147,29 @@ export default function CocktailVotePage({ id }: Props) {
 
   return (
     <main className="min-h-screen bg-gray-100">
-      {/* Overlay */}
       <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm" />
       
-      {/* Modal */}
       <div className="relative min-h-screen flex items-center justify-center p-4">
+        <LanguageSwitcher />
         <div className="bg-white w-full max-w-2xl rounded-xl shadow-2xl overflow-hidden">
-          {/* Header */}
           <div className="bg-white px-6 py-4 border-b sticky top-0 z-10 flex items-center justify-between">
             <Button 
-              onClick={() => router.push('/vote')}
+              onClick={async () => await router.push(getRoute(routes.vote.list, locale))}
               variant="ghost"
               className="hover:bg-gray-100"
             >
-              ← Volver
+              ← {t('back')}
             </Button>
             <div className="flex items-center gap-4">
               <div className="text-sm text-gray-500">
-                {votes} votos
+                {votes} {t('votes')}
               </div>
               <div className="text-sm text-gray-500">
-                | Validación: {validationEnabled === null ? '...' : validationEnabled ? 'Activada' : 'Desactivada'}
+                | {t('validation')}: {validationEnabled === null ? '...' : validationEnabled ? t('enabled') : t('disabled')}
               </div>
             </div>
           </div>
           
-          {/* Scrollable Content */}
           <div className="max-h-[calc(100vh-8rem)] overflow-y-auto">
             <CocktailDetail 
               cocktail={cocktail} 

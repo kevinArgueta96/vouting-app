@@ -1,0 +1,37 @@
+{
+  "Index": {
+    "title": "Tervetuloa Cocktail-äänestykseen",
+    "description": "Arvioi ja äänestä suosikkicocktailiasi",
+    "submit": "Aloita äänestys"
+  },
+  "Vote": {
+    "title": "Äänestä Cocktailia",
+    "submit": "Lähetä ääni",
+    "thanks": "Kiitos äänestyksestä!",
+    "loading": "Ladataan...",
+    "back": "Takaisin",
+    "notFound": "Cocktailia ei löytynyt",
+    "votes": "ääntä",
+    "validation": "Validointi",
+    "enabled": "Käytössä",
+    "disabled": "Pois käytöstä",
+    "alreadyVoted": "Olet jo äänestänyt tätä cocktailia tältä laitteelta",
+    "submitError": "Virhe äänen lähettämisessä. Yritä uudelleen.",
+    "by": "tekijä",
+    "wantRecipe": "Haluaisin saada reseptin",
+    "email": "Sähköposti",
+    "emailPlaceholder": "sinun@email.com",
+    "invalidEmail": "Anna kelvollinen sähköpostiosoite",
+    "submitVote": "Lähetä ääni"
+  },
+  "CocktailDetail": {
+    "ingredients": "Ainesosat",
+    "rating": "Arvostelu",
+    "submitRating": "Lähetä arvostelu"
+  },
+  "Thanks": {
+    "title": "Kiitos!",
+    "message": "Äänesi on tallennettu",
+    "backHome": "Takaisin etusivulle"
+  }
+}

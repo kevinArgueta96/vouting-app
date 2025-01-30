@@ -1,9 +1,10 @@
 'use client'
 
-import { Button } from "../../components/ui/button"
+import { Button } from "../../../components/ui/button"
 import { useState, useEffect } from 'react'
-import { characteristicService } from '../../services/supabase'
-import { Database } from '../../types/supabase'
+import { characteristicService } from '../../../services/supabase'
+import { Database } from '../../../types/supabase'
+import { useTranslations } from 'next-intl'
 
 type RatingCharacteristic = Database['public']['Tables']['rating_characteristics']['Row']
 
@@ -26,6 +27,7 @@ export default function CocktailDetail({
   cocktail: Cocktail;
   onSubmit: (ratings: Rating) => void;
 }) {
+  const t = useTranslations('Vote')
   const [characteristics, setCharacteristics] = useState<RatingCharacteristic[]>([]);
   const [ratings, setRatings] = useState<Rating>({});
   const [emailError, setEmailError] = useState('');
@@ -36,7 +38,6 @@ export default function CocktailDetail({
       try {
         const chars = await characteristicService.getAllCharacteristics();
         setCharacteristics(chars);
-        // Initialize ratings with 0 for each characteristic
         setRatings(
           chars.reduce((acc, char) => ({
             ...acc,
@@ -75,7 +76,7 @@ export default function CocktailDetail({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (wantRecipe && !validateEmail(ratings.user_email || '')) {
-      setEmailError('Por favor ingrese un email válido');
+      setEmailError(t('invalidEmail'));
       return;
     }
     setEmailError('');
@@ -89,7 +90,7 @@ export default function CocktailDetail({
     <form onSubmit={handleSubmit} className="p-6">
           <div className="space-y-4 mb-8">
             <h1 className="text-3xl font-bold">{cocktail.name}</h1>
-            <p className="text-sm text-gray-500">por {cocktail.brand}</p>
+            <p className="text-sm text-gray-500">{t('by')} {cocktail.brand}</p>
             <p className="text-gray-600 text-sm leading-relaxed">{cocktail.description}</p>
           </div>
 
@@ -146,14 +147,14 @@ export default function CocktailDetail({
                 }}
               />
               <label htmlFor="wantRecipe" className="ml-2 text-sm text-gray-600">
-                Me gustaría recibir la receta
+                {t('wantRecipe')}
               </label>
             </div>
 
             {wantRecipe && (
               <div className="mt-4 bg-gray-50 rounded-lg p-4">
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                  Email
+                  {t('email')}
                 </label>
                 <input
                   type="email"
@@ -166,7 +167,7 @@ export default function CocktailDetail({
                     handleRatingChange('user_email', e.target.value);
                     if (emailError) setEmailError('');
                   }}
-                  placeholder="tu@email.com"
+                  placeholder={t('emailPlaceholder')}
                 />
                 {emailError && (
                   <p className="mt-1 text-sm text-red-600">{emailError}</p>
@@ -181,7 +182,7 @@ export default function CocktailDetail({
               className="w-full"
               disabled={!canSubmit()}
             >
-              Enviar Votación
+              {t('submitVote')}
             </Button>
           </div>
     </form>
