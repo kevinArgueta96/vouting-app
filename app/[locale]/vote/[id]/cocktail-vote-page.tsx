@@ -190,11 +190,6 @@ We appreciate your participation!
 
   return (
     <main className="min-h-screen bg-vouting-blue relative">
-      {/* Language Switcher */}
-      <div className="fixed top-4 right-4 z-20">
-        <LanguageSwitcher />
-      </div>
-      
       {/* Main Content */}
       <div className="pt-16">
         <CocktailDetail 

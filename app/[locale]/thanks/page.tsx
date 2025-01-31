@@ -14,7 +14,7 @@ export default function ThanksPage() {
       <div className="flex justify-center mt-2 mb-8">
         <div className="bg-white rounded-full p-5 inline-block">
           <Image
-            src="/svg/hdf_heslins_drink_logo.svg"
+            src={`/svg/hdf_heslins_drink_logo.svg`}
             alt="HDF Helsinki Drink Festival"
             width={160}
             height={80}
@@ -30,7 +30,7 @@ export default function ThanksPage() {
           {/* SVG container with specific dimensions */}
           <div className="relative w-[329px] h-[148px] rounded-[51px] overflow-hidden mb-8">
             <Image
-              src="/svg/Grupo 500.svg"
+              src={`/svg/Grupo 500.svg`}
               alt="Background"
               width={329}
               height={148}
@@ -44,7 +44,7 @@ export default function ThanksPage() {
             {/* Thank you text */}
             <div className="mb-12">
               <Image
-                src="/svg/Thank you for voting!.svg"
+                src={`/svg/Thank you for voting!.svg`}
                 alt="Thank you for voting!"
                 width={280}
                 height={40}
@@ -61,7 +61,7 @@ export default function ThanksPage() {
                 className="flex items-center text-white gap-6 hover:opacity-80 transition-opacity"
               >
                 <Image
-                  src="/svg/Icon core-drink-alcohol.svg"
+                  src={`/svg/Icon core-drink-alcohol.svg`}
                   alt="Cocktails"
                   width={28}
                   height={28}
@@ -77,7 +77,7 @@ export default function ThanksPage() {
                 className="flex items-center text-white gap-6 hover:opacity-80 transition-opacity"
               >
                 <Image
-                  src="/svg/Icon ion-ios-world-outline.svg"
+                  src={`/svg/Icon ion-ios-world-outline.svg`}
                   alt="World"
                   width={28}
                   height={28}
@@ -91,7 +91,7 @@ export default function ThanksPage() {
                 className="flex items-center text-white gap-6 hover:opacity-80 transition-opacity"
               >
                 <Image
-                  src="/svg/Icon fa-solid-map-location.svg"
+                  src={`/svg/Icon fa-solid-map-location.svg`}
                   alt="Map"
                   width={28}
                   height={28}
@@ -105,7 +105,7 @@ export default function ThanksPage() {
                 className="flex items-center text-white gap-6 hover:opacity-80 transition-opacity"
               >
                 <Image
-                  src="/svg/Icon akar-instagram-fill.svg"
+                  src={`/svg/Icon akar-instagram-fill.svg`}
                   alt="Instagram"
                   width={28}
                   height={28}

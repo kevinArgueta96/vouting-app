@@ -12,7 +12,6 @@ export default function Home() {
 
   return (
     <main className="flex min-h-screen flex-col items-center p-6 relative">
-      <LanguageSwitcher />
       <div className="flex-1 flex flex-col items-center justify-center">
         <h1 className="text-4xl font-bold mb-4 text-center">
           {t('title')}
