@@ -1,11 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import Image from 'next/image'
 import { useLocale } from 'next-intl'
 import { routes } from '../config/routes'
 import { useState } from 'react'
 import Drawer from './ui/drawer'
+
+// Import SVG directly as a React component
+import HDFLogo from '../../public/svg/hdf_word.svg'
 
 export default function Header() {
   const locale = useLocale()
@@ -13,15 +15,8 @@ export default function Header() {
   
   return (
     <header className="w-full p-4 flex justify-between items-center bg-[#F9F6F0]">
-      <Link href={routes.home(locale)} className="relative w-[92px] h-7">
-        <Image
-          src={`/svg/hdf_word.svg`}
-          alt="HDF Logo"
-          fill
-          style={{ objectFit: 'contain' }}
-          priority
-          sizes="92px"
-        />
+      <Link href={routes.home(locale)} className="relative">
+        <HDFLogo width={92} height={28} />
       </Link>
       <button 
         onClick={() => setIsDrawerOpen(true)}

@@ -9,13 +9,18 @@ export const metadata: Metadata = {
   description: "A voting application built with Next.js",
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
+  params,
 }: {
   children: React.ReactNode
+  params?: { locale?: string }
 }) {
+  // Await params and default to 'en' if no locale is provided
+  const lang = (await params)?.locale || 'en';
+  
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={lang} suppressHydrationWarning>
       <body className={inter.className}>{children}</body>
     </html>
   )

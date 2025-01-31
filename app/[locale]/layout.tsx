@@ -19,11 +19,13 @@ export function generateStaticParams() {
 
 export default async function LocaleLayout({
   children,
-  params: { locale },
+  params,
 }: {
   children: React.ReactNode
   params: { locale: string }
 }) {
+  // Await and destructure the locale param
+  const { locale } = params;
   // Cast and validate the locale param
   const validLocale = locale as Locale;
   if (!locales.includes(validLocale)) {
@@ -39,15 +41,11 @@ export default async function LocaleLayout({
 
   // Use the validated locale
   return (
-    <html lang={validLocale}>
-      <body className={inter.className}>
-        <NextIntlClientProvider locale={validLocale} messages={messages}>
-          <Header />
-          <main>
-            {children}
-          </main>
-        </NextIntlClientProvider>
-      </body>
-    </html>
+    <NextIntlClientProvider locale={validLocale} messages={messages}>
+      <Header />
+      <main>
+        {children}
+      </main>
+    </NextIntlClientProvider>
   )
 }
