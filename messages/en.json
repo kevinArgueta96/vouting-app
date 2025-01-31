@@ -18,7 +18,7 @@
     "alreadyVoted": "You have already voted for this cocktail from this device",
     "submitError": "Error submitting vote. Please try again.",
     "by": "by",
-    "wantRecipe": "I would like to receive the recipe",
+    "sendRecipe": "Send me the cocktail recipe by email",
     "email": "Email",
     "emailPlaceholder": "your@email.com",
     "invalidEmail": "Please enter a valid email",

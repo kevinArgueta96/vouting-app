@@ -19,6 +19,10 @@ const config = {
     },
     extend: {
       colors: {
+        vouting: {
+          blue: "#3B4992", // Medium-dark blue color
+          pink: "#FFD4D4" // Light pink color for illustrations
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

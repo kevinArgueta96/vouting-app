@@ -2,32 +2,41 @@
 
 import { useLocale } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
-import { routes } from '../config/routes';
+import { locales } from '../i18n';
+import { useCallback } from 'react';
 
 export default function LanguageSwitcher() {
   const locale = useLocale();
   const router = useRouter();
-  const currentPathname = usePathname();
+  const pathname = usePathname();
 
   const switchLocale = locale === 'en' ? 'fi' : 'en';
   const label = locale === 'en' ? 'Suomi' : 'English';
 
-  const handleSwitch = () => {
-    // Get the path after the locale
-    const pathAfterLocale = currentPathname.replace(`/${locale}`, '');
-    // If we're at the root, use home route
-    if (pathAfterLocale === '') {
-      router.push(`/${switchLocale}`);
-      return;
-    }
-    // Otherwise, replace the current locale with the new one
-    router.push(`/${switchLocale}${pathAfterLocale}`);
-  };
+  const handleSwitch = useCallback(() => {
+    if (!pathname) return;
+
+    // Remove the current locale from the pathname
+    const segments = pathname.split('/');
+    segments[1] = switchLocale;
+    
+    // Construct the new path with the switched locale
+    const newPath = segments.join('/');
+    
+    // Use replace to avoid adding to history stack
+    router.replace(newPath);
+  }, [pathname, router, switchLocale]);
+
+  // Only render if we're using a supported locale
+  if (!locales.includes(locale as any)) {
+    return null;
+  }
 
   return (
     <button
       onClick={handleSwitch}
       className="fixed top-4 right-4 px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200 transition-colors"
+      aria-label={`Switch to ${label}`}
     >
       {label}
     </button>

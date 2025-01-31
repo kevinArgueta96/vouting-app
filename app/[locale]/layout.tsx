@@ -3,7 +3,8 @@ import { Inter } from "next/font/google"
 import "../globals.css"
 import { notFound } from "next/navigation"
 import { NextIntlClientProvider } from 'next-intl'
-import { locales } from "../i18n"
+import { locales, type Locale } from "../i18n"
+import Header from "../components/header"
 
 const inter = Inter({ subsets: ["latin"] })
 
@@ -18,25 +19,35 @@ export function generateStaticParams() {
 
 export default async function LocaleLayout({
   children,
-  params,
+  params: { locale },
 }: {
   children: React.ReactNode
   params: { locale: string }
 }) {
-  const { locale } = await params;
-  // Validate that the incoming `locale` parameter is valid
-  if (!locales.includes(locale)) notFound()
+  // Cast and validate the locale param
+  const validLocale = locale as Locale;
+  if (!locales.includes(validLocale)) {
+    notFound();
+  }
 
   let messages;
   try {
-    messages = (await import(`../../messages/${locale}.json`)).default
+    messages = (await import(`../../messages/${validLocale}.json`)).default;
   } catch (error) {
-    notFound()
+    notFound();
   }
 
+  // Use the validated locale
   return (
-    <NextIntlClientProvider locale={locale} messages={messages}>
-      {children}
-    </NextIntlClientProvider>
+    <html lang={validLocale}>
+      <body className={inter.className}>
+        <NextIntlClientProvider locale={validLocale} messages={messages}>
+          <Header />
+          <main>
+            {children}
+          </main>
+        </NextIntlClientProvider>
+      </body>
+    </html>
   )
 }

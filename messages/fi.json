@@ -18,7 +18,7 @@
     "alreadyVoted": "Olet jo äänestänyt tätä cocktailia tältä laitteelta",
     "submitError": "Virhe äänen lähettämisessä. Yritä uudelleen.",
     "by": "tekijä",
-    "wantRecipe": "Haluaisin saada reseptin",
+    "sendRecipe": "Lähetä minulle cocktail-resepti sähköpostilla",
     "email": "Sähköposti",
     "emailPlaceholder": "sinun@email.com",
     "invalidEmail": "Anna kelvollinen sähköpostiosoite",

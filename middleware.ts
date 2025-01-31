@@ -10,18 +10,18 @@ const validPaths = [
   /^\/[^/]+\/thanks\/?$/, // thanks: /{locale}/thanks
 ];
 
-const middleware = createMiddleware({
+const intlMiddleware = createMiddleware({
   locales,
   defaultLocale,
   localePrefix: 'always'
 });
 
-export default async function middlewareHandler(request: any) {
+export default function middleware(request: any) {
   const pathname = request.nextUrl.pathname;
 
-  // Skip validation for root path as it's handled by next-intl
-  if (pathname === '/') {
-    return middleware(request);
+  // Skip validation for root path and static files
+  if (pathname === '/' || /\.(jpg|png|svg|ico|json)$/.test(pathname)) {
+    return intlMiddleware(request);
   }
 
   // Check if the path is valid
@@ -38,9 +38,14 @@ export default async function middlewareHandler(request: any) {
   }
 
   // Continue with the intl middleware
-  return middleware(request);
+  return intlMiddleware(request);
 }
 
 export const config = {
-  matcher: ['/', '/(fi|en)/:path*']
+  matcher: [
+    // Match all paths except static files
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    '/', 
+    '/(fi|en)/:path*'
+  ]
 };
