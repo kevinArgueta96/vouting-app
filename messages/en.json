@@ -21,6 +21,7 @@
     "sendRecipe": "Send me the cocktail recipe by email",
     "email": "Email",
     "emailPlaceholder": "your@email.com",
+    "enterEmail": "Enter your email",
     "invalidEmail": "Please enter a valid email",
     "submitVote": "Submit Vote"
   },

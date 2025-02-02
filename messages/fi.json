@@ -21,6 +21,7 @@
     "sendRecipe": "Lähetä minulle cocktail-resepti sähköpostilla",
     "email": "Sähköposti",
     "emailPlaceholder": "sinun@email.com",
+    "enterEmail": "Anna sähköpostiosoitteesi",
     "invalidEmail": "Anna kelvollinen sähköpostiosoite",
     "submitVote": "Lähetä ääni"
   },

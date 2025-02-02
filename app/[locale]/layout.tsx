@@ -25,7 +25,7 @@ export default async function LocaleLayout({
   params: { locale: string }
 }) {
   // Await and destructure the locale param
-  const { locale } = params;
+  const { locale } = await params;
   // Cast and validate the locale param
   const validLocale = locale as Locale;
   if (!locales.includes(validLocale)) {
