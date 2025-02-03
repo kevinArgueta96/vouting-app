@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { cocktailService } from '../../services/supabase';
 import Link from 'next/link';
-import { routes, getRoute } from '../../config/routes';
+import { routes } from '../../config/routes';
 import { useLocale } from 'next-intl';
 
 interface Cocktail {
@@ -46,7 +46,7 @@ export function CocktailGrid() {
       {cocktails.map((cocktail) => (
         <Link
           key={cocktail.id}
-          href={getRoute(routes.vote.detail, locale, cocktail.id.toString())}
+          href={routes.vote.detail(locale, cocktail.id.toString())}
           className="group"
         >
           <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:bg-white/10 border border-white/10 hover:border-white/20">

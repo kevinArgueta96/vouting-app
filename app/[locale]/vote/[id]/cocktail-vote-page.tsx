@@ -39,7 +39,7 @@ export default function CocktailVotePage({ id }: Props) {
 
     const loadData = async () => {
       try {
-        const [cocktailData, _, isValidationEnabled] =
+        const [cocktailData, _votes, isValidationEnabled] =
           await Promise.all([
             cocktailService.getCocktailById(Number(id)),
             cocktailService.getCocktailVotes(Number(id)),
@@ -47,6 +47,7 @@ export default function CocktailVotePage({ id }: Props) {
           ]);
 
         if (mounted) {
+          console.log(_votes)
           setCocktail(cocktailData);
           setValidationEnabled(isValidationEnabled);
         }

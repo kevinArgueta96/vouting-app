@@ -1,10 +1,12 @@
-import CocktailVotePage from './cocktail-vote-page'
+import CocktailVotePage from './cocktail-vote-page';
 
-export default async function VoteDetailPage({
-  params
-}: {
-  params: { id: string }
-}) {
-  const id = (await params).id
-  return <CocktailVotePage id={id} />
+interface PageProps {
+  params: Promise<{ id: string }>; // ✅ Define params as a Promise
+}
+
+export default async function VoteDetailPage({ params }: PageProps) {
+  const resolvedParams = await params; // ✅ Await params to resolve the Promise
+  const { id } = resolvedParams;
+
+  return <CocktailVotePage id={id} />;
 }

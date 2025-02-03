@@ -1,29 +1,32 @@
-import type { Metadata } from "next"
-import "../globals.css"
-import { notFound } from "next/navigation"
-import { NextIntlClientProvider } from 'next-intl'
-import { locales, type Locale } from "../i18n"
-import Header from "../components/header"
+import type { Metadata } from "next";
+import "../globals.css";
+import { ReactNode } from "react";
+import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { locales, type Locale } from "../i18n";
+import Header from "../components/header";
 
 export const metadata: Metadata = {
-  title: "Vouting App",
+  title: "Voting App",
   description: "A voting application built with Next.js",
-}
+};
 
+// Generación de parámetros estáticos para rutas localizadas
 export function generateStaticParams() {
-  return locales.map((locale: string) => ({ locale }))
+  return locales.map((locale: string) => ({ locale }));
 }
 
-export default async function LocaleLayout({
-  children,
-  params,
-}: {
-  children: React.ReactNode
-  params: { locale: string }
-}) {
-  // Await and destructure the locale param
-  const { locale } = await params;
-  // Cast and validate the locale param
+// Definir props explícitamente
+interface LocaleLayoutProps {
+  children: ReactNode;
+  params: Promise<{ locale: string }>; // 🔥 Se define params como una promesa
+}
+
+export default async function LocaleLayout({ children, params }: LocaleLayoutProps) {
+  // Asegurar que params sea una promesa y resolverla
+  const resolvedParams = await params; // 🔥 Se usa await para resolver la promesa
+  const { locale } = resolvedParams;
+
   const validLocale = locale as Locale;
   if (!locales.includes(validLocale)) {
     notFound();
@@ -36,13 +39,10 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  // Use the validated locale
   return (
     <NextIntlClientProvider locale={validLocale} messages={messages}>
       <Header />
-      <main>
-        {children}
-      </main>
+      <main>{children}</main>
     </NextIntlClientProvider>
-  )
+  );
 }
