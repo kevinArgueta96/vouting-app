@@ -170,7 +170,7 @@ We appreciate your participation!
 
   if (loading) {
     return (
-      <main className="min-h-screen bg-vouting-blue text-white flex items-center justify-center">
+      <main className="min-h-screen bg-[#F9F6F0] text-black flex items-center justify-center">
         <div className="text-center text-xl">
           {t('loading')}
         </div>
@@ -180,7 +180,7 @@ We appreciate your participation!
 
   if (!cocktail) {
     return (
-      <main className="min-h-screen bg-vouting-blue text-white p-6">
+      <main className="min-h-screen bg-[#F9F6F0] text-black p-6">
         <div className="text-center text-xl mt-16">
           {t('notFound')}
         </div>
@@ -189,7 +189,7 @@ We appreciate your participation!
   }
 
   return (
-    <main className="min-h-screen bg-vouting-blue relative">
+    <main className="min-h-screen bg-[#F9F6F0] relative">
       {/* Main Content */}
       <div className="pt-16">
         <CocktailDetail 
