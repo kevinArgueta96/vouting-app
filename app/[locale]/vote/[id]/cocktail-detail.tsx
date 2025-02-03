@@ -126,10 +126,10 @@ export default function CocktailDetail({
           </div>
 
           {/* Rating Sections */}
-          <div className="space-y-16">
+          <div className="space-y-2">
             {characteristics.map((characteristic) => (
               <div key={characteristic.id} className="text-center">
-                <h4 className="text-2xl uppercase mb-6 tracking-wide text-white">
+                <h4 className="text-2xl uppercase mb-2 tracking-wide text-white">
                   {characteristic.label}
                 </h4>
                 <div className="flex justify-center gap-6 sm:gap-8">
@@ -157,17 +157,42 @@ export default function CocktailDetail({
 
           {/* Email and Recipe Options */}
           <div className="mt-12 space-y-4 text-white">
-            <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg">
-              <input
-                type="radio"
-                id="recipe-checkbox"
-                checked={wantRecipe}
-                onChange={(e) => setWantRecipe(e.target.checked)}
-                className="w-4 h-4 rounded-full border-2 border-[#FFD4D4] checked:bg-[#FFD4D4]"
-              />
-              <label htmlFor="recipe-checkbox" className="text-sm">
-                {t("sendRecipe")}
-              </label>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg">
+                <input
+                  type="radio"
+                  id="recipe-checkbox"
+                  name="options"
+                  checked={wantRecipe}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setWantRecipe(true);
+                    }
+                  }}
+                  className="w-4 h-4 rounded-full border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4]"
+                />
+                <label htmlFor="recipe-checkbox" className="text-sm">
+                  {t("sendRecipe")}
+                </label>
+              </div>
+              
+              <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg">
+                <input
+                  type="radio"
+                  id="draffle-checkbox"
+                  name="options"
+                  checked={!wantRecipe}
+                  onChange={(e) => {
+                    if (e.target.checked) {
+                      setWantRecipe(false);
+                    }
+                  }}
+                  className="w-4 h-4 rounded-full border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4]"
+                />
+                <label htmlFor="draffle-checkbox" className="text-sm">
+                  Participate to the draffle.
+                </label>
+              </div>
             </div>
 
             {wantRecipe && (
@@ -191,10 +216,10 @@ export default function CocktailDetail({
           <div className="mt-8 pb-8">
             <Button
               type="submit"
-              className="w-full bg-[#FFD4D4] text-[#3B4992] hover:bg-[#FFE4E4] transition-colors duration-200 rounded-full py-3 font-semibold"
+              className="w-full bg-[#FF8B9C] text-white hover:bg-[#ff7c8f] transition-colors duration-200 rounded-lg py-3 font-bold uppercase tracking-wider"
               disabled={!canSubmit()}
             >
-              SEND VOTE
+              Send Vote
             </Button>
           </div>
         </div>
