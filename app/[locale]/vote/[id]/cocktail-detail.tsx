@@ -7,10 +7,10 @@ import { Database } from "../../../types/supabase";
 import { useTranslations } from "next-intl";
 
 const RATING_EMOJIS = [
-  { value: 1, emoji: "🙁" },
-  { value: 2, emoji: "🙂" },
-  { value: 3, emoji: "😊" },
-  { value: 4, emoji: "😁" },
+  { value: 1, emoji: "/images/emoji_1.png" },
+  { value: 2, emoji: "/images/emoji_2.png" },
+  { value: 3, emoji: "/images/emoji_3.png" },
+  { value: 4, emoji: "/images/emoji_4.png" },
 ];
 
 type RatingCharacteristic =
@@ -113,7 +113,7 @@ export default function CocktailDetail({
       <div className="relative w-full flex-1 bg-[#3B4992] rounded-t-[50px] pt-24 px-4">
         <div className="max-w-[600px] mx-auto">
           {/* Cocktail Info */}
-          <div className="text-white space-y-1 mb-6">
+          <div className="text-white space-y-2 mb-12">
             <h2 className="text-4xl font-bold uppercase text-left">
               {cocktail.name}
             </h2>
@@ -126,30 +126,45 @@ export default function CocktailDetail({
           </div>
 
           {/* Rating Sections */}
-          <div className="space-y-2">
+          <div className="space-y-12">
             {characteristics.map((characteristic) => (
               <div key={characteristic.id} className="text-center">
                 <h4 className="text-2xl uppercase mb-4 tracking-wide text-white">
                   {characteristic.label}
                 </h4>
-                <div className="flex justify-center gap-6 sm:gap-8">
-                  {RATING_EMOJIS.map((rating) => (
-                    <button
-                      key={rating.value}
-                      type="button"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        handleRatingChange(characteristic.id, rating.value);
-                      }}
-                      className={`w-12 h-12 rounded-full bg-[#FFD4D4] flex items-center justify-center text-xl transition-transform ${
-                        ratings[characteristic.id] === rating.value
-                          ? "transform scale-110 ring-2 ring-[#FFD4D4]"
-                          : "opacity-60 hover:opacity-90"
-                      }`}
-                    >
-                      {rating.emoji}
-                    </button>
-                  ))}
+                <div className="relative h-16">
+                  <div className={`flex justify-center gap-6 sm:gap-8 transition-all duration-700 ${
+                    (ratings[characteristic.id] as number) > 0 ? 'scale-0 opacity-0 transform translate-y-4' : 'scale-100 opacity-100 transform translate-y-0'
+                  }`}>
+                    {RATING_EMOJIS.map((rating) => (
+                      <button
+                        key={rating.value}
+                        type="button"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          handleRatingChange(characteristic.id, rating.value);
+                        }}
+                        className="w-16 h-16 flex items-center justify-center transition-transform hover:scale-110"
+                      >
+                        <img 
+                          src={rating.emoji} 
+                          alt={`Rating ${rating.value}`} 
+                          className="w-12 h-12 object-contain"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                  
+                  {/* Selected Emoji */}
+                  {(ratings[characteristic.id] as number) > 0 && (
+                    <div className="absolute inset-0 flex justify-center items-center transition-all duration-700 transform scale-100 opacity-100 translate-y-0">
+                      <img 
+                        src={RATING_EMOJIS[(ratings[characteristic.id] as number) - 1].emoji}
+                        alt={`Selected Rating ${ratings[characteristic.id]}`}
+                        className="w-12 h-12 object-contain animate-pulse"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             ))}
