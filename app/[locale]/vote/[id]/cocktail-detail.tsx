@@ -27,24 +27,6 @@ interface Cocktail {
   description: string;
 }
 
-const CocktailIllustration = () => (
-  <div className="relative w-full max-w-[150px] mx-auto mb-8">
-    <div className="bg-[#FFD4D4] p-4 rounded-lg">
-      <svg className="w-full h-auto" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
-        {/* Hand */}
-        <path d="M100 140C110 140 120 130 120 120C120 110 110 100 100 100C90 100 80 110 80 120C80 130 90 140 100 140Z" fill="#FFD4D4" stroke="#334798" strokeWidth="2"/>
-        
-        {/* Cocktail Glass */}
-        <path d="M90 50L110 50L115 100H85L90 50Z" fill="#334798"/>
-        
-        {/* Citrus Slice */}
-        <circle cx="120" cy="60" r="10" fill="#FFD4D4" stroke="#334798" strokeWidth="2"/>
-        <path d="M116 60H124" stroke="#334798" strokeWidth="2"/>
-      </svg>
-    </div>
-  </div>
-)
-
 export default function CocktailDetail({ 
   cocktail,
   onSubmit 
@@ -113,20 +95,26 @@ export default function CocktailDetail({
   };
 
   return (
-    <form onSubmit={handleSubmit} className="min-h-screen bg-[#FAF7F2] max-w-md mx-auto px-4 sm:px-6">
+      <form onSubmit={handleSubmit} className="h-screen flex items-center ">
+        {/* Main Content */}
+        <div className="bg-[#3B4992] rounded-full h-[120vh] w-[120vh]  ">
+  
+          {/* Cocktail Image */}
+          <div className="relative w-full max-w-[250px] mx-auto mb-8">
+          <div className="p-4 rounded-lg">
+            <img 
+              src="/images/cocktail-image-vote.png" 
+              alt="Cocktail"
+              className="w-full h-auto"
+            />
+          </div>
+        </div>
 
-      {/* Main Content */}
-      <div className="pb-6 pt-8">
-        {/* Cocktail Illustration */}
-        <CocktailIllustration />
-
-        {/* Content Circle */}
-        <div className="bg-vouting-blue text-white rounded-[50px] p-10 relative">
           {/* Cocktail Info */}
-          <div className="space-y-4 mb-8 sm:mb-12 text-center">
-            <h2 className="text-3xl sm:text-4xl font-bold uppercase tracking-wider">{cocktail.name}</h2>
-            <h3 className="text-lg sm:text-xl uppercase tracking-wide">{cocktail.brand}</h3>
-            <p className="text-sm leading-relaxed">
+          <div className="space-y-2 mb-8 sm:mb-12 text-white">
+            <h2 className="text-3xl font-bold uppercase  text-left">{cocktail.name}</h2>
+            <h3 className="text-lg sm:text-xl uppercase tracking-wide text-left">{cocktail.brand}</h3>
+            <p className="text-sm leading-relaxed text-left">
               {cocktail.description}
             </p>
           </div>
@@ -197,13 +185,12 @@ export default function CocktailDetail({
           <div className="mt-8 sm:mt-12">
             <Button 
               type="submit"
-              className="w-full bg-[#FFD4D4] text-vouting-blue hover:bg-[#FFE4E4] transition-colors duration-200 rounded-full py-3 font-semibold"
+              className="w-full bg-[#FFD4D4] text-[#3B4992] hover:bg-[#FFE4E4] transition-colors duration-200 rounded-full py-3 font-semibold"
               disabled={!canSubmit()}
             >
               SEND VOTE
             </Button>
           </div>
-        </div>
       </div>
     </form>
   )
