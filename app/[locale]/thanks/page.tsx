@@ -87,10 +87,10 @@ export default function ThanksPage() {
     <main className="min-h-screen bg-[#2B3990] relative flex flex-col">
       {/* Main logo */}
       <div className="flex justify-center mt-2 mb-3">
-      <div
-    className="bg-white w-[300px] h-[120px] flex items-center justify-center"
-    style={{ borderRadius: '100% / 100%' }}
-  >
+        <div
+          className="bg-white w-[300px] h-[120px] flex items-center justify-center"
+          style={{ borderRadius: "100% / 100%" }}
+        >
           <Image
             src={`/svg/hdf_heslins_drink_logo.svg`}
             alt="HDF Helsinki Drink Festival"
@@ -117,28 +117,33 @@ export default function ThanksPage() {
             }}
           >
             <Image
-              src={`/svg/Grupo 500.svg`}
+              src={`/svg/thanks_background.svg`}
               alt="Background"
               fill
-              sizes="(max-width: 768px) 90vw, 500px"
+              sizes="(max-width: 800px) , 600px"
               className="object-contain object-center mx-auto"
               priority
             />
           </div>
 
           {/* Overlay Content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-start z-10 p-20">
+          <div className="absolute inset-0 flex flex-col items-center justify-start p-20">
             {/* Thank you text */}
             <div className="mb-10">
-              <Image
-                src={`/svg/Thank you for voting!.svg`}
-                alt="Thank you for voting!"
-                width={100}
-                height={100}
-                className="mx-auto"
-                style={{ width: "250px", height: "100%" }}
-                priority
-              />
+              <div
+                className="mx-auto text-white text-center uppercase flex flex-col -mt-10"
+                style={{
+                  fontFamily: "Russo One",
+                  fontSize: "2.1rem",
+                  width: "100%",
+                  maxWidth: "400px",
+                  letterSpacing: "-0.25px",
+                  lineHeight: "1.1",
+                }}
+              >
+                <span>Thank you</span>
+                <span>for voting!</span>
+              </div>
             </div>
 
             {/* Options Container */}
@@ -150,7 +155,7 @@ export default function ThanksPage() {
                 >
                   <div className="flex items-center justify-center w-10 h-10">
                     <Image
-                      src={`/svg/Icon core-drink-alcohol.svg`}
+                      src={`/svg/drink-alcohol.svg`}
                       alt="Cocktails"
                       width={28}
                       height={28}
@@ -210,7 +215,7 @@ export default function ThanksPage() {
                 >
                   <div className="flex items-center justify-center w-10 h-10">
                     <Image
-                      src={`/svg/Icon akar-instagram-fill.svg`}
+                      src={`/svg/instagram-fill.svg`}
                       alt="Instagram"
                       width={28}
                       height={28}
