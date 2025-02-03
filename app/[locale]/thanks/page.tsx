@@ -3,116 +3,227 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useState, useCallback } from "react";
+
+function useOptimalSize() {
+  // Valores iniciales más apropiados para evitar flash
+  const [size, setSize] = useState({ width: 320, height: 400 });
+
+  const calculateSize = useCallback(() => {
+    if (typeof window === "undefined") return;
+
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    // Calcular espacio disponible considerando márgenes de seguridad
+    const topSpace = 100; // Reducido el espacio para logo
+    const bottomSpace = 250; // Aumentado el espacio para botones y padding
+    const horizontalPadding = 48; // 24px a cada lado
+
+    const availableHeight = viewportHeight - (topSpace + bottomSpace);
+    const availableWidth = viewportWidth - horizontalPadding;
+
+    // Ancho mínimo para el contenido
+    const minContentWidth = 320;
+
+    // Calcular dimensiones base manteniendo proporción y límites
+    let width = Math.min(availableWidth, 500);
+    let height = Math.min(availableHeight, 600);
+
+    // Asegurar ancho mínimo
+    width = Math.max(width, minContentWidth);
+
+    // Mantener proporción 1.2 (más natural para el diseño)
+    const aspectRatio = 1.2;
+
+    // Ajustar dimensiones manteniendo el aspect ratio y asegurando espacio para contenido
+    if (width * aspectRatio > height) {
+      width = height / aspectRatio;
+      // Asegurar que el ancho no sea menor que el contenido después del ajuste
+      if (width < minContentWidth) {
+        width = minContentWidth;
+        height = width * aspectRatio;
+      }
+    } else {
+      height = width * aspectRatio;
+    }
+
+    // Aplicar límites finales
+    width = Math.min(Math.round(width), 500);
+    height = Math.min(Math.round(height), 600);
+
+    setSize({ width, height });
+  }, []);
+
+  useEffect(() => {
+    calculateSize();
+    const debouncedResize = debounce(calculateSize, 100);
+    window.addEventListener("resize", debouncedResize);
+    return () => window.removeEventListener("resize", debouncedResize);
+  }, [calculateSize]);
+
+  return size;
+}
+
+// Función de debounce para optimizar el rendimiento
+function debounce(func: Function, wait: number) {
+  let timeout: NodeJS.Timeout;
+  return function executedFunction(...args: any[]) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
 
 export default function ThanksPage() {
   const locale = useLocale();
   const t = useTranslations("Thanks");
+  const { width, height } = useOptimalSize();
 
   return (
     <main className="min-h-screen bg-[#2B3990] relative flex flex-col">
       {/* Main logo */}
-      <div className="flex justify-center mt-2 mb-8">
-        <div className="bg-white rounded-full p-5 inline-block">
+      <div className="flex justify-center mt-2 mb-3">
+      <div
+    className="bg-white w-[300px] h-[120px] flex items-center justify-center"
+    style={{ borderRadius: '100% / 100%' }}
+  >
           <Image
             src={`/svg/hdf_heslins_drink_logo.svg`}
             alt="HDF Helsinki Drink Festival"
-            width={160}
-            height={80}
-            style={{ width: "auto" }}
+            width={100} // Aumenta el ancho
+            height={100} // Aumenta la altura
+            style={{ width: "70%", height: "auto" }} // Asegura que no se distorsione
             priority
           />
         </div>
       </div>
 
       {/* Content section */}
-      <div className="rounded-tl-[50px] relative flex-grow">
-        <div className="flex flex-col items-center">
-          {/* SVG container with specific dimensions */}
-          <div className="relative w-[329px] h-[148px] rounded-[51px] overflow-hidden mb-8">
+      <div className="relative flex-grow">
+        {/* Background SVG Container */}
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden z-0">
+          <div
+            className="relative transition-all duration-300 ease-in-out transform -mt-[32rem]"
+            style={{
+              width: `${width}px`,
+              height: `${height}px`,
+              maxWidth: "calc(100% - 48px)",
+              margin: "0 auto",
+              top: "-15%",
+            }}
+          >
             <Image
               src={`/svg/Grupo 500.svg`}
               alt="Background"
-              width={329}
-              height={148}
-              className="w-full h-full object-cover"
+              fill
+              sizes="(max-width: 768px) 90vw, 500px"
+              className="object-contain object-center mx-auto"
+              priority
             />
-            <div className="text-white text-2xl font-bold absolute top-4 left-6">HDF</div>
           </div>
 
-          {/* Content below SVG */}
-          <div className="px-6 w-full max-w-sm mx-auto">
+          {/* Overlay Content */}
+          <div className="absolute inset-0 flex flex-col items-center justify-start z-10 p-20">
             {/* Thank you text */}
-            <div className="mb-12">
+            <div className="mb-10">
               <Image
                 src={`/svg/Thank you for voting!.svg`}
                 alt="Thank you for voting!"
-                width={280}
-                height={40}
+                width={100}
+                height={100}
                 className="mx-auto"
-                style={{ width: "auto" }}
+                style={{ width: "250px", height: "100%" }}
                 priority
               />
             </div>
 
-            {/* Options */}
-            <div className="space-y-8">
-              <Link
-                href="#"
-                className="flex items-center text-white gap-6 hover:opacity-80 transition-opacity"
-              >
-                <Image
-                  src={`/svg/Icon core-drink-alcohol.svg`}
-                  alt="Cocktails"
-                  width={28}
-                  height={28}
-                  style={{ width: "auto" }}
-                />
-                <span className="text-lg font-medium">
-                  SEE ALL HDF COMPETITION COCKTAILS
-                </span>
-              </Link>
+            {/* Options Container */}
+            <div className="w-[180px] overflow-hidden mx-auto">
+              <div className="flex flex-col items-center justify-center gap-6">
+                <Link
+                  href="#"
+                  className="grid grid-cols-[40px_100px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
+                >
+                  <div className="flex items-center justify-center w-10 h-10">
+                    <Image
+                      src={`/svg/Icon core-drink-alcohol.svg`}
+                      alt="Cocktails"
+                      width={28}
+                      height={28}
+                      className="object-contain w-7 h-7"
+                    />
+                  </div>
+                  <div className="text-left w-[100px]">
+                    <span className="text-sm font-medium leading-tight block whitespace-normal">
+                      SEE ALL HDF COMPETITION COCKTAILS
+                    </span>
+                  </div>
+                </Link>
 
-              <Link
-                href="#"
-                className="flex items-center text-white gap-6 hover:opacity-80 transition-opacity"
-              >
-                <Image
-                  src={`/svg/Icon ion-ios-world-outline.svg`}
-                  alt="World"
-                  width={28}
-                  height={28}
-                  style={{ width: "auto" }}
-                />
-                <span className="text-lg font-medium">CHECK THE AFTERPARTY</span>
-              </Link>
+                <Link
+                  href="#"
+                  className="grid grid-cols-[40px_100px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
+                >
+                  <div className="flex items-center justify-center w-10 h-10">
+                    <Image
+                      src={`/svg/Icon ion-ios-world-outline.svg`}
+                      alt="World"
+                      width={28}
+                      height={28}
+                      className="object-contain w-7 h-7"
+                    />
+                  </div>
+                  <div className="text-left w-[100px]">
+                    <span className="text-sm font-medium leading-tight block whitespace-normal">
+                      CHECK THE AFTERPARTY
+                    </span>
+                  </div>
+                </Link>
 
-              <Link
-                href="#"
-                className="flex items-center text-white gap-6 hover:opacity-80 transition-opacity"
-              >
-                <Image
-                  src={`/svg/Icon fa-solid-map-location.svg`}
-                  alt="Map"
-                  width={28}
-                  height={28}
-                  style={{ width: "auto" }}
-                />
-                <span className="text-lg font-medium">SEE THE EVENT MAP</span>
-              </Link>
+                <Link
+                  href="#"
+                  className="grid grid-cols-[40px_100px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
+                >
+                  <div className="flex items-center justify-center w-10 h-10">
+                    <Image
+                      src={`/svg/Icon fa-solid-map-location.svg`}
+                      alt="Map"
+                      width={28}
+                      height={28}
+                      className="object-contain w-7 h-7"
+                    />
+                  </div>
+                  <div className="text-left w-[100px]">
+                    <span className="text-sm font-medium leading-tight block whitespace-normal">
+                      SEE THE EVENT MAP
+                    </span>
+                  </div>
+                </Link>
 
-              <Link
-                href="#"
-                className="flex items-center text-white gap-6 hover:opacity-80 transition-opacity"
-              >
-                <Image
-                  src={`/svg/Icon akar-instagram-fill.svg`}
-                  alt="Instagram"
-                  width={28}
-                  height={28}
-                  style={{ width: "auto" }}
-                />
-                <span className="text-lg font-medium">FOLLOW US</span>
-              </Link>
+                <Link
+                  href="#"
+                  className="grid grid-cols-[40px_100px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
+                >
+                  <div className="flex items-center justify-center w-10 h-10">
+                    <Image
+                      src={`/svg/Icon akar-instagram-fill.svg`}
+                      alt="Instagram"
+                      width={28}
+                      height={28}
+                      className="object-contain w-7 h-7"
+                    />
+                  </div>
+                  <div className="text-left w-[100px]">
+                    <span className="text-sm font-medium leading-tight block whitespace-normal">
+                      FOLLOW US
+                    </span>
+                  </div>
+                </Link>
+              </div>
             </div>
           </div>
         </div>
