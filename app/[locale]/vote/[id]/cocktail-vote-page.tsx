@@ -39,7 +39,7 @@ export default function CocktailVotePage({ id }: Props) {
 
     const loadData = async () => {
       try {
-        const [cocktailData, votesCount, isValidationEnabled] =
+        const [cocktailData, _, isValidationEnabled] =
           await Promise.all([
             cocktailService.getCocktailById(Number(id)),
             cocktailService.getCocktailVotes(Number(id)),
@@ -162,9 +162,9 @@ We appreciate your participation!
       }
 
       await router.push(getRoute(routes.thanks, locale));
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("Error submitting rating:", error);
-      if (error.message === t("alreadyVoted")) {
+      if (error instanceof Error && error.message === t("alreadyVoted")) {
         alert(error.message);
       } else {
         alert(t("submitError"));

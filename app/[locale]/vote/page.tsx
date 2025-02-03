@@ -1,7 +1,6 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import LanguageSwitcher from "../../components/language-switcher";
 import { CocktailGrid } from "../../components/ui/cocktail-grid";
 
 export default function VotePage() {
