@@ -39,8 +39,6 @@ export const cocktailService = {
   }
 }
 
-type FeatureFlag = Database['public']['Tables']['feature_flags']['Row']
-
 export const featureFlagService = {
   async isFeatureEnabled(featureId: string) {
     try {

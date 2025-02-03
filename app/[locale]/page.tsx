@@ -3,7 +3,6 @@
 import { Button } from "../components/ui/button"
 import { useTranslations, useLocale } from 'next-intl'
 import Link from 'next/link'
-import LanguageSwitcher from "../components/language-switcher"
 import { routes, getRoute } from '../config/routes'
 
 export default function Home() {

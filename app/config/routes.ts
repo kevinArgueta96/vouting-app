@@ -8,10 +8,12 @@ export const routes = {
 } as const;
 
 // Helper function to ensure all routes are properly formatted with locale
+type RouteFunction = (locale: string, ...args: (string | number)[]) => string;
+
 export const getRoute = (
-  path: (locale: string, ...args: any[]) => string,
+  path: RouteFunction,
   locale: string,
-  ...args: any[]
+  ...args: (string | number)[]
 ) => {
   return path(locale, ...args);
 };

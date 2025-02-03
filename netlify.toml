@@ -1,5 +1,5 @@
 [build]
-  command = "next build"
+  command = "CI=false next build"
   publish = ".next"
 
 [build.environment]

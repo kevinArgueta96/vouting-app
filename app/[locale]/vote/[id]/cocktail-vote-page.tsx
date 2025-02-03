@@ -10,7 +10,6 @@ import {
 } from "../../../services/supabase";
 import { Database } from "../../../types/supabase";
 import { useTranslations, useLocale } from "next-intl";
-import LanguageSwitcher from "../../../components/language-switcher";
 import { routes, getRoute } from "../../../config/routes";
 
 type Rating = {
@@ -32,7 +31,6 @@ export default function CocktailVotePage({ id }: Props) {
   const t = useTranslations("Vote");
   const locale = useLocale();
   const [cocktail, setCocktail] = useState<Cocktail | null>(null);
-  const [votes, setVotes] = useState(0);
   const [loading, setLoading] = useState(true);
   const [validationEnabled, setValidationEnabled] = useState<boolean>(false);
 
@@ -50,7 +48,6 @@ export default function CocktailVotePage({ id }: Props) {
 
         if (mounted) {
           setCocktail(cocktailData);
-          setVotes(votesCount);
           setValidationEnabled(isValidationEnabled);
         }
       } catch (error) {

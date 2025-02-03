@@ -77,24 +77,35 @@ export async function POST(request: Request) {
           { status: 500 }
         );
       }
-    } catch (sendError: any) {
+    } catch (sendError: unknown) {
+      if (!(sendError instanceof Error)) {
+        throw sendError;
+      }
+      const error = sendError as Error & {
+        code?: string;
+        response?: { body?: unknown };
+      };
+
       console.error('SendGrid error details:', {
-        message: sendError.message,
-        code: sendError.code,
-        response: sendError.response?.body
+        message: error.message,
+        code: error.code,
+        response: error.response?.body
       });
-      if (sendError.response) {
-        console.error('SendGrid error body:', sendError.response.body);
+      if (error.response) {
+        console.error('SendGrid error body:', error.response.body);
       }
       return NextResponse.json(
         { success: false, error: sendError.message },
         { status: 500 }
       );
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error('API route error:', error);
     return NextResponse.json(
-      { success: false, error: error.message },
+      { 
+        success: false, 
+        error: error instanceof Error ? error.message : 'An unknown error occurred'
+      },
       { status: 500 }
     );
   }

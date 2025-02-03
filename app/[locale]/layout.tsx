@@ -6,8 +6,6 @@ import { NextIntlClientProvider } from 'next-intl'
 import { locales, type Locale } from "../i18n"
 import Header from "../components/header"
 
-const inter = Inter({ subsets: ["latin"] })
-
 export const metadata: Metadata = {
   title: "Vouting App",
   description: "A voting application built with Next.js",
@@ -35,7 +33,7 @@ export default async function LocaleLayout({
   let messages;
   try {
     messages = (await import(`../../messages/${validLocale}.json`)).default;
-  } catch (error) {
+  } catch {
     notFound();
   }
 

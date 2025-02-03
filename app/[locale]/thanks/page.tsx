@@ -66,9 +66,12 @@ function useOptimalSize() {
 }
 
 // Función de debounce para optimizar el rendimiento
-function debounce(func: Function, wait: number) {
+function debounce<T extends (...args: unknown[]) => void>(
+  func: T,
+  wait: number
+): (...args: Parameters<T>) => void {
   let timeout: NodeJS.Timeout;
-  return function executedFunction(...args: any[]) {
+  return function executedFunction(...args: Parameters<T>) {
     const later = () => {
       clearTimeout(timeout);
       func(...args);
@@ -79,7 +82,6 @@ function debounce(func: Function, wait: number) {
 }
 
 export default function ThanksPage() {
-  const locale = useLocale();
   const t = useTranslations("Thanks");
   const { width, height } = useOptimalSize();
 

@@ -2,6 +2,7 @@
 
 import { Button } from "../../../components/ui/button";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { characteristicService } from "../../../services/supabase";
 import { Database } from "../../../types/supabase";
 import { useTranslations } from "next-intl";
@@ -40,7 +41,6 @@ export default function CocktailDetail({
   const [ratings, setRatings] = useState<Rating>({});
   const [emailError, setEmailError] = useState("");
   const [wantRecipe, setWantRecipe] = useState(false);
-  const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
 
   useEffect(() => {
     const loadCharacteristics = async () => {
@@ -102,9 +102,11 @@ export default function CocktailDetail({
     <form onSubmit={handleSubmit} className="flex flex-col items-center overflow-hidden">
       {/* Cocktail Image - Large at the top */}
       <div className="w-full max-w-[500px] px-4 relative z-10 mb-[-100px]">
-        <img
+        <Image
           src="/images/cocktail-image-vote.png"
           alt="Cocktail"
+          width={500}
+          height={500}
           className="w-full h-auto"
         />
       </div>
@@ -146,9 +148,11 @@ export default function CocktailDetail({
                         }}
                         className="w-16 h-16 flex items-center justify-center transition-transform hover:scale-110"
                       >
-                        <img 
+                        <Image 
                           src={rating.emoji} 
-                          alt={`Rating ${rating.value}`} 
+                          alt={`Rating ${rating.value}`}
+                          width={48}
+                          height={48}
                           className="w-12 h-12 object-contain"
                         />
                       </button>
@@ -158,9 +162,11 @@ export default function CocktailDetail({
                   {/* Selected Emoji */}
                   {(ratings[characteristic.id] as number) > 0 && (
                     <div className="absolute inset-0 flex justify-center items-center transition-all duration-700 transform scale-100 opacity-100 translate-y-0">
-                      <img 
+                      <Image 
                         src={RATING_EMOJIS[(ratings[characteristic.id] as number) - 1].emoji}
                         alt={`Selected Rating ${ratings[characteristic.id]}`}
+                        width={48}
+                        height={48}
                         className="w-12 h-12 object-contain animate-pulse"
                       />
                     </div>

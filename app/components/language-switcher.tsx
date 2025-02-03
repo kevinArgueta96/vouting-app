@@ -2,7 +2,7 @@
 
 import { useLocale } from 'next-intl';
 import { usePathname, useRouter } from 'next/navigation';
-import { locales } from '../i18n';
+import { locales, type Locale } from '../i18n';
 import { useCallback } from 'react';
 
 export default function LanguageSwitcher() {
@@ -28,7 +28,7 @@ export default function LanguageSwitcher() {
   }, [pathname, router, switchLocale]);
 
   // Only render if we're using a supported locale
-  if (!locales.includes(locale as any)) {
+  if (!locales.includes(locale as Locale)) {
     return null;
   }
 
