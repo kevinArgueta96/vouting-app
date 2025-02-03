@@ -113,14 +113,14 @@ export default function CocktailDetail({
       <div className="relative w-full flex-1 bg-[#3B4992] rounded-t-[50px] pt-24 px-4">
         <div className="max-w-[600px] mx-auto">
           {/* Cocktail Info */}
-          <div className="text-white space-y-2 mb-12">
-            <h2 className="text-4xl font-bold uppercase text-center">
+          <div className="text-white space-y-1 mb-6">
+            <h2 className="text-4xl font-bold uppercase text-left">
               {cocktail.name}
             </h2>
-            <h3 className="text-xl uppercase tracking-wide text-center">
+            <h3 className="text-xl uppercase tracking-wide text-left">
               {cocktail.brand}
             </h3>
-            <p className="text-sm leading-relaxed text-center max-w-[500px] mx-auto">
+            <p className="text-sm text-left ">
               {cocktail.description}
             </p>
           </div>
@@ -129,7 +129,7 @@ export default function CocktailDetail({
           <div className="space-y-2">
             {characteristics.map((characteristic) => (
               <div key={characteristic.id} className="text-center">
-                <h4 className="text-2xl uppercase mb-2 tracking-wide text-white">
+                <h4 className="text-2xl uppercase mb-4 tracking-wide text-white">
                   {characteristic.label}
                 </h4>
                 <div className="flex justify-center gap-6 sm:gap-8">
