@@ -33,6 +33,11 @@
   "Thanks": {
     "title": "Thank You!",
     "message": "Your vote has been recorded",
-    "backHome": "Back to Home"
+    "backHome": "Back to Home",
+    "thankYouForVoting": "Thank you for voting!",
+    "seeAllCocktails": "SEE ALL HDF COMPETITION COCKTAILS",
+    "checkAfterparty": "CHECK THE AFTERPARTY",
+    "seeEventMap": "SEE THE EVENT MAP",
+    "followUs": "FOLLOW US"
   }
 }

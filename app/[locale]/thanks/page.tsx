@@ -84,7 +84,7 @@ export default function ThanksPage() {
   const { width, height } = useOptimalSize();
 
   return (
-    <main className="min-h-screen bg-[#2B3990] relative flex flex-col">
+    <main className="min-h-screen bg-[#334798] relative flex flex-col">
       {/* Main logo */}
       <div className="flex justify-center mt-2 mb-3">
         <div
@@ -141,8 +141,7 @@ export default function ThanksPage() {
                   lineHeight: "1.1",
                 }}
               >
-                <span>Thank you</span>
-                <span>for voting!</span>
+                <span>{t('thankYouForVoting')}</span>
               </div>
             </div>
 
@@ -164,7 +163,7 @@ export default function ThanksPage() {
                   </div>
                   <div className="text-left w-[100px]">
                     <span className="text-sm font-medium leading-tight block whitespace-normal">
-                      SEE ALL HDF COMPETITION COCKTAILS
+                      {t('seeAllCocktails')}
                     </span>
                   </div>
                 </Link>
@@ -184,7 +183,7 @@ export default function ThanksPage() {
                   </div>
                   <div className="text-left w-[100px]">
                     <span className="text-sm font-medium leading-tight block whitespace-normal">
-                      CHECK THE AFTERPARTY
+                      {t('checkAfterparty')}
                     </span>
                   </div>
                 </Link>
@@ -204,7 +203,7 @@ export default function ThanksPage() {
                   </div>
                   <div className="text-left w-[100px]">
                     <span className="text-sm font-medium leading-tight block whitespace-normal">
-                      SEE THE EVENT MAP
+                      {t('seeEventMap')}
                     </span>
                   </div>
                 </Link>
@@ -224,7 +223,7 @@ export default function ThanksPage() {
                   </div>
                   <div className="text-left w-[100px]">
                     <span className="text-sm font-medium leading-tight block whitespace-normal">
-                      FOLLOW US
+                      {t('followUs')}
                     </span>
                   </div>
                 </Link>

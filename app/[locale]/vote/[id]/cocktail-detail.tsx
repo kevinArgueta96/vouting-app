@@ -32,14 +32,14 @@ const CocktailIllustration = () => (
     <div className="bg-[#FFD4D4] p-4 rounded-lg">
       <svg className="w-full h-auto" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
         {/* Hand */}
-        <path d="M100 140C110 140 120 130 120 120C120 110 110 100 100 100C90 100 80 110 80 120C80 130 90 140 100 140Z" fill="#FFD4D4" stroke="#3B4992" strokeWidth="2"/>
+        <path d="M100 140C110 140 120 130 120 120C120 110 110 100 100 100C90 100 80 110 80 120C80 130 90 140 100 140Z" fill="#FFD4D4" stroke="#334798" strokeWidth="2"/>
         
         {/* Cocktail Glass */}
-        <path d="M90 50L110 50L115 100H85L90 50Z" fill="#3B4992"/>
+        <path d="M90 50L110 50L115 100H85L90 50Z" fill="#334798"/>
         
         {/* Citrus Slice */}
-        <circle cx="120" cy="60" r="10" fill="#FFD4D4" stroke="#3B4992" strokeWidth="2"/>
-        <path d="M116 60H124" stroke="#3B4992" strokeWidth="2"/>
+        <circle cx="120" cy="60" r="10" fill="#FFD4D4" stroke="#334798" strokeWidth="2"/>
+        <path d="M116 60H124" stroke="#334798" strokeWidth="2"/>
       </svg>
     </div>
   </div>
@@ -121,7 +121,7 @@ export default function CocktailDetail({
         <CocktailIllustration />
 
         {/* Content Circle */}
-        <div className="bg-[#3B4992] text-white rounded-[50px] p-10 relative">
+        <div className="bg-vouting-blue text-white rounded-[50px] p-10 relative">
           {/* Cocktail Info */}
           <div className="space-y-4 mb-8 sm:mb-12 text-center">
             <h2 className="text-3xl sm:text-4xl font-bold uppercase tracking-wider">{cocktail.name}</h2>
@@ -197,7 +197,7 @@ export default function CocktailDetail({
           <div className="mt-8 sm:mt-12">
             <Button 
               type="submit"
-              className="w-full bg-[#FFD4D4] text-[#3B4992] hover:bg-[#FFE4E4] transition-colors duration-200 rounded-full py-3 font-semibold"
+              className="w-full bg-[#FFD4D4] text-vouting-blue hover:bg-[#FFE4E4] transition-colors duration-200 rounded-full py-3 font-semibold"
               disabled={!canSubmit()}
             >
               SEND VOTE

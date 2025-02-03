@@ -33,6 +33,11 @@
   "Thanks": {
     "title": "Kiitos!",
     "message": "Äänesi on tallennettu",
-    "backHome": "Takaisin etusivulle"
+    "backHome": "Takaisin etusivulle",
+    "thankYouForVoting": "Kiitos äänestyksestä!",
+    "seeAllCocktails": "KATSO KAIKKI HDF-KILPAILUCOCKTAILIT",
+    "checkAfterparty": "TARKISTA JATKOBILEET",
+    "seeEventMap": "KATSO TAPAHTUMAKARTTA",
+    "followUs": "SEURAA MEITÄ"
   }
 }

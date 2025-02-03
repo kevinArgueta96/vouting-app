@@ -2,21 +2,30 @@
 
 import Link from 'next/link'
 import { useLocale } from 'next-intl'
+import { usePathname } from 'next/navigation'
 import { routes } from '../config/routes'
 import { useState } from 'react'
 import Drawer from './ui/drawer'
 
 // Import SVG directly as a React component
 import HDFLogo from '../../public/svg/hdf_word.svg'
+import HDFLogoWhite from '../../public/svg/hdf_word_withe.svg'
 
 export default function Header() {
   const locale = useLocale()
+  const pathname = usePathname()
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   
+  const isDarkHeader = pathname === `/${locale}` || pathname === `/${locale}/thanks`
+  
   return (
-    <header className="w-full p-4 flex justify-between items-center bg-[#F9F6F0]">
+    <header className={`w-full p-4 flex justify-between items-center ${isDarkHeader ? 'bg-vouting-blue' : 'bg-[#F9F6F0]'}`}>
       <Link href={routes.home(locale)} className="relative">
-        <HDFLogo width={92} height={28} />
+        {isDarkHeader ? (
+          <HDFLogoWhite width={92} height={28} />
+        ) : (
+          <HDFLogo width={92} height={28} />
+        )}
       </Link>
       <button 
         onClick={() => setIsDrawerOpen(true)}
