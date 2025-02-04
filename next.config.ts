@@ -4,7 +4,7 @@ import type { NextConfig } from "next";
 const withNextIntl = createNextIntlPlugin('./app/i18n.ts');
 
 const nextConfig: NextConfig = {
-  output: 'standalone',
+  output: 'export',
   webpack(config) {
     config.module.rules.push({
       test: /\.svg$/,
@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
     return config;
   },
   images: {
-    remotePatterns: [],
+    unoptimized: true,
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none';",
   }
