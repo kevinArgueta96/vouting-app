@@ -7,7 +7,7 @@ export default function VotePage() {
   const t = useTranslations('Vote');
 
   return (
-    <main className="flex min-h-screen flex-col items-center p-6 relative">
+    <main className="flex min-h-screen flex-col items-center p-6 relative bg-[#F9F6F0]">
       <div className="flex-1 flex flex-col items-center w-full">
         <h1 className="text-4xl font-bold mb-8 text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-primary/60">
           {t('title')}

@@ -28,7 +28,8 @@
   "CocktailDetail": {
     "ingredients": "Ainesosat",
     "rating": "Arvostelu",
-    "submitRating": "Lähetä arvostelu"
+    "submitRating": "Lähetä arvostelu",
+    "sendVote": "Lähetä ääni"
   },
   "Thanks": {
     "title": "Kiitos!",

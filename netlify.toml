@@ -6,23 +6,25 @@
   NEXT_TELEMETRY_DISABLED = "1"
   NODE_VERSION = "20"
 
-# Handle Next.js routing
-[[redirects]]
-  from = "/*"
-  to = "/_next/static/:splat"
-  status = 200
-  force = true
-  conditions = {Path = "/_next/static/*"}
-
-[[redirects]]
-  from = "/*"
-  to = "/404"
-  status = 404
-
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# These redirects ensure all routes are handled by Next.js
+[[redirects]]
+  from = "/_next/*"
+  to = "/_next/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/api/*"
+  to = "/api/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/*"
+  to = "/.netlify/functions/nextjs-server"
+  status = 200
+  force = true
+
+[functions]
+  external_node_modules = ["@netlify/plugin-nextjs"]

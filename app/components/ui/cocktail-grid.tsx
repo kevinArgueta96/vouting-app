@@ -5,6 +5,7 @@ import { cocktailService } from '../../services/supabase';
 import Link from 'next/link';
 import { routes } from '../../config/routes';
 import { useLocale } from 'next-intl';
+import { Modal } from './modal';
 
 interface Cocktail {
   id: number;
@@ -16,6 +17,7 @@ interface Cocktail {
 export function CocktailGrid() {
   const [cocktails, setCocktails] = useState<Cocktail[]>([]);
   const [loading, setLoading] = useState(true);
+  const [selectedCocktail, setSelectedCocktail] = useState<Cocktail | null>(null);
   const locale = useLocale();
 
   useEffect(() => {
@@ -42,48 +44,76 @@ export function CocktailGrid() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl mx-auto">
-      {cocktails.map((cocktail) => (
-        <Link
-          key={cocktail.id}
-          href={routes.vote.detail(locale, cocktail.id.toString())}
-          className="group"
-        >
-          <div className="bg-white/5 backdrop-blur-lg rounded-xl p-6 transition-all duration-300 hover:scale-105 hover:bg-white/10 border border-white/10 hover:border-white/20">
-            <div className="flex flex-col h-full">
-              <div className="mb-4">
-                <div className="inline-block px-3 py-1 text-sm rounded-full bg-primary/10 text-primary mb-3">
-                  {cocktail.brand}
+    <div className="bg-[#F9F6F0] min-h-screen py-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl mx-auto px-6">
+        {cocktails.map((cocktail) => (
+          <div
+            key={cocktail.id}
+            className="group cursor-pointer"
+            onClick={() => setSelectedCocktail(cocktail)}
+          >
+            <div className="bg-white rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] border border-gray-100">
+              <div className="flex flex-col h-full">
+                <div className="mb-4">
+                  <div className="inline-block px-3 py-1 text-sm font-medium rounded-full bg-blue-50 text-blue-600 mb-3">
+                    {cocktail.brand}
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-900 group-hover:text-blue-600 transition-colors">
+                    {cocktail.name}
+                  </h3>
+                  <p className="text-gray-600 line-clamp-2">
+                    {cocktail.description}
+                  </p>
                 </div>
-                <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
-                  {cocktail.name}
-                </h3>
-                <p className="text-gray-400 line-clamp-3">
-                  {cocktail.description}
-                </p>
-              </div>
-              <div className="mt-auto">
-                <div className="flex items-center justify-between">
-                  <span className="text-sm text-gray-400">Click to rate</span>
-                  <svg
-                    className="w-6 h-6 text-primary transform group-hover:translate-x-1 transition-transform"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
-                  </svg>
+                <div className="mt-auto pt-4 border-t border-gray-100">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm font-medium text-blue-600">View Details</span>
+                    <svg
+                      className="w-5 h-5 text-blue-600 transform group-hover:translate-x-1 transition-transform"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M13 7l5 5m0 0l-5 5m5-5H6"
+                      />
+                    </svg>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </Link>
-      ))}
+        ))}
+      </div>
+
+      <Modal
+        isOpen={!!selectedCocktail}
+        onClose={() => setSelectedCocktail(null)}
+      >
+        {selectedCocktail && (
+          <div className="text-center">
+            <div className="mb-6">
+              <div className="inline-block px-4 py-1.5 text-sm font-medium rounded-full bg-blue-50 text-blue-600 mb-3">
+                {selectedCocktail.brand}
+              </div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">{selectedCocktail.name}</h2>
+              <p className="text-gray-600 mb-6">{selectedCocktail.description}</p>
+            </div>
+            <Link
+              href={routes.vote.detail(locale, selectedCocktail.id.toString())}
+              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors w-full"
+            >
+              Rate this Cocktail
+              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
+            </Link>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

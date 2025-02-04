@@ -37,10 +37,12 @@ export default function CocktailDetail({
   onSubmit: (ratings: Rating) => void;
 }) {
   const t = useTranslations("Vote");
+  const tCocktail = useTranslations("CocktailDetail");
   const [characteristics, setCharacteristics] = useState<RatingCharacteristic[]>([]);
   const [ratings, setRatings] = useState<Rating>({});
   const [emailError, setEmailError] = useState("");
   const [wantRecipe, setWantRecipe] = useState(false);
+  const [wantDraffle, setWantDraffle] = useState(false);
 
   useEffect(() => {
     const loadCharacteristics = async () => {
@@ -181,16 +183,11 @@ export default function CocktailDetail({
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg">
                 <input
-                  type="radio"
+                  type="checkbox"
                   id="recipe-checkbox"
-                  name="options"
                   checked={wantRecipe}
-                  onChange={(e) => {
-                    if (e.target.checked) {
-                      setWantRecipe(true);
-                    }
-                  }}
-                  className="w-4 h-4 rounded-full border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4]"
+                  onChange={(e) => setWantRecipe(e.target.checked)}
+                  className="w-4 h-4 rounded border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4]"
                 />
                 <label htmlFor="recipe-checkbox" className="text-sm">
                   {t("sendRecipe")}
@@ -199,16 +196,16 @@ export default function CocktailDetail({
               
               <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg">
                 <input
-                  type="radio"
+                  type="checkbox"
                   id="draffle-checkbox"
-                  name="options"
-                  checked={!wantRecipe}
+                  checked={wantDraffle}
                   onChange={(e) => {
+                    setWantDraffle(e.target.checked);
                     if (e.target.checked) {
-                      setWantRecipe(false);
+                      console.log('User wants to participate in the draffle');
                     }
                   }}
-                  className="w-4 h-4 rounded-full border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4]"
+                  className="w-4 h-4 rounded border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4]"
                 />
                 <label htmlFor="draffle-checkbox" className="text-sm">
                   Participate to the draffle.
@@ -240,7 +237,7 @@ export default function CocktailDetail({
               className="w-full bg-[#FF8B9C] text-white hover:bg-[#ff7c8f] transition-colors duration-200 rounded-lg py-3 font-bold uppercase tracking-wider"
               disabled={!canSubmit()}
             >
-              Send Vote
+              {tCocktail("sendVote")}
             </Button>
           </div>
         </div>

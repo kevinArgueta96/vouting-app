@@ -28,7 +28,8 @@
   "CocktailDetail": {
     "ingredients": "Ingredients",
     "rating": "Rating",
-    "submitRating": "Submit Rating"
+    "submitRating": "Submit Rating",
+    "sendVote": "Send Vote"
   },
   "Thanks": {
     "title": "Thank You!",
