@@ -1,10 +1,13 @@
 [build]
   command = "npm install && npm run build"
-  publish = "out"
+  publish = ".next"
 
 [build.environment]
   NEXT_TELEMETRY_DISABLED = "1"
   NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
 
 [[headers]]
   for = "/*"
@@ -16,11 +19,15 @@
 
 [build.processing]
   skip_processing = false
+
 [build.processing.css]
   minify = true
+
 [build.processing.js]
   minify = true
+
 [build.processing.html]
   pretty_urls = true
+
 [build.processing.images]
   compress = true
