@@ -34,7 +34,6 @@ export default function CocktailVotePage({ id }: Props) {
   const locale = useLocale();
   const [cocktail, setCocktail] = useState<Cocktail | null>(null);
   const [loading, setLoading] = useState(true);
-  const [validationEnabled, setValidationEnabled] = useState<boolean>(false);
   const [errorModal, setErrorModal] = useState({
     isOpen: false,
     title: "",
@@ -46,7 +45,7 @@ export default function CocktailVotePage({ id }: Props) {
 
     const loadData = async () => {
       try {
-        const [cocktailData, _votes, isValidationEnabled] =
+        const [cocktailData, _votes] =
           await Promise.all([
             cocktailService.getCocktailById(Number(id)),
             cocktailService.getCocktailVotes(Number(id)),
@@ -56,7 +55,6 @@ export default function CocktailVotePage({ id }: Props) {
         if (mounted) {
           console.log(_votes)
           setCocktail(cocktailData);
-          setValidationEnabled(isValidationEnabled);
         }
       } catch (error) {
         console.error("Error loading data:", error);

@@ -32,7 +32,6 @@ interface Cocktail {
 export default function CocktailDetail({
   cocktail,
   onSubmit,
-  onViewDetails,
 }: {
   cocktail: Cocktail;
   onSubmit: (ratings: Rating) => void;

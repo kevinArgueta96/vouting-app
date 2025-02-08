@@ -6,7 +6,7 @@ const USER_UUID_KEY = 'voting_user_uuid';
 export const getUserUuid = (): string => {
   if (typeof window === 'undefined') return '';
   
-  let userUuid = localStorage.getItem(USER_UUID_KEY);
+  const userUuid = localStorage.getItem(USER_UUID_KEY);
   
   if (!userUuid) {
     const newUuid = uuidv4();
