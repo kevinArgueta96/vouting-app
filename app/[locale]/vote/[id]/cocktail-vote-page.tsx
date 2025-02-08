@@ -8,6 +8,8 @@ import {
   ratingService,
   featureFlagService,
 } from "../../../services/supabase";
+import { getUserUuid } from "../../../lib/user-session";
+import { Modal } from "../../../components/ui/modal";
 import { Database } from "../../../types/supabase";
 import { useTranslations, useLocale } from "next-intl";
 import { routes, getRoute } from "../../../config/routes";
@@ -33,6 +35,11 @@ export default function CocktailVotePage({ id }: Props) {
   const [cocktail, setCocktail] = useState<Cocktail | null>(null);
   const [loading, setLoading] = useState(true);
   const [validationEnabled, setValidationEnabled] = useState<boolean>(false);
+  const [errorModal, setErrorModal] = useState({
+    isOpen: false,
+    title: "",
+    message: "",
+  });
 
   useEffect(() => {
     let mounted = true;
@@ -69,50 +76,16 @@ export default function CocktailVotePage({ id }: Props) {
 
   const handleRatingSubmit = async (ratings: Rating) => {
     try {
-      // Get client-side information only when submitting
-      let ip = "0.0.0.0";
-      let userAgent = "";
+      const userUuid = getUserUuid();
 
-      // Ensure we're in the browser before accessing window
-      if (typeof window === "object") {
-        userAgent = window.navigator.userAgent;
-        try {
-          const ipResponse = await fetch("https://api.ipify.org?format=json");
-          const ipData = await ipResponse.json();
-          ip = ipData.ip;
-        } catch (error) {
-          console.error("Error fetching IP:", error);
-        }
-      }
-
-      // Use the cached validation status
-      if (validationEnabled) {
-        try {
-          const hasVoted = await ratingService.checkExistingVote(
-            Number(id),
-            ip,
-            userAgent
-          );
-
-          if (hasVoted) {
-            alert(t("alreadyVoted"));
-            return;
-          }
-        } catch (error) {
-          console.error("Error checking existing vote:", error);
-          alert(t("submitError"));
-          return;
-        }
-      }
-
+      // Always try to submit the rating - let the database constraint handle duplicates
       await ratingService.submitRating({
         cocktail_id: Number(id),
         appearance: ratings.appearance as number,
         taste: ratings.taste as number,
         innovativeness: ratings.innovativeness as number,
         user_email: ratings.user_email || null,
-        ip_address: ip,
-        user_agent: userAgent,
+        user_uuid: userUuid,
       });
 
       // Send email if user provided their email
@@ -152,9 +125,11 @@ We appreciate your participation!
           if (!emailResponse.ok) {
             const emailResult = await emailResponse.json();
             console.error("Failed to send email:", emailResult.error);
-            alert(
-              "Failed to send email confirmation. Please check your email address."
-            );
+            setErrorModal({
+              isOpen: true,
+              title: t("modal.errorTitle"),
+              message: t("modal.emailError"),
+            });
             return;
           }
         } catch (error) {
@@ -165,10 +140,18 @@ We appreciate your participation!
       await router.push(getRoute(routes.thanks, locale));
     } catch (error: unknown) {
       console.error("Error submitting rating:", error);
-      if (error instanceof Error && error.message === t("alreadyVoted")) {
-        alert(error.message);
+      if (error instanceof Error && error.message === 'alreadyVoted') {
+        setErrorModal({
+          isOpen: true,
+          title: t("modal.alreadyVotedTitle"),
+          message: t("modal.alreadyVotedMessage"),
+        });
       } else {
-        alert(t("submitError"));
+        setErrorModal({
+          isOpen: true,
+          title: t("modal.errorTitle"),
+          message: t("modal.errorMessage"),
+        });
       }
     }
   };
@@ -192,7 +175,19 @@ We appreciate your participation!
   return (
     <main className="min-h-screen bg-[#F9F6F0] relative">
       {/* Main Content */}
-      <CocktailDetail cocktail={cocktail} onSubmit={handleRatingSubmit} />
+      <CocktailDetail 
+        cocktail={cocktail} 
+        onSubmit={handleRatingSubmit}
+      />
+      
+      {/* Error Modal */}
+      <Modal
+        isOpen={errorModal.isOpen}
+        onClose={() => setErrorModal({ ...errorModal, isOpen: false })}
+        title={errorModal.title}
+        message={errorModal.message}
+        buttonText={t("modal.closeButton")}
+      />
     </main>
   );
 }

@@ -65,26 +65,32 @@ export const featureFlagService = {
 }
 
 export const ratingService = {
-  async checkExistingVote(cocktailId: number, ipAddress: string, userAgent: string) {
+  async checkExistingVote(cocktailId: number, userUuid: string) {
     const { count, error } = await supabase
       .from('cocktail_ratings')
       .select('*', { count: 'exact', head: true })
       .eq('cocktail_id', cocktailId)
-      .eq('ip_address', ipAddress)
-      .eq('user_agent', userAgent)
+      .eq('user_uuid', userUuid)
 
     if (error) throw error
     return count !== null && count > 0
   },
 
-  async submitRating(rating: CocktailRatingInsert) {
+  async submitRating(rating: Omit<CocktailRatingInsert, 'ip_address' | 'user_agent'>) {
     const { data, error } = await supabase
       .from('cocktail_ratings')
-      .insert(rating)
+      .insert({
+        ...rating,
+      })
       .select()
       .single()
 
-    if (error) throw error
+    if (error) {
+      if (error.code === '23505') {
+        throw new Error('alreadyVoted')
+      }
+      throw error
+    }
     return data as CocktailRating
   },
 

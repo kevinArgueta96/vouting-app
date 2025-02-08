@@ -17,6 +17,14 @@
     "disabled": "Pois käytöstä",
     "alreadyVoted": "Olet jo äänestänyt tätä cocktailia tältä laitteelta",
     "submitError": "Virhe äänen lähettämisessä. Yritä uudelleen.",
+    "modal": {
+      "alreadyVotedTitle": "Ääni jo rekisteröity",
+      "alreadyVotedMessage": "Huomasimme, että olet jo arvioinut tämän cocktailin. Reilun äänestyksen varmistamiseksi jokainen voi antaa vain yhden arvion cocktailia kohden.",
+      "errorTitle": "Hups! Jotain meni pieleen",
+      "errorMessage": "Emme voineet käsitellä ääntäsi tällä hetkellä. Yritä uudelleen hetken kuluttua.",
+      "emailError": "Emme voineet lähettää reseptiä sähköpostiisi. Tarkista, että sähköpostiosoite on oikein ja yritä uudelleen.",
+      "closeButton": "Selvä"
+    },
     "by": "tekijä",
     "sendRecipe": "Lähetä minulle cocktail-resepti sähköpostilla",
     "email": "Sähköposti",
@@ -29,7 +37,8 @@
     "ingredients": "Ainesosat",
     "rating": "Arvostelu",
     "submitRating": "Lähetä arvostelu",
-    "sendVote": "Lähetä ääni"
+    "sendVote": "Lähetä ääni",
+    "viewDetails": "Näytä tiedot"
   },
   "Thanks": {
     "title": "Kiitos!",

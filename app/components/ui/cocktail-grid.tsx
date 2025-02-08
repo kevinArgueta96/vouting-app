@@ -4,8 +4,8 @@ import { useState, useEffect } from 'react';
 import { cocktailService } from '../../services/supabase';
 import Link from 'next/link';
 import { routes } from '../../config/routes';
-import { useLocale } from 'next-intl';
-import { Modal } from './modal';
+import { useLocale, useTranslations } from 'next-intl';
+import { CocktailDetailModal } from './cocktail-detail-modal';
 
 interface Cocktail {
   id: number;
@@ -19,6 +19,7 @@ export function CocktailGrid() {
   const [loading, setLoading] = useState(true);
   const [selectedCocktail, setSelectedCocktail] = useState<Cocktail | null>(null);
   const locale = useLocale();
+  const t = useTranslations('CocktailDetail');
 
   useEffect(() => {
     const fetchCocktails = async () => {
@@ -67,7 +68,7 @@ export function CocktailGrid() {
                 </div>
                 <div className="mt-auto pt-4 border-t border-gray-100">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-blue-600">View Details</span>
+                    <span className="text-sm font-medium text-blue-600">{t('viewDetails')}</span>
                     <svg
                       className="w-5 h-5 text-blue-600 transform group-hover:translate-x-1 transition-transform"
                       fill="none"
@@ -89,31 +90,23 @@ export function CocktailGrid() {
         ))}
       </div>
 
-      <Modal
-        isOpen={!!selectedCocktail}
-        onClose={() => setSelectedCocktail(null)}
-      >
-        {selectedCocktail && (
-          <div className="text-center">
-            <div className="mb-6">
-              <div className="inline-block px-4 py-1.5 text-sm font-medium rounded-full bg-blue-50 text-blue-600 mb-3">
-                {selectedCocktail.brand}
-              </div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-4">{selectedCocktail.name}</h2>
-              <p className="text-gray-600 mb-6">{selectedCocktail.description}</p>
-            </div>
-            <Link
-              href={routes.vote.detail(locale, selectedCocktail.id.toString())}
-              className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors w-full"
-            >
-              Rate this Cocktail
-              <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </Link>
-          </div>
-        )}
-      </Modal>
+      {selectedCocktail && (
+        <CocktailDetailModal
+          isOpen={!!selectedCocktail}
+          onClose={() => setSelectedCocktail(null)}
+          cocktail={selectedCocktail}
+        >
+          <Link
+            href={routes.vote.detail(locale, selectedCocktail.id.toString())}
+            className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#FF8B9C] hover:bg-[#ff7c8f] transition-colors w-full mt-6"
+          >
+            {t('submitRating')}
+            <svg className="ml-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+            </svg>
+          </Link>
+        </CocktailDetailModal>
+      )}
     </div>
   );
 }

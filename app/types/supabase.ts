@@ -29,6 +29,26 @@ export interface Database {
           description?: string
         }
       }
+      user_sessions: {
+        Row: {
+          user_uuid: string
+          created_at: string
+          ip_address: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          user_uuid: string
+          created_at?: string
+          ip_address?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          user_uuid?: string
+          created_at?: string
+          ip_address?: string | null
+          user_agent?: string | null
+        }
+      }
       cocktail_ratings: {
         Row: {
           id: number
@@ -36,9 +56,8 @@ export interface Database {
           appearance: number
           taste: number
           innovativeness: number
-          user_email: string | null,
-          ip_address: string | null,
-          user_agent: string | null
+          user_email: string | null
+          user_uuid: string
           created_at: string
         }
         Insert: {
@@ -47,9 +66,8 @@ export interface Database {
           appearance: number
           taste: number
           innovativeness: number
-          user_email?: string | null,
-          ip_address?: string | null,
-          user_agent?: string | null
+          user_email?: string | null
+          user_uuid: string
           created_at?: string
         }
         Update: {
@@ -58,9 +76,8 @@ export interface Database {
           appearance?: number
           taste?: number
           innovativeness?: number
-          user_email?: string | null,
-          ip_address?: string | null,
-          user_agent?: string | null
+          user_email?: string | null
+          user_uuid?: string
           created_at?: string
         }
       }

@@ -32,9 +32,11 @@ interface Cocktail {
 export default function CocktailDetail({
   cocktail,
   onSubmit,
+  onViewDetails,
 }: {
   cocktail: Cocktail;
   onSubmit: (ratings: Rating) => void;
+  onViewDetails?: () => void;
 }) {
   const t = useTranslations("Vote");
   const tCocktail = useTranslations("CocktailDetail");
@@ -116,19 +118,30 @@ export default function CocktailDetail({
       {/* Content with background circle */}
       <div className="relative w-full flex-1 bg-[#3B4992] rounded-t-[50px] pt-24 px-4">
         <div className="max-w-[600px] mx-auto">
-          {/* Cocktail Info */}
-          <div className="text-white space-y-2 mb-12">
-            <h2 className="text-4xl font-bold uppercase text-left">
-              {cocktail.name}
-            </h2>
-            <h3 className="text-xl uppercase tracking-wide text-left">
-              {cocktail.brand}
-            </h3>
-            <p className="text-sm text-left ">
-              {cocktail.description}
-            </p>
+                   {/* Cocktail Info */}
+                   <div className="text-white space-y-2 mb-12">
+            <div className="flex justify-between items-start gap-4">
+              <div>
+                <h2 className="text-4xl font-bold uppercase text-left">
+                  {cocktail.name}
+                </h2>
+                <h3 className="text-xl uppercase tracking-wide text-left">
+                  {cocktail.brand}
+                </h3>
+                <p className="text-sm text-left mt-2">
+                  {cocktail.description}
+                </p>
+              </div>
+              {onViewDetails && (
+                <button
+                  onClick={onViewDetails}
+                  className="bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg text-sm font-medium"
+                >
+                  {tCocktail("viewDetails")}
+                </button>
+              )}
+            </div>
           </div>
-
           {/* Rating Sections */}
           <div className="space-y-12">
             {characteristics.map((characteristic) => (

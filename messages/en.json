@@ -17,6 +17,14 @@
     "disabled": "Disabled",
     "alreadyVoted": "You have already voted for this cocktail from this device",
     "submitError": "Error submitting vote. Please try again.",
+    "modal": {
+      "alreadyVotedTitle": "Vote Already Registered",
+      "alreadyVotedMessage": "We've noticed that you've already rated this cocktail. To ensure fair voting, each person can only submit one rating per cocktail.",
+      "errorTitle": "Oops! Something went wrong",
+      "errorMessage": "We couldn't process your vote at this time. Please try again in a moment.",
+      "emailError": "We couldn't send the recipe to your email. Please check that the email address is correct and try again.",
+      "closeButton": "Got it"
+    },
     "by": "by",
     "sendRecipe": "Send me the cocktail recipe by email",
     "email": "Email",
@@ -29,7 +37,8 @@
     "ingredients": "Ingredients",
     "rating": "Rating",
     "submitRating": "Submit Rating",
-    "sendVote": "Send Vote"
+    "sendVote": "Send Vote",
+    "viewDetails": "View Details"
   },
   "Thanks": {
     "title": "Thank You!",
