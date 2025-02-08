@@ -39,15 +39,7 @@ export const CocktailDetailModal: React.FC<CocktailDetailModalProps> = ({
           </div>
 
           <div className="relative">
-            {/* Cocktail Image */}
-            <div className="w-full h-48 relative">
-              <Image
-                src="/images/cocktail-image-vote.png"
-                alt={cocktail.name}
-                fill
-                className="object-cover"
-              />
-            </div>
+           
 
             {/* Cocktail Details */}
             <div className="p-8 text-white">

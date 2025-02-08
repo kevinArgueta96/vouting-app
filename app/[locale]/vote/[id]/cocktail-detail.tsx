@@ -118,29 +118,17 @@ export default function CocktailDetail({
       {/* Content with background circle */}
       <div className="relative w-full flex-1 bg-[#3B4992] rounded-t-[50px] pt-24 px-4">
         <div className="max-w-[600px] mx-auto">
-                   {/* Cocktail Info */}
-                   <div className="text-white space-y-2 mb-12">
-            <div className="flex justify-between items-start gap-4">
-              <div>
-                <h2 className="text-4xl font-bold uppercase text-left">
-                  {cocktail.name}
-                </h2>
-                <h3 className="text-xl uppercase tracking-wide text-left">
-                  {cocktail.brand}
-                </h3>
-                <p className="text-sm text-left mt-2">
-                  {cocktail.description}
-                </p>
-              </div>
-              {onViewDetails && (
-                <button
-                  onClick={onViewDetails}
-                  className="bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-lg text-sm font-medium"
-                >
-                  {tCocktail("viewDetails")}
-                </button>
-              )}
-            </div>
+          {/* Cocktail Info */}
+          <div className="text-white space-y-2 mb-12">
+            <h2 className="text-4xl font-bold uppercase text-left">
+              {cocktail.name}
+            </h2>
+            <h3 className="text-xl uppercase tracking-wide text-left">
+              {cocktail.brand}
+            </h3>
+            <p className="text-sm text-left ">
+              {cocktail.description}
+            </p>
           </div>
           {/* Rating Sections */}
           <div className="space-y-12">
@@ -150,9 +138,8 @@ export default function CocktailDetail({
                   {characteristic.label}
                 </h4>
                 <div className="relative h-16">
-                  <div className={`flex justify-center gap-6 sm:gap-8 transition-all duration-700 ${
-                    (ratings[characteristic.id] as number) > 0 ? 'scale-0 opacity-0 transform translate-y-4' : 'scale-100 opacity-100 transform translate-y-0'
-                  }`}>
+                  <div className={`flex justify-center gap-6 sm:gap-8 transition-all duration-700 ${(ratings[characteristic.id] as number) > 0 ? 'scale-0 opacity-0 transform translate-y-4' : 'scale-100 opacity-100 transform translate-y-0'
+                    }`}>
                     {RATING_EMOJIS.map((rating) => (
                       <button
                         key={rating.value}
@@ -163,8 +150,8 @@ export default function CocktailDetail({
                         }}
                         className="w-16 h-16 flex items-center justify-center transition-transform hover:scale-110"
                       >
-                        <Image 
-                          src={rating.emoji} 
+                        <Image
+                          src={rating.emoji}
                           alt={`Rating ${rating.value}`}
                           width={48}
                           height={48}
@@ -173,11 +160,11 @@ export default function CocktailDetail({
                       </button>
                     ))}
                   </div>
-                  
+
                   {/* Selected Emoji */}
                   {(ratings[characteristic.id] as number) > 0 && (
                     <div className="absolute inset-0 flex justify-center items-center transition-all duration-700 transform scale-100 opacity-100 translate-y-0">
-                      <Image 
+                      <Image
                         src={RATING_EMOJIS[(ratings[characteristic.id] as number) - 1].emoji}
                         alt={`Selected Rating ${ratings[characteristic.id]}`}
                         width={48}
@@ -206,7 +193,7 @@ export default function CocktailDetail({
                   {t("sendRecipe")}
                 </label>
               </div>
-              
+
               <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg">
                 <input
                   type="checkbox"
