@@ -7,6 +7,9 @@ const inter = Inter({ subsets: ["latin"] });
 export const metadata: Metadata = {
   title: "Voting App",
   description: "A voting application built with Next.js",
+  icons: {
+    icon: '/favicon.svg',
+  },
 };
 
 export default async function RootLayout({
