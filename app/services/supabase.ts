@@ -137,6 +137,18 @@ export const ratingService = {
   }
 }
 
+export const userSessionService = {
+  async checkUserSession(userUuid: string) {
+    const { count, error } = await supabase
+      .from('user_sessions')
+      .select('*', { count: 'exact', head: true })
+      .eq('user_uuid', userUuid)
+
+    if (error) throw error
+    return count !== null && count > 0
+  }
+}
+
 export const characteristicService = {
   async getAllCharacteristics() {
     const { data, error } = await supabase

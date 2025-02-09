@@ -7,8 +7,9 @@ import {
   cocktailService,
   ratingService,
   featureFlagService,
+  userSessionService,
 } from "../../../services/supabase";
-import { getUserUuid } from "../../../lib/user-session";
+import { getUserUuid, createUserSession } from "../../../lib/user-session";
 import { Modal } from "../../../components/ui/modal";
 import { Database } from "../../../types/supabase";
 import { useTranslations, useLocale } from "next-intl";
@@ -74,9 +75,16 @@ export default function CocktailVotePage({ id }: Props) {
 
   const handleRatingSubmit = async (ratings: Rating) => {
     try {
-      const userUuid = getUserUuid();
+      const userUuid = await getUserUuid();
+      
+      // Check if user session exists
+      const sessionExists = await userSessionService.checkUserSession(userUuid);
+      if (!sessionExists) {
+        // Create user session if it doesn't exist
+        await createUserSession(userUuid);
+      }
 
-      // Always try to submit the rating - let the database constraint handle duplicates
+      // Now submit the rating
       await ratingService.submitRating({
         cocktail_id: Number(id),
         appearance: ratings.appearance as number,

@@ -3,7 +3,7 @@ import { supabase } from './supabase';
 
 const USER_UUID_KEY = 'voting_user_uuid';
 
-export const getUserUuid = (): string => {
+export const getUserUuid = async (): Promise<string> => {
   if (typeof window === 'undefined') return '';
   
   const userUuid = localStorage.getItem(USER_UUID_KEY);
@@ -13,7 +13,7 @@ export const getUserUuid = (): string => {
     localStorage.setItem(USER_UUID_KEY, newUuid);
     
     // Create user session in Supabase
-    createUserSession(newUuid).catch(console.error);
+    await createUserSession(newUuid);
     return newUuid;
   }
   
