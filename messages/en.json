@@ -51,14 +51,6 @@
       "description": "Description",
       "appreciation": "We appreciate your participation in voting for our cocktails!"
     },
-    "recipe": {
-      "title": "Your Cocktail Recipe: {cocktailName}",
-      "thankYou": "Thank you for voting! Here's the recipe you requested:",
-      "description": "Description",
-      "enjoyMessage": "Enjoy crafting your cocktail!",
-      "regards": "Best regards,",
-      "company": "Helsinki Distilling Company"
-    },
     "raffle": {
       "title": "Thank You for Participating in Our Raffle!",
       "message": "We've received your entry for the raffle. Thank you for participating!",

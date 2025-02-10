@@ -78,9 +78,9 @@ export async function POST(request: Request) {
         EmailComponent = CombinedEmail;
         emailProps.translations = emailTemplates.combined;
       } else if (wantRecipe) {
-        emailSubject = emailTemplates.recipe.title.replace('{cocktailName}', cocktail.name);
+        emailSubject = emailTemplates.vote.title.replace('{cocktailName}', cocktail.name);
         EmailComponent = CocktailVoteEmail;
-        emailProps.translations = emailTemplates.recipe;
+        emailProps.translations = emailTemplates.vote;
       } else if (wantRaffle) {
         emailSubject = emailTemplates.raffle.title;
         EmailComponent = RaffleEmail;

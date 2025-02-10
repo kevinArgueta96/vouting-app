@@ -50,14 +50,6 @@
       "description": "Kuvaus",
       "appreciation": "Arvostamme osallistumistasi cocktailien äänestykseen!"
     },
-    "recipe": {
-      "title": "Cocktail-reseptisi: {cocktailName}",
-      "thankYou": "Kiitos äänestyksestä! Tässä pyytämäsi resepti:",
-      "description": "Kuvaus",
-      "enjoyMessage": "Nauti cocktailisi valmistamisesta!",
-      "regards": "Ystävällisin terveisin,",
-      "company": "Helsinki Distilling Company"
-    },
     "raffle": {
       "title": "Kiitos osallistumisestasi arvontaan!",
       "message": "Olemme vastaanottaneet arvontaosallistumisesi. Kiitos osallistumisesta!",
