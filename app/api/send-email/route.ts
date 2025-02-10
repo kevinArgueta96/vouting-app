@@ -24,10 +24,10 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: Request) {
   try {
     // Validate environment variables
-    if (!process.env.RESEND_API_KEY) {
-      console.error('RESEND_API_KEY is not set');
+    if (!process.env.RESEND_API_KEY || !process.env.RESEND_FROM_EMAIL) {
+      console.error('Missing required environment variables');
       return NextResponse.json(
-        { success: false, error: 'Resend API key not configured' },
+        { success: false, error: 'Email service not properly configured' },
         { status: 500 }
       );
     }
