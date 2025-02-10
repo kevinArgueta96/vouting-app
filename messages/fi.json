@@ -26,7 +26,8 @@
       "closeButton": "Selvä"
     },
     "by": "tekijä",
-    "sendRecipe": "Lähetä minulle cocktail-resepti sähköpostilla",
+    "sendRecipe": "Lähetä cocktailin resepti sähköpostiini",
+    "participateRaffle": "Osallistu arvontaan",
     "email": "Sähköposti",
     "emailPlaceholder": "sinun@email.com",
     "enterEmail": "Anna sähköpostiosoitteesi",

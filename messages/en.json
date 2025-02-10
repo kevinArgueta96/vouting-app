@@ -26,12 +26,14 @@
       "closeButton": "Got it"
     },
     "by": "by",
-    "sendRecipe": "Send me the cocktail recipe by email",
+    "sendRecipe": "Send the recipe of the cocktail to my email",
+    "participateRaffle": "Participate to the draffle",
     "email": "Email",
     "emailPlaceholder": "your@email.com",
     "enterEmail": "Enter your email",
     "invalidEmail": "Please enter a valid email",
     "submitVote": "Submit Vote"
+
   },
   "CocktailDetail": {
     "ingredients": "Ingredients",

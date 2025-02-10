@@ -16,11 +16,13 @@ import { useTranslations, useLocale } from "next-intl";
 import { routes, getRoute } from "../../../config/routes";
 
 type Rating = {
-  [key: string]: number | string | undefined;
+  [key: string]: number | string | boolean | undefined;
   appearance?: number;
   taste?: number;
   innovativeness?: number;
   user_email?: string;
+  wantRecipe?: boolean;
+  wantRaffle?: boolean;
 };
 
 type Cocktail = Database["public"]["Tables"]["cocktails"]["Row"];
@@ -114,11 +116,8 @@ export default function CocktailVotePage({ id }: Props) {
             body: JSON.stringify({
               to: ratings.user_email as string,
               cocktail,
-              ratings: {
-                appearance: ratings.appearance,
-                taste: ratings.taste,
-                innovativeness: ratings.innovativeness
-              }
+              wantRecipe: ratings.wantRecipe,
+              wantRaffle: ratings.wantRaffle
             }),
           });
 

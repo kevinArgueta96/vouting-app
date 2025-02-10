@@ -1,7 +1,8 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
-import * as React from 'react';
 import CocktailVoteEmail from '../../components/email/CocktailVoteEmail';
+import RaffleEmail from '../../components/email/RaffleEmail';
+import CombinedEmail from '../../components/email/CombinedEmail';
 import { Database } from '../../types/supabase';
 
 type Cocktail = Database['public']['Tables']['cocktails']['Row'];
@@ -9,6 +10,8 @@ type Cocktail = Database['public']['Tables']['cocktails']['Row'];
 interface EmailRequestBody {
   to: string;
   cocktail: Cocktail;
+  wantRecipe: boolean;
+  wantRaffle: boolean;
 }
 
 if (!process.env.RESEND_API_KEY) {
@@ -44,10 +47,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const { to, cocktail } = body as EmailRequestBody;
+    const { to, cocktail, wantRecipe, wantRaffle } = body as EmailRequestBody;
 
     // Validate required fields
-    if (!to || !cocktail) {
+    if (!to || !cocktail || (wantRecipe === undefined) || (wantRaffle === undefined)) {
       console.error('Missing required fields');
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
@@ -57,19 +60,37 @@ export async function POST(request: Request) {
     console.log('Attempting to send email to:', to);
 
     try {
-      const emailSubject = `${cocktail.name} - Thank you for your vote!`;
+      let emailSubject = 'Thank you for your participation!';
+      let EmailComponent;
+
+      if (wantRecipe && wantRaffle) {
+        emailSubject = `${cocktail.name} Recipe and Raffle Entry Confirmation`;
+        EmailComponent = CombinedEmail;
+      } else if (wantRecipe) {
+        emailSubject = `${cocktail.name} - Your Requested Recipe`;
+        EmailComponent = CocktailVoteEmail;
+      } else if (wantRaffle) {
+        emailSubject = 'Raffle Entry Confirmation';
+        EmailComponent = RaffleEmail;
+      } else {
+        return NextResponse.json(
+          { success: false, error: 'No email type selected' },
+          { status: 400 }
+        );
+      }
+
       console.log('Attempting to send email with payload:', {
         from: process.env.RESEND_FROM_EMAIL,
         to,
         subject: emailSubject,
-        cocktail: cocktail.name,
+        type: EmailComponent.name,
       });
 
       const response = await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL,
         to,
         subject: emailSubject,
-        react: CocktailVoteEmail({ cocktail })
+        react: EmailComponent({ cocktail })
       });
 
       if (!response.data?.id) {

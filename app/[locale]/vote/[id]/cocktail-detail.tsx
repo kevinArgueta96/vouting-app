@@ -18,8 +18,10 @@ type RatingCharacteristic =
   Database["public"]["Tables"]["rating_characteristics"]["Row"];
 
 type Rating = {
-  [key: string]: number | string | undefined;
+  [key: string]: number | string | boolean | undefined;
   user_email?: string;
+  wantRecipe?: boolean;
+  wantRaffle?: boolean;
 };
 
 interface Cocktail {
@@ -43,7 +45,8 @@ export default function CocktailDetail({
   const [ratings, setRatings] = useState<Rating>({});
   const [emailError, setEmailError] = useState("");
   const [wantRecipe, setWantRecipe] = useState(false);
-  const [wantDraffle, setWantDraffle] = useState(false);
+  const [wantRaffle, setWantRaffle] = useState(false);
+  const [showEmailInput, setShowEmailInput] = useState(false);
 
   useEffect(() => {
     const loadCharacteristics = async () => {
@@ -78,11 +81,15 @@ export default function CocktailDetail({
     return re.test(email);
   };
 
+  useEffect(() => {
+    setShowEmailInput(wantRecipe || wantRaffle);
+  }, [wantRecipe, wantRaffle]);
+
   const canSubmit = () => {
     const hasAllRatings = characteristics.every(
       (char) => (ratings[char.id] as number) > 0
     );
-    if (!wantRecipe) {
+    if (!wantRecipe && !wantRaffle) {
       return hasAllRatings;
     }
     return hasAllRatings && validateEmail(ratings.user_email || "");
@@ -90,14 +97,18 @@ export default function CocktailDetail({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (wantRecipe && !validateEmail(ratings.user_email || "")) {
+    if ((wantRecipe || wantRaffle) && !validateEmail(ratings.user_email || "")) {
       setEmailError(t("invalidEmail"));
       return;
     }
     setEmailError("");
 
     if (canSubmit()) {
-      onSubmit(ratings);
+      onSubmit({
+        ...ratings,
+        wantRecipe,
+        wantRaffle
+      });
     }
   };
 
@@ -196,23 +207,18 @@ export default function CocktailDetail({
               <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg">
                 <input
                   type="checkbox"
-                  id="draffle-checkbox"
-                  checked={wantDraffle}
-                  onChange={(e) => {
-                    setWantDraffle(e.target.checked);
-                    if (e.target.checked) {
-                      console.log('User wants to participate in the draffle');
-                    }
-                  }}
+                  id="raffle-checkbox"
+                  checked={wantRaffle}
+                  onChange={(e) => setWantRaffle(e.target.checked)}
                   className="w-4 h-4 rounded border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4]"
                 />
-                <label htmlFor="draffle-checkbox" className="text-sm">
-                  Participate to the draffle.
+                <label htmlFor="raffle-checkbox" className="text-sm">
+                  {t("participateRaffle")}
                 </label>
               </div>
             </div>
 
-            {wantRecipe && (
+            {showEmailInput && (
               <div className="mt-4 space-y-3">
                 <input
                   type="email"
