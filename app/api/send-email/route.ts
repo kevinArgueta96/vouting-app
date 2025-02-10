@@ -1,8 +1,22 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
+import * as React from 'react';
+import CocktailVoteEmail from '../../components/email/CocktailVoteEmail';
+import { Database } from '../../types/supabase';
+
+type Cocktail = Database['public']['Tables']['cocktails']['Row'];
+
+interface EmailRequestBody {
+  to: string;
+  cocktail: Cocktail;
+}
 
 if (!process.env.RESEND_API_KEY) {
   throw new Error('RESEND_API_KEY environment variable is required');
+}
+
+if (!process.env.RESEND_FROM_EMAIL) {
+  throw new Error('RESEND_FROM_EMAIL environment variable is required');
 }
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -14,14 +28,6 @@ export async function POST(request: Request) {
       console.error('RESEND_API_KEY is not set');
       return NextResponse.json(
         { success: false, error: 'Resend API key not configured' },
-        { status: 500 }
-      );
-    }
-
-    if (!process.env.RESEND_FROM_EMAIL) {
-      console.error('RESEND_FROM_EMAIL is not set');
-      return NextResponse.json(
-        { success: false, error: 'Sender email not configured' },
         { status: 500 }
       );
     }
@@ -38,10 +44,10 @@ export async function POST(request: Request) {
       );
     }
 
-    const { to, subject, text, html } = body;
+    const { to, cocktail } = body as EmailRequestBody;
 
     // Validate required fields
-    if (!to || !subject || !text) {
+    if (!to || !cocktail) {
       console.error('Missing required fields');
       return NextResponse.json(
         { success: false, error: 'Missing required fields' },
@@ -51,24 +57,25 @@ export async function POST(request: Request) {
     console.log('Attempting to send email to:', to);
 
     try {
-      const response = await resend.emails.send({
-        from: 'Acme <onboarding@resend.dev>',
+      const emailSubject = `${cocktail.name} - Thank you for your vote!`;
+      console.log('Attempting to send email with payload:', {
+        from: process.env.RESEND_FROM_EMAIL,
         to,
-        subject,
-        text,
-        html: html || text,
+        subject: emailSubject,
+        cocktail: cocktail.name,
       });
 
-      console.log('Email payload:', {
+      const response = await resend.emails.send({
+        from: process.env.RESEND_FROM_EMAIL,
         to,
-        subject,
-        text: text.substring(0, 100) + '...' // Log truncated text for privacy
+        subject: emailSubject,
+        react: CocktailVoteEmail({ cocktail })
       });
 
       if (!response.data?.id) {
-        console.error('Failed to send email:', response);
+        console.error('Failed to send email. Response:', response);
         return NextResponse.json(
-          { success: false, error: 'Failed to send email' },
+          { success: false, error: 'Failed to send email', details: response },
           { status: 500 }
         );
       }
@@ -76,14 +83,16 @@ export async function POST(request: Request) {
       console.log('Email sent successfully with ID:', response.data.id);
       return NextResponse.json({ success: true, id: response.data.id });
     } catch (sendError: unknown) {
-      console.error('Resend error:', sendError);
-      const error = sendError as Error;
+      console.error('Detailed Resend error:', sendError);
+      const error = sendError as Error & { statusCode?: number; response?: any };
       return NextResponse.json(
         { 
           success: false, 
-          error: 'message' in error ? error.message : 'Failed to send email'
+          error: 'message' in error ? error.message : 'Failed to send email',
+          statusCode: error.statusCode,
+          details: error.response
         },
-        { status: 500 }
+        { status: error.statusCode || 500 }
       );
     }
   } catch (error: unknown) {

@@ -105,6 +105,7 @@ export default function CocktailVotePage({ id }: Props) {
       // Send email if user provided their email
       if (ratings.user_email && cocktail) {
         try {
+          console.log("Sending email to:", ratings.user_email);
           const emailResponse = await fetch("/api/send-email", {
             method: "POST",
             headers: {
@@ -112,42 +113,49 @@ export default function CocktailVotePage({ id }: Props) {
             },
             body: JSON.stringify({
               to: ratings.user_email as string,
-              subject: `${cocktail.name} - Cocktail Details`,
-              text: `
-Thank you for rating ${cocktail.name}!
-
-Cocktail Details:
-Name: ${cocktail.name}
-Brand: ${cocktail.brand}
-Description: ${cocktail.description}
-
-We appreciate your participation!
-              `,
-              html: `
-<h2>Thank you for rating ${cocktail.name}!</h2>
-
-<h3>Cocktail Details:</h3>
-<p><strong>Name:</strong> ${cocktail.name}</p>
-<p><strong>Brand:</strong> ${cocktail.brand}</p>
-<p><strong>Description:</strong> ${cocktail.description}</p>
-
-<p>We appreciate your participation!</p>
-              `,
+              cocktail,
+              ratings: {
+                appearance: ratings.appearance,
+                taste: ratings.taste,
+                innovativeness: ratings.innovativeness
+              }
             }),
           });
 
+          const emailResult = await emailResponse.json();
+          
           if (!emailResponse.ok) {
-            const emailResult = await emailResponse.json();
-            console.error("Failed to send email:", emailResult.error);
+            console.error("Failed to send email:", {
+              status: emailResponse.status,
+              statusText: emailResponse.statusText,
+              result: emailResult
+            });
+            
+            let errorMessage = t("modal.emailError");
+            if (emailResult.error) {
+              errorMessage += ` - ${emailResult.error}`;
+              if (emailResult.details) {
+                errorMessage += `\nDetails: ${JSON.stringify(emailResult.details, null, 2)}`;
+              }
+            }
+            
             setErrorModal({
               isOpen: true,
               title: t("modal.errorTitle"),
-              message: t("modal.emailError"),
+              message: errorMessage,
             });
             return;
           }
+
+          console.log("Email sent successfully:", emailResult);
         } catch (error) {
           console.error("Error sending email:", error);
+          setErrorModal({
+            isOpen: true,
+            title: t("modal.errorTitle"),
+            message: `${t("modal.emailError")} - ${error instanceof Error ? error.message : 'Unknown error'}`,
+          });
+          return;
         }
       }
 
