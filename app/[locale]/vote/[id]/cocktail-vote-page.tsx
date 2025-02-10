@@ -46,15 +46,12 @@ export default function CocktailVotePage({ id }: Props) {
 
     const loadData = async () => {
       try {
-        const [cocktailData, _votes] =
-          await Promise.all([
-            cocktailService.getCocktailById(Number(id)),
-            cocktailService.getCocktailVotes(Number(id)),
-            featureFlagService.isFeatureEnabled("VALIDATE_REPEAT_VOUTE"),
-          ]);
+        const [cocktailData, _votes] = await Promise.all([
+          cocktailService.getCocktailById(Number(id)),
+          cocktailService.getCocktailVotes(Number(id))
+        ]);
 
         if (mounted) {
-          console.log(_votes)
           setCocktail(cocktailData);
         }
       } catch (error) {
@@ -84,7 +81,18 @@ export default function CocktailVotePage({ id }: Props) {
         await createUserSession(userUuid);
       }
 
-      // Now submit the rating
+      // Check if repeat vote validation is enabled
+      const isValidateRepeatVoteEnabled = await featureFlagService.isFeatureEnabled("VALIDATE_REPEAT_VOUTE");
+      
+      if (isValidateRepeatVoteEnabled) {
+        // Check if user has already voted for this cocktail
+        const hasVoted = await ratingService.checkExistingVote(Number(id), userUuid);
+        if (hasVoted) {
+          throw new Error('alreadyVoted');
+        }
+      }
+
+      // Submit the rating
       await ratingService.submitRating({
         cocktail_id: Number(id),
         appearance: ratings.appearance as number,
