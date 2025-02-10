@@ -1,17 +1,17 @@
-import sgMail from '@sendgrid/mail';
+import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
-if (!process.env.SENDGRID_API_KEY) {
-  throw new Error('SENDGRID_API_KEY environment variable is required');
+if (!process.env.RESEND_API_KEY) {
+  throw new Error('RESEND_API_KEY environment variable is required');
 }
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function GET(request: Request) {
   try {
-    if (!process.env.SENDGRID_FROM_EMAIL) {
+    if (!process.env.RESEND_FROM_EMAIL) {
       return NextResponse.json(
-        { success: false, error: 'SENDGRID_FROM_EMAIL not set' },
+        { success: false, error: 'RESEND_FROM_EMAIL not set' },
         { status: 500 }
       );
     }
@@ -27,57 +27,42 @@ export async function GET(request: Request) {
       );
     }
 
-    const msg = {
-      to: testEmail,
-      from: process.env.SENDGRID_FROM_EMAIL,
-      subject: 'Test Email from Cocktail App',
-      text: 'This is a test email to verify SendGrid configuration.',
-      html: '<p>This is a test email to verify SendGrid configuration.</p>',
-    };
-
     console.log('Sending test email to:', testEmail);
-    console.log('From:', process.env.SENDGRID_FROM_EMAIL);
+    console.log('From:', process.env.RESEND_FROM_EMAIL);
 
     try {
-      const [response] = await sgMail.send(msg);
-      console.log('SendGrid test response:', response);
+      const response = await resend.emails.send({
+        from: 'Acme <onboarding@resend.dev>',
+        to: testEmail,
+        subject: 'Test Email from Cocktail App',
+        text: 'This is a test email to verify Resend configuration.',
+        html: '<p>This is a test email to verify Resend configuration.</p>',
+      });
 
-      if (response.statusCode === 202) {
-        return NextResponse.json({ 
-          success: true,
-          message: 'Test email sent successfully',
-          statusCode: response.statusCode
-        });
-      } else {
+      if (!response.data?.id) {
+        console.error('Failed to send test email:', response);
         return NextResponse.json(
           { 
             success: false, 
-            error: `Unexpected status: ${response.statusCode}`,
-            details: response
+            error: 'Failed to send test email'
           },
           { status: 500 }
         );
       }
-    } catch (sendError: unknown) {
-      if (!(sendError instanceof Error)) {
-        throw sendError;
-      }
-      const error = sendError as Error & {
-        code?: string;
-        response?: { body?: unknown };
-      };
 
-      console.error('SendGrid test error:', {
-        message: error.message,
-        code: error.code,
-        response: error.response?.body
+      console.log('Test email sent successfully with ID:', response.data.id);
+      return NextResponse.json({ 
+        success: true,
+        message: 'Test email sent successfully',
+        id: response.data.id
       });
-      
+    } catch (sendError: unknown) {
+      console.error('Resend test error:', sendError);
+      const error = sendError as Error;
       return NextResponse.json(
         { 
           success: false, 
-          error: error.message,
-          details: error.response?.body
+          error: 'message' in error ? error.message : 'Failed to send test email'
         },
         { status: 500 }
       );

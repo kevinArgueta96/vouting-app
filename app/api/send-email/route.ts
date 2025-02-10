@@ -1,25 +1,25 @@
-import sgMail from '@sendgrid/mail';
+import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
 
-if (!process.env.SENDGRID_API_KEY) {
-  throw new Error('SENDGRID_API_KEY environment variable is required');
+if (!process.env.RESEND_API_KEY) {
+  throw new Error('RESEND_API_KEY environment variable is required');
 }
 
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
   try {
     // Validate environment variables
-    if (!process.env.SENDGRID_API_KEY) {
-      console.error('SENDGRID_API_KEY is not set');
+    if (!process.env.RESEND_API_KEY) {
+      console.error('RESEND_API_KEY is not set');
       return NextResponse.json(
-        { success: false, error: 'SendGrid API key not configured' },
+        { success: false, error: 'Resend API key not configured' },
         { status: 500 }
       );
     }
 
-    if (!process.env.SENDGRID_FROM_EMAIL) {
-      console.error('SENDGRID_FROM_EMAIL is not set');
+    if (!process.env.RESEND_FROM_EMAIL) {
+      console.error('RESEND_FROM_EMAIL is not set');
       return NextResponse.json(
         { success: false, error: 'Sender email not configured' },
         { status: 500 }
@@ -50,52 +50,39 @@ export async function POST(request: Request) {
     }
     console.log('Attempting to send email to:', to);
 
-    const msg = {
-      to,
-      from: process.env.SENDGRID_FROM_EMAIL,
-      subject,
-      text,
-      html: html || text,
-    };
-
-    console.log('Email payload:', {
-      ...msg,
-      text: text.substring(0, 100) + '...' // Log truncated text for privacy
-    });
-
     try {
-      const [response] = await sgMail.send(msg);
-      console.log('SendGrid response:', response);
-      
-      if (response.statusCode === 202) {
-        console.log('Email sent successfully');
-        return NextResponse.json({ success: true });
-      } else {
-        console.error('Unexpected SendGrid status code:', response.statusCode);
+      const response = await resend.emails.send({
+        from: 'Acme <onboarding@resend.dev>',
+        to,
+        subject,
+        text,
+        html: html || text,
+      });
+
+      console.log('Email payload:', {
+        to,
+        subject,
+        text: text.substring(0, 100) + '...' // Log truncated text for privacy
+      });
+
+      if (!response.data?.id) {
+        console.error('Failed to send email:', response);
         return NextResponse.json(
-          { success: false, error: `Unexpected status: ${response.statusCode}` },
+          { success: false, error: 'Failed to send email' },
           { status: 500 }
         );
       }
-    } catch (sendError: unknown) {
-      if (!(sendError instanceof Error)) {
-        throw sendError;
-      }
-      const error = sendError as Error & {
-        code?: string;
-        response?: { body?: unknown };
-      };
 
-      console.error('SendGrid error details:', {
-        message: error.message,
-        code: error.code,
-        response: error.response?.body
-      });
-      if (error.response) {
-        console.error('SendGrid error body:', error.response.body);
-      }
+      console.log('Email sent successfully with ID:', response.data.id);
+      return NextResponse.json({ success: true, id: response.data.id });
+    } catch (sendError: unknown) {
+      console.error('Resend error:', sendError);
+      const error = sendError as Error;
       return NextResponse.json(
-        { success: false, error: sendError.message },
+        { 
+          success: false, 
+          error: 'message' in error ? error.message : 'Failed to send email'
+        },
         { status: 500 }
       );
     }
