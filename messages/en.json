@@ -72,6 +72,12 @@
       "company": "Helsinki Distilling Company"
     }
   },
+  "QRCode": {
+    "title": "QR Code Generator",
+    "enterVoteId": "Enter Vote ID",
+    "voteIdPlaceholder": "Enter the vote ID to generate QR code",
+    "scanToVote": "Scan this QR code to vote"
+  },
   "Thanks": {
     "title": "Thank You!",
     "message": "Your vote has been recorded",

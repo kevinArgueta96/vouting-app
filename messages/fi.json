@@ -71,6 +71,12 @@
       "company": "Helsinki Distilling Company"
     }
   },
+  "QRCode": {
+    "title": "QR-koodin luonti",
+    "enterVoteId": "Syötä äänestys-ID",
+    "voteIdPlaceholder": "Syötä äänestys-ID luodaksesi QR-koodin",
+    "scanToVote": "Skannaa tämä QR-koodi äänestääksesi"
+  },
   "Thanks": {
     "title": "Kiitos!",
     "message": "Äänesi on tallennettu",
