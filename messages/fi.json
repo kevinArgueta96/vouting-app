@@ -41,6 +41,43 @@
     "sendVote": "Lähetä ääni",
     "viewDetails": "Näytä tiedot"
   },
+  "EmailTemplates": {
+    "vote": {
+      "title": "Kiitos äänestämisestä {cocktailName}!",
+      "cocktailDetails": "Cocktailin tiedot",
+      "name": "Nimi",
+      "brand": "Brändi",
+      "description": "Kuvaus",
+      "appreciation": "Arvostamme osallistumistasi cocktailien äänestykseen!"
+    },
+    "recipe": {
+      "title": "Cocktail-reseptisi: {cocktailName}",
+      "thankYou": "Kiitos äänestyksestä! Tässä pyytämäsi resepti:",
+      "description": "Kuvaus",
+      "enjoyMessage": "Nauti cocktailisi valmistamisesta!",
+      "regards": "Ystävällisin terveisin,",
+      "company": "Helsinki Distilling Company"
+    },
+    "raffle": {
+      "title": "Kiitos osallistumisestasi arvontaan!",
+      "message": "Olemme vastaanottaneet arvontaosallistumisesi. Kiitos osallistumisesta!",
+      "entryConfirm": "Osallistumisesi on rekisteröity onnistuneesti. Voittajille ilmoitetaan suoraan sähköpostitse.",
+      "goodLuck": "Onnea arvontaan!",
+      "regards": "Ystävällisin terveisin,",
+      "company": "Helsinki Distilling Company"
+    },
+    "combined": {
+      "title": "Kiitos kiinnostuksestasi!",
+      "message": "Kiitos äänestyksestä ja arvontaan osallistumisesta!",
+      "recipeTitle": "Pyytämäsi resepti: {cocktailName}",
+      "description": "Kuvaus",
+      "raffleTitle": "Arvontaosallistumisen vahvistus",
+      "raffleMessage": "Osallistumisesi arvontaan on rekisteröity onnistuneesti. Voittajille ilmoitetaan suoraan sähköpostitse.",
+      "finalMessage": "Onnea arvontaan ja nauti cocktailistasi!",
+      "regards": "Ystävällisin terveisin,",
+      "company": "Helsinki Distilling Company"
+    }
+  },
   "Thanks": {
     "title": "Kiitos!",
     "message": "Äänesi on tallennettu",

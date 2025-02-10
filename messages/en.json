@@ -42,6 +42,43 @@
     "sendVote": "Send Vote",
     "viewDetails": "View Details"
   },
+  "EmailTemplates": {
+    "vote": {
+      "title": "Thank you for voting for {cocktailName}!",
+      "cocktailDetails": "Cocktail Details",
+      "name": "Name",
+      "brand": "Brand",
+      "description": "Description",
+      "appreciation": "We appreciate your participation in voting for our cocktails!"
+    },
+    "recipe": {
+      "title": "Your Cocktail Recipe: {cocktailName}",
+      "thankYou": "Thank you for voting! Here's the recipe you requested:",
+      "description": "Description",
+      "enjoyMessage": "Enjoy crafting your cocktail!",
+      "regards": "Best regards,",
+      "company": "Helsinki Distilling Company"
+    },
+    "raffle": {
+      "title": "Thank You for Participating in Our Raffle!",
+      "message": "We've received your entry for the raffle. Thank you for participating!",
+      "entryConfirm": "Your entry has been successfully registered. Winners will be notified directly via email.",
+      "goodLuck": "Good luck!",
+      "regards": "Best regards,",
+      "company": "Helsinki Distilling Company"
+    },
+    "combined": {
+      "title": "Thank You for Your Interest!",
+      "message": "Thank you for voting and participating in our raffle!",
+      "recipeTitle": "Your Requested Recipe: {cocktailName}",
+      "description": "Description",
+      "raffleTitle": "Raffle Entry Confirmation",
+      "raffleMessage": "Your entry for the raffle has been successfully registered. Winners will be notified directly via email.",
+      "finalMessage": "Good luck with the raffle and enjoy your cocktail!",
+      "regards": "Best regards,",
+      "company": "Helsinki Distilling Company"
+    }
+  },
   "Thanks": {
     "title": "Thank You!",
     "message": "Your vote has been recorded",

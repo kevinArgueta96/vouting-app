@@ -1,18 +1,64 @@
 import * as React from 'react';
 
-export default function RaffleEmail() {
+interface EmailTranslations {
+  title: string;
+  message: string;
+  entryConfirm: string;
+  goodLuck: string;
+  regards: string;
+  company: string;
+}
+
+interface RaffleEmailProps {
+  translations: EmailTranslations;
+}
+
+export default function RaffleEmail({
+  translations
+}: RaffleEmailProps) {
+
   return (
-    <div>
-      <h1>Thank You for Participating in Our Raffle!</h1>
-      <p>We've received your entry for the raffle. Thank you for participating!</p>
-      
-      <div style={{ margin: '20px 0' }}>
-        <p>Your entry has been successfully registered. Winners will be notified directly via email.</p>
+    <div style={{
+      backgroundColor: '#F9F6F0',
+      fontFamily: 'Arial, sans-serif',
+      padding: '20px',
+      maxWidth: '600px',
+      margin: '0 auto',
+    }}>
+      <h1 style={{
+        textAlign: 'center',
+        color: '#1a1a1a',
+        fontSize: '24px',
+        marginBottom: '20px',
+      }}>
+        {translations.title}
+      </h1>
+
+      <div style={{
+        backgroundColor: '#ffffff',
+        padding: '20px',
+        borderRadius: '8px',
+        marginBottom: '20px',
+      }}>
+        <p style={{ marginBottom: '15px' }}>
+          {translations.message}
+        </p>
+        
+        <div style={{ marginBottom: '20px' }}>
+          <p>{translations.entryConfirm}</p>
+        </div>
       </div>
-      
-      <div style={{ marginTop: '20px' }}>
-        <p>Good luck!</p>
-        <p>Best regards,<br/>Helsinki Distilling Company</p>
+
+      <div style={{
+        textAlign: 'center',
+        color: '#666666',
+        fontSize: '14px',
+      }}>
+        <p style={{ marginBottom: '15px' }}>{translations.goodLuck}</p>
+        <p>
+          {translations.regards}<br/>
+          {translations.company}
+        </p>
       </div>
     </div>
   );

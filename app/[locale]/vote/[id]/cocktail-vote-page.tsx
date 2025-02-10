@@ -113,12 +113,13 @@ export default function CocktailVotePage({ id }: Props) {
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              to: ratings.user_email as string,
-              cocktail,
-              wantRecipe: ratings.wantRecipe,
-              wantRaffle: ratings.wantRaffle
-            }),
+              body: JSON.stringify({
+                to: ratings.user_email as string,
+                cocktail,
+                wantRecipe: ratings.wantRecipe,
+                wantRaffle: ratings.wantRaffle,
+                locale
+              }),
           });
 
           const emailResult = await emailResponse.json();

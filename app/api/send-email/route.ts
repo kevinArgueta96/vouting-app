@@ -12,7 +12,12 @@ interface EmailRequestBody {
   cocktail: Cocktail;
   wantRecipe: boolean;
   wantRaffle: boolean;
+  locale?: string;
 }
+
+// Import translations
+import enTranslations from '../../../messages/en.json';
+import fiTranslations from '../../../messages/fi.json';
 
 if (!process.env.RESEND_API_KEY) {
   throw new Error('RESEND_API_KEY environment variable is required');
@@ -60,18 +65,26 @@ export async function POST(request: Request) {
     console.log('Attempting to send email to:', to);
 
     try {
-      let emailSubject = 'Thank you for your participation!';
-      let EmailComponent;
+      // Get translations based on locale
+      const translations = body.locale === 'fi' ? fiTranslations : enTranslations;
+      const emailTemplates = translations.EmailTemplates;
+
+      let emailSubject: string;
+      let EmailComponent: any;
+      let emailProps: any = { cocktail };
 
       if (wantRecipe && wantRaffle) {
-        emailSubject = `${cocktail.name} Recipe and Raffle Entry Confirmation`;
+        emailSubject = emailTemplates.combined.title;
         EmailComponent = CombinedEmail;
+        emailProps.translations = emailTemplates.combined;
       } else if (wantRecipe) {
-        emailSubject = `${cocktail.name} - Your Requested Recipe`;
+        emailSubject = emailTemplates.recipe.title.replace('{cocktailName}', cocktail.name);
         EmailComponent = CocktailVoteEmail;
+        emailProps.translations = emailTemplates.recipe;
       } else if (wantRaffle) {
-        emailSubject = 'Raffle Entry Confirmation';
+        emailSubject = emailTemplates.raffle.title;
         EmailComponent = RaffleEmail;
+        emailProps.translations = emailTemplates.raffle;
       } else {
         return NextResponse.json(
           { success: false, error: 'No email type selected' },
@@ -84,13 +97,14 @@ export async function POST(request: Request) {
         to,
         subject: emailSubject,
         type: EmailComponent.name,
+        locale: body.locale
       });
 
       const response = await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL,
         to,
         subject: emailSubject,
-        react: EmailComponent({ cocktail })
+        react: EmailComponent(emailProps)
       });
 
       if (!response.data?.id) {

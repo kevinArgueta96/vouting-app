@@ -3,13 +3,25 @@ import { Database } from '../../types/supabase';
 
 type Cocktail = Database['public']['Tables']['cocktails']['Row'];
 
+interface EmailTranslations {
+  title: string;
+  cocktailDetails: string;
+  name: string;
+  brand: string;
+  description: string;
+  appreciation: string;
+}
+
 interface CocktailVoteEmailProps {
   cocktail: Cocktail;
+  translations: EmailTranslations;
 }
 
 export default function CocktailVoteEmail({
   cocktail,
+  translations
 }: CocktailVoteEmailProps) {
+
   return (
     <div style={{
       backgroundColor: '#F9F6F0',
@@ -24,7 +36,7 @@ export default function CocktailVoteEmail({
         fontSize: '24px',
         marginBottom: '20px',
       }}>
-        Thank you for voting for {cocktail.name}!
+        {translations.title.replace('{cocktailName}', cocktail.name)}
       </h1>
 
       <div style={{
@@ -38,19 +50,19 @@ export default function CocktailVoteEmail({
           color: '#1a1a1a',
           marginBottom: '15px',
         }}>
-          Cocktail Details
+          {translations.cocktailDetails}
         </h2>
         
         <p style={{ marginBottom: '15px' }}>
-          <strong>Name:</strong> {cocktail.name}
+          <strong>{translations.name}:</strong> {cocktail.name}
         </p>
         
         <p style={{ marginBottom: '15px' }}>
-          <strong>Brand:</strong> {cocktail.brand}
+          <strong>{translations.brand}:</strong> {cocktail.brand}
         </p>
         
         <p style={{ marginBottom: '20px' }}>
-          <strong>Description:</strong> {cocktail.description}
+          <strong>{translations.description}:</strong> {cocktail.description}
         </p>
       </div>
 
@@ -59,7 +71,7 @@ export default function CocktailVoteEmail({
         color: '#666666',
         fontSize: '14px',
       }}>
-        We appreciate your participation in voting for our cocktails!
+        {translations.appreciation}
       </p>
     </div>
   );
