@@ -32,7 +32,8 @@
     "emailPlaceholder": "sinun@email.com",
     "enterEmail": "Anna sähköpostiosoitteesi",
     "invalidEmail": "Anna kelvollinen sähköpostiosoite",
-    "submitVote": "Lähetä ääni"
+    "submitVote": "Lähetä ääni",
+    "submitting": "Lähetetään..."
   },
   "CocktailDetail": {
     "ingredients": "Ainesosat",

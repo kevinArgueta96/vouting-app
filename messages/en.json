@@ -32,7 +32,8 @@
     "emailPlaceholder": "your@email.com",
     "enterEmail": "Enter your email",
     "invalidEmail": "Please enter a valid email",
-    "submitVote": "Submit Vote"
+    "submitVote": "Submit Vote",
+    "submitting": "Submitting..."
 
   },
   "CocktailDetail": {

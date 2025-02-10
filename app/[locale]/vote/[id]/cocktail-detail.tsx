@@ -47,6 +47,7 @@ export default function CocktailDetail({
   const [wantRecipe, setWantRecipe] = useState(false);
   const [wantRaffle, setWantRaffle] = useState(false);
   const [showEmailInput, setShowEmailInput] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const loadCharacteristics = async () => {
@@ -97,6 +98,8 @@ export default function CocktailDetail({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+    
     if ((wantRecipe || wantRaffle) && !validateEmail(ratings.user_email || "")) {
       setEmailError(t("invalidEmail"));
       return;
@@ -104,11 +107,16 @@ export default function CocktailDetail({
     setEmailError("");
 
     if (canSubmit()) {
-      onSubmit({
-        ...ratings,
-        wantRecipe,
-        wantRaffle
-      });
+      setIsSubmitting(true);
+      try {
+        await onSubmit({
+          ...ratings,
+          wantRecipe,
+          wantRaffle
+        });
+      } catch (error) {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -240,9 +248,9 @@ export default function CocktailDetail({
             <Button
               type="submit"
               className="w-full bg-[#FF8B9C] text-white hover:bg-[#ff7c8f] transition-colors duration-200 rounded-lg py-3 font-bold uppercase tracking-wider"
-              disabled={!canSubmit()}
+              disabled={!canSubmit() || isSubmitting}
             >
-              {tCocktail("sendVote")}
+              {isSubmitting ? t("submitting") : tCocktail("sendVote")}
             </Button>
           </div>
         </div>
