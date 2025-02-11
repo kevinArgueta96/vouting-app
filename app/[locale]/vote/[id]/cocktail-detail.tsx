@@ -63,8 +63,8 @@ export default function CocktailDetail({
             {}
           )
         );
-      } catch (error) {
-        console.error("Error loading rating characteristics:", error);
+      } catch {
+        console.error("Error loading rating characteristics:");
       }
     };
     loadCharacteristics();
@@ -114,7 +114,7 @@ export default function CocktailDetail({
           wantRecipe,
           wantRaffle
         });
-      } catch (error) {
+      } catch {
         setIsSubmitting(false);
       }
     }

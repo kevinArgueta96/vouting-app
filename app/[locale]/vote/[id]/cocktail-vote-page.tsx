@@ -48,10 +48,7 @@ export default function CocktailVotePage({ id }: Props) {
 
     const loadData = async () => {
       try {
-        const [cocktailData, _votes] = await Promise.all([
-          cocktailService.getCocktailById(Number(id)),
-          cocktailService.getCocktailVotes(Number(id))
-        ]);
+        const cocktailData = await cocktailService.getCocktailById(Number(id));
 
         if (mounted) {
           setCocktail(cocktailData);

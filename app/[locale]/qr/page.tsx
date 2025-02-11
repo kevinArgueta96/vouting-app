@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { QRCodeSVG } from 'qrcode.react';
 import { useTranslations, useLocale } from 'next-intl';
-import { routes, getRoute } from '@/app/config/routes';
-import { Button } from '@/app/components/ui/button';
 
 export default function QRCodePage() {
   const [voteId, setVoteId] = useState('');

@@ -1,11 +1,43 @@
 import { Resend } from 'resend';
 import { NextResponse } from 'next/server';
+import React, { ComponentType, ElementType } from 'react';
 import CocktailVoteEmail from '../../components/email/CocktailVoteEmail';
 import RaffleEmail from '../../components/email/RaffleEmail';
 import CombinedEmail from '../../components/email/CombinedEmail';
 import { Database } from '../../types/supabase';
 
 type Cocktail = Database['public']['Tables']['cocktails']['Row'];
+
+// Translation interfaces for each email type
+interface CombinedEmailTranslations {
+  title: string;
+  message: string;
+  recipeTitle: string;
+  description: string;
+  raffleTitle: string;
+  raffleMessage: string;
+  finalMessage: string;
+  regards: string;
+  company: string;
+}
+
+interface CocktailVoteEmailTranslations {
+  title: string;
+  cocktailDetails: string;
+  name: string;
+  brand: string;
+  description: string;
+  appreciation: string;
+}
+
+interface RaffleEmailTranslations {
+  title: string;
+  message: string;
+  entryConfirm: string;
+  goodLuck: string;
+  regards: string;
+  company: string;
+}
 
 interface EmailRequestBody {
   to: string;
@@ -70,21 +102,21 @@ export async function POST(request: Request) {
       const emailTemplates = translations.EmailTemplates;
 
       let emailSubject: string;
-      let EmailComponent: any;
-      let emailProps: any = { cocktail };
+      let EmailComponent: ElementType;
+      let emailProps: { cocktail?: Cocktail; translations: unknown };
 
       if (wantRecipe && wantRaffle) {
         emailSubject = emailTemplates.combined.title;
-        EmailComponent = CombinedEmail;
-        emailProps.translations = emailTemplates.combined;
+        EmailComponent = CombinedEmail as ComponentType<{ cocktail: Cocktail; translations: CombinedEmailTranslations }>;
+        emailProps = { cocktail, translations: emailTemplates.combined };
       } else if (wantRecipe) {
         emailSubject = emailTemplates.vote.title.replace('{cocktailName}', cocktail.name);
-        EmailComponent = CocktailVoteEmail;
-        emailProps.translations = emailTemplates.vote;
+        EmailComponent = CocktailVoteEmail as ComponentType<{ cocktail: Cocktail; translations: CocktailVoteEmailTranslations }>;
+        emailProps = { cocktail, translations: emailTemplates.vote };
       } else if (wantRaffle) {
         emailSubject = emailTemplates.raffle.title;
-        EmailComponent = RaffleEmail;
-        emailProps.translations = emailTemplates.raffle;
+        EmailComponent = RaffleEmail as ComponentType<{ translations: RaffleEmailTranslations }>;
+        emailProps = { translations: emailTemplates.raffle };
       } else {
         return NextResponse.json(
           { success: false, error: 'No email type selected' },
@@ -104,7 +136,7 @@ export async function POST(request: Request) {
         from: process.env.RESEND_FROM_EMAIL,
         to,
         subject: emailSubject,
-        react: EmailComponent(emailProps)
+        react: React.createElement(EmailComponent, emailProps)
       });
 
       if (!response.data?.id) {
@@ -119,7 +151,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ success: true, id: response.data.id });
     } catch (sendError: unknown) {
       console.error('Detailed Resend error:', sendError);
-      const error = sendError as Error & { statusCode?: number; response?: any };
+      const error = sendError as Error & { statusCode?: number; response?: Record<string, unknown> };
       return NextResponse.json(
         { 
           success: false, 
