@@ -9,6 +9,55 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      cocktails_translations: {
+        Row: {
+          id: number
+          cocktail_id: number
+          locale: string
+          name: string
+          brand: string
+          description: string
+        }
+        Insert: {
+          id?: number
+          cocktail_id: number
+          locale: string
+          name: string
+          brand: string
+          description: string
+        }
+        Update: {
+          id?: number
+          cocktail_id?: number
+          locale?: string
+          name?: string
+          brand?: string
+          description?: string
+        }
+      }
+      rating_characteristics_translations: {
+        Row: {
+          id: number
+          rating_characteristics_id: string
+          locale: string
+          label: string
+          description: string | null
+        }
+        Insert: {
+          id?: number
+          rating_characteristics_id: string
+          locale: string
+          label: string
+          description?: string | null
+        }
+        Update: {
+          id?: number
+          rating_characteristics_id?: string
+          locale?: string
+          label?: string
+          description?: string | null
+        }
+      }
       cocktails: {
         Row: {
           id: number

@@ -24,7 +24,7 @@ export function CocktailGrid() {
   useEffect(() => {
     const fetchCocktails = async () => {
       try {
-        const data = await cocktailService.getAllCocktails();
+        const data = await cocktailService.getAllCocktails(locale);
         setCocktails(data);
       } catch (error) {
         console.error('Error fetching cocktails:', error);
@@ -34,7 +34,7 @@ export function CocktailGrid() {
     };
 
     fetchCocktails();
-  }, []);
+  }, [locale]);
 
   if (loading) {
     return (

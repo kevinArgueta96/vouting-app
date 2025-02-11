@@ -48,7 +48,7 @@ export default function CocktailVotePage({ id }: Props) {
 
     const loadData = async () => {
       try {
-        const cocktailData = await cocktailService.getCocktailById(Number(id));
+        const cocktailData = await cocktailService.getCocktailById(Number(id), locale);
 
         if (mounted) {
           setCocktail(cocktailData);
@@ -67,7 +67,7 @@ export default function CocktailVotePage({ id }: Props) {
     return () => {
       mounted = false;
     };
-  }, [id]);
+  }, [id, locale]);
 
   const handleRatingSubmit = async (ratings: Rating) => {
     try {

@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import { characteristicService } from "../../../services/supabase";
 import { Database } from "../../../types/supabase";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 
 const RATING_EMOJIS = [
   { value: 1, emoji: "/images/emoji_1.png" },
@@ -49,10 +49,12 @@ export default function CocktailDetail({
   const [showEmailInput, setShowEmailInput] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const locale = useLocale();
+
   useEffect(() => {
     const loadCharacteristics = async () => {
       try {
-        const chars = await characteristicService.getAllCharacteristics();
+        const chars = await characteristicService.getAllCharacteristics(locale);
         setCharacteristics(chars);
         setRatings(
           chars.reduce(
@@ -68,7 +70,7 @@ export default function CocktailDetail({
       }
     };
     loadCharacteristics();
-  }, []);
+  }, [locale]);
 
   const handleRatingChange = (category: string, value: number | string) => {
     setRatings((prev) => ({

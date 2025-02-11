@@ -8,24 +8,75 @@ type RatingCharacteristic = Database['public']['Tables']['rating_characteristics
 type RatingCharacteristicInsert = Database['public']['Tables']['rating_characteristics']['Insert']
 
 export const cocktailService = {
-  async getAllCocktails() {
+  async getAllCocktails(locale: string) {
     const { data, error } = await supabase
-      .from('cocktails')
-      .select('*')
+      .from('cocktails_translations')
+      .select(`
+        cocktail_id,
+        name,
+        brand,
+        description
+      `)
+      .eq('locale', locale)
 
     if (error) throw error
-    return data as Cocktail[]
+    return data.map(item => ({
+      id: item.cocktail_id,
+      name: item.name,
+      brand: item.brand,
+      description: item.description
+    })) as Cocktail[]
   },
 
-  async getCocktailById(id: number) {
+  async getCocktailById(id: number, locale: string) {
+    let translatedData;
+    
     const { data, error } = await supabase
-      .from('cocktails')
-      .select('*')
-      .eq('id', id)
+      .from('cocktails_translations')
+      .select(`
+        cocktail_id,
+        name,
+        brand,
+        description
+      `)
+      .eq('cocktail_id', id)
+      .eq('locale', locale)
       .single()
 
-    if (error) throw error
-    return data as Cocktail
+    if (error) {
+      // If translation not found, fallback to default language (en)
+      if (locale !== 'en') {
+        const { data: fallbackData, error: fallbackError } = await supabase
+          .from('cocktails_translations')
+          .select(`
+            cocktail_id,
+            name,
+            brand,
+            description
+          `)
+          .eq('cocktail_id', id)
+          .eq('locale', 'en')
+          .single()
+
+        if (fallbackError) throw fallbackError
+        translatedData = fallbackData
+      } else {
+        throw error
+      }
+    } else {
+      translatedData = data
+    }
+
+    if (!translatedData) {
+      throw new Error('No translation found')
+    }
+
+    return {
+      id: translatedData.cocktail_id,
+      name: translatedData.name,
+      brand: translatedData.brand,
+      description: translatedData.description
+    } as Cocktail
   },
 
   async getCocktailVotes(cocktailId: number) {
@@ -150,13 +201,58 @@ export const userSessionService = {
 }
 
 export const characteristicService = {
-  async getAllCharacteristics() {
+  async getAllCharacteristics(locale: string) {
+    let characteristicsData;
+    
     const { data, error } = await supabase
       .from('rating_characteristics')
-      .select('*')
+      .select(`
+        id,
+        min_rating,
+        max_rating,
+        rating_characteristics_translations!inner (
+          label,
+          description
+        )
+      `)
+      .eq('rating_characteristics_translations.locale', locale)
 
-    if (error) throw error
-    return data as RatingCharacteristic[]
+    if (error) {
+      // If translations not found, fallback to default language (en)
+      if (locale !== 'en') {
+        const { data: fallbackData, error: fallbackError } = await supabase
+          .from('rating_characteristics')
+          .select(`
+            id,
+            min_rating,
+            max_rating,
+            rating_characteristics_translations!inner (
+              label,
+              description
+            )
+          `)
+          .eq('rating_characteristics_translations.locale', 'en')
+
+        if (fallbackError) throw fallbackError
+        characteristicsData = fallbackData
+      } else {
+        throw error
+      }
+    } else {
+      characteristicsData = data
+    }
+
+    if (!characteristicsData) {
+      throw new Error('No characteristics found')
+    }
+
+    return characteristicsData.map(item => ({
+      id: item.id,
+      label: item.rating_characteristics_translations[0].label,
+      description: item.rating_characteristics_translations[0].description,
+      min_rating: item.min_rating,
+      max_rating: item.max_rating
+    })) as RatingCharacteristic[]
   },
 
   async addCharacteristic(characteristic: RatingCharacteristicInsert) {
