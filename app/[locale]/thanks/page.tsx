@@ -17,8 +17,8 @@ function useOptimalSize() {
     const viewportHeight = window.innerHeight;
 
     // Calcular espacio disponible considerando márgenes de seguridad
-    const topSpace = 210; // Reducido el espacio para logo
-    const bottomSpace = 10; // Aumentado el espacio para botones y padding
+    const topSpace = 100; // Reducido el espacio para logo
+    const bottomSpace = 150; // Aumentado el espacio para botones y padding
     const horizontalPadding = 48; // 24px a cada lado
 
     const availableHeight = viewportHeight - (topSpace + bottomSpace);
@@ -28,8 +28,8 @@ function useOptimalSize() {
     const minContentWidth = 320;
 
     // Calcular dimensiones base manteniendo proporción y límites
-    let width = Math.min(availableWidth);
-    let height = Math.min(availableHeight);
+    let width = Math.min(availableWidth, 500);
+    let height = Math.min(availableHeight, 600);
 
     // Asegurar ancho mínimo
     width = Math.max(width, minContentWidth);
@@ -233,7 +233,9 @@ export default function ThanksPage() {
                 </Link>
 
                 <Link
-                  href="#"
+                  href="https://www.instagram.com/helsinkidrinkfestival"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="grid grid-cols-[40px_100px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
                 >
                   <div className="flex items-center justify-center w-10 h-10">
