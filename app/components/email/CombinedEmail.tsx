@@ -1,13 +1,17 @@
 import * as React from 'react';
 import { Database } from '../../types/supabase';
 
-type Cocktail = Database['public']['Tables']['cocktails']['Row'];
+type CocktailTranslation = Database['public']['Tables']['cocktails_translations']['Row'];
+type Cocktail = Database['public']['Tables']['cocktails']['Row'] & {
+  translations?: CocktailTranslation[];
+};
 
 interface EmailTranslations {
   title: string;
   message: string;
   recipeTitle: string;
   description: string;
+  recipe: string;
   raffleTitle: string;
   raffleMessage: string;
   finalMessage: string;
@@ -18,11 +22,13 @@ interface EmailTranslations {
 interface CombinedEmailProps {
   cocktail: Cocktail;
   translations: EmailTranslations;
+  locale: string;
 }
 
 export default function CombinedEmail({
   cocktail,
-  translations
+  translations,
+  locale
 }: CombinedEmailProps) {
 
   return (
@@ -76,6 +82,25 @@ export default function CombinedEmail({
             {translations.description}
           </h3>
           <p>{cocktail.description}</p>
+          <div style={{
+            marginTop: '20px',
+            marginBottom: '20px',
+            padding: '15px',
+            backgroundColor: '#f5f5f5',
+            borderRadius: '5px',
+            border: '1px solid #e0e0e0'
+          }}>
+            <h3 style={{
+              fontSize: '18px',
+              color: '#1a1a1a',
+              marginBottom: '10px'
+            }}>
+              {translations.recipe}
+            </h3>
+            <p style={{ lineHeight: '1.5' }}>
+              {cocktail.translations?.find((t) => t.locale === locale)?.recipe}
+            </p>
+          </div>
         </div>
       </div>
 

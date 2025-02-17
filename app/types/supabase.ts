@@ -17,6 +17,7 @@ export interface Database {
           name: string
           brand: string
           description: string
+          recipe: string | null
         }
         Insert: {
           id?: number
@@ -25,6 +26,7 @@ export interface Database {
           name: string
           brand: string
           description: string
+          recipe?: string | null
         }
         Update: {
           id?: number
@@ -33,6 +35,7 @@ export interface Database {
           name?: string
           brand?: string
           description?: string
+          recipe?: string | null
         }
       }
       rating_characteristics_translations: {

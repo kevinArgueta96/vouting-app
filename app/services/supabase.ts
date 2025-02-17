@@ -15,7 +15,8 @@ export const cocktailService = {
         cocktail_id,
         name,
         brand,
-        description
+        description,
+        recipe
       `)
       .eq('locale', locale)
 
@@ -24,7 +25,11 @@ export const cocktailService = {
       id: item.cocktail_id,
       name: item.name,
       brand: item.brand,
-      description: item.description
+      description: item.description,
+      translations: [{
+        locale: locale,
+        recipe: item.recipe
+      }]
     })) as Cocktail[]
   },
 
@@ -37,7 +42,8 @@ export const cocktailService = {
         cocktail_id,
         name,
         brand,
-        description
+        description,
+        recipe
       `)
       .eq('cocktail_id', id)
       .eq('locale', locale)
@@ -52,7 +58,8 @@ export const cocktailService = {
             cocktail_id,
             name,
             brand,
-            description
+            description,
+            recipe
           `)
           .eq('cocktail_id', id)
           .eq('locale', 'en')
@@ -75,7 +82,11 @@ export const cocktailService = {
       id: translatedData.cocktail_id,
       name: translatedData.name,
       brand: translatedData.brand,
-      description: translatedData.description
+      description: translatedData.description,
+      translations: [{
+        locale: locale,
+        recipe: translatedData.recipe
+      }]
     } as Cocktail
   },
 

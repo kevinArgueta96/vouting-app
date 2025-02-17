@@ -6,7 +6,10 @@ import RaffleEmail from '../../components/email/RaffleEmail';
 import CombinedEmail from '../../components/email/CombinedEmail';
 import { Database } from '../../types/supabase';
 
-type Cocktail = Database['public']['Tables']['cocktails']['Row'];
+type CocktailTranslation = Database['public']['Tables']['cocktails_translations']['Row'];
+type Cocktail = Database['public']['Tables']['cocktails']['Row'] & {
+  translations?: CocktailTranslation[];
+};
 
 // Translation interfaces for each email type
 interface CombinedEmailTranslations {
@@ -27,6 +30,7 @@ interface CocktailVoteEmailTranslations {
   name: string;
   brand: string;
   description: string;
+  recipe: string;
   appreciation: string;
 }
 
@@ -103,16 +107,16 @@ export async function POST(request: Request) {
 
       let emailSubject: string;
       let EmailComponent: ElementType;
-      let emailProps: { cocktail?: Cocktail; translations: unknown };
+      let emailProps: { cocktail?: Cocktail; translations: unknown; locale?: string };
 
       if (wantRecipe && wantRaffle) {
         emailSubject = emailTemplates.combined.title;
-        EmailComponent = CombinedEmail as ComponentType<{ cocktail: Cocktail; translations: CombinedEmailTranslations }>;
-        emailProps = { cocktail, translations: emailTemplates.combined };
+        EmailComponent = CombinedEmail as ComponentType<{ cocktail: Cocktail; translations: CombinedEmailTranslations; locale: string }>;
+        emailProps = { cocktail, translations: emailTemplates.combined, locale: body.locale || 'en' };
       } else if (wantRecipe) {
         emailSubject = emailTemplates.vote.title.replace('{cocktailName}', cocktail.name);
-        EmailComponent = CocktailVoteEmail as ComponentType<{ cocktail: Cocktail; translations: CocktailVoteEmailTranslations }>;
-        emailProps = { cocktail, translations: emailTemplates.vote };
+        EmailComponent = CocktailVoteEmail as ComponentType<{ cocktail: Cocktail; translations: CocktailVoteEmailTranslations; locale: string }>;
+        emailProps = { cocktail, translations: emailTemplates.vote, locale: body.locale || 'en' };
       } else if (wantRaffle) {
         emailSubject = emailTemplates.raffle.title;
         EmailComponent = RaffleEmail as ComponentType<{ translations: RaffleEmailTranslations }>;

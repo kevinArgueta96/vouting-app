@@ -50,6 +50,7 @@
       "name": "Name",
       "brand": "Brand",
       "description": "Description",
+      "recipe": "Recipe",
       "appreciation": "We appreciate your participation in voting for our cocktails!"
     },
     "raffle": {
@@ -65,6 +66,7 @@
       "message": "Thank you for voting and participating in our raffle!",
       "recipeTitle": "Your Requested Recipe: {cocktailName}",
       "description": "Description",
+      "recipe": "Recipe",
       "raffleTitle": "Raffle Entry Confirmation",
       "raffleMessage": "Your entry for the raffle has been successfully registered. Winners will be notified directly via email.",
       "finalMessage": "Good luck with the raffle and enjoy your cocktail!",

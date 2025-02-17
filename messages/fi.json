@@ -49,6 +49,7 @@
       "name": "Nimi",
       "brand": "Brändi",
       "description": "Kuvaus",
+      "recipe": "Resepti",
       "appreciation": "Arvostamme osallistumistasi cocktailien äänestykseen!"
     },
     "raffle": {
@@ -64,6 +65,7 @@
       "message": "Kiitos äänestyksestä ja arvontaan osallistumisesta!",
       "recipeTitle": "Pyytämäsi resepti: {cocktailName}",
       "description": "Kuvaus",
+      "recipe": "Resepti",
       "raffleTitle": "Arvontaosallistumisen vahvistus",
       "raffleMessage": "Osallistumisesi arvontaan on rekisteröity onnistuneesti. Voittajille ilmoitetaan suoraan sähköpostitse.",
       "finalMessage": "Onnea arvontaan ja nauti cocktailistasi!",

@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { Database } from '../../types/supabase';
 
-type Cocktail = Database['public']['Tables']['cocktails']['Row'];
+type CocktailTranslation = Database['public']['Tables']['cocktails_translations']['Row'];
+type Cocktail = Database['public']['Tables']['cocktails']['Row'] & {
+  translations?: CocktailTranslation[];
+};
 
 interface EmailTranslations {
   title: string;
@@ -9,17 +12,20 @@ interface EmailTranslations {
   name: string;
   brand: string;
   description: string;
+  recipe: string;
   appreciation: string;
 }
 
 interface CocktailVoteEmailProps {
   cocktail: Cocktail;
   translations: EmailTranslations;
+  locale: string;
 }
 
 export default function CocktailVoteEmail({
   cocktail,
-  translations
+  translations,
+  locale
 }: CocktailVoteEmailProps) {
 
   return (
@@ -61,9 +67,29 @@ export default function CocktailVoteEmail({
           <strong>{translations.brand}:</strong> {cocktail.brand}
         </p>
         
-        <p style={{ marginBottom: '20px' }}>
+        <p style={{ marginBottom: '15px' }}>
           <strong>{translations.description}:</strong> {cocktail.description}
         </p>
+        
+        <div style={{
+          marginTop: '20px',
+          marginBottom: '20px',
+          padding: '15px',
+          backgroundColor: '#f5f5f5',
+          borderRadius: '5px',
+          border: '1px solid #e0e0e0'
+        }}>
+          <h3 style={{
+            fontSize: '18px',
+            color: '#1a1a1a',
+            marginBottom: '10px'
+          }}>
+            {translations.recipe}
+          </h3>
+          <p style={{ lineHeight: '1.5' }}>
+            {cocktail.translations?.find((t) => t.locale === locale)?.recipe}
+          </p>
+        </div>
       </div>
 
       <p style={{
