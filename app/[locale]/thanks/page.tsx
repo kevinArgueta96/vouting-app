@@ -123,8 +123,30 @@ export default function ThanksPage() {
               src={`/svg/thanks_background.svg`}
               alt="Background"
               fill
-              sizes="(max-width: 800px) , 600px"
-              className="object-contain object-center mx-auto"
+              priority
+            />
+            <Image
+              src="/images/thaks_emoji.png"
+              alt="Thanks emoji"
+              width={6}
+              height={6}
+              className="absolute right-[0%] bottom-[80%] w-[70px] "
+              priority
+            />
+            <Image
+              src="/images/thanks_coktail.png"
+              alt="Thanks cocktail"
+              width={150}
+              height={150}
+              className="absolute top-[15%] z-1 w-[70px]"
+              priority
+            />
+            <Image
+              src="/images/thanks_hand.png"
+              alt="Thanks hand"
+              width={150}
+              height={150}
+              className="absolute top-[70%] left-[60%] z-10 w-[180px]"
               priority
             />
           </div>
