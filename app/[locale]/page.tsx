@@ -10,7 +10,7 @@ export default function Home() {
   const locale = useLocale()
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative">
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 relative -mt-20">
       <div className="w-full max-w-4xl mx-auto px-2 sm:px-4 flex flex-col items-center justify-center">
         <div className="bg-white/10 backdrop-blur-sm p-6 sm:p-8 md:p-12 rounded-2xl shadow-2xl w-full">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center text-white tracking-tight mb-4 sm:mb-6 break-words hyphens-auto">
