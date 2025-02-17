@@ -151,14 +151,14 @@ export default function CocktailDetail({
             </p>
           </div>
           {/* Rating Sections */}
-          <div className="space-y-12">
+          <div className="space-y-8">
             {characteristics.map((characteristic) => (
               <div key={characteristic.id} className="text-center">
                 <h4 className="text-2xl uppercase mb-4 tracking-wide text-white">
                   {characteristic.label}
                 </h4>
                 <div className="relative h-16">
-                  <div className={`flex justify-center gap-6 sm:gap-8 transition-all duration-700 ${(ratings[characteristic.id] as number) > 0 ? 'scale-0 opacity-0 transform translate-y-4' : 'scale-100 opacity-100 transform translate-y-0'
+                  <div className={`flex justify-center gap-5 sm:gap-2 transition-all duration-700 ${(ratings[characteristic.id] as number) > 0 ? 'scale-0 opacity-0 transform translate-y-4' : 'scale-100 opacity-100 transform translate-y-0'
                     }`}>
                     {RATING_EMOJIS.map((rating) => (
                       <button
@@ -173,9 +173,9 @@ export default function CocktailDetail({
                         <Image
                           src={rating.emoji}
                           alt={`Rating ${rating.value}`}
-                          width={48}
-                          height={48}
-                          className="w-12 h-12 object-contain"
+                          width={64}
+                          height={64}
+                          className="w-16 h-16 object-contain"
                         />
                       </button>
                     ))}
@@ -187,9 +187,9 @@ export default function CocktailDetail({
                       <Image
                         src={RATING_EMOJIS[(ratings[characteristic.id] as number) - 1].emoji}
                         alt={`Selected Rating ${ratings[characteristic.id]}`}
-                        width={48}
-                        height={48}
-                        className="w-12 h-12 object-contain animate-pulse"
+                        width={64}
+                        height={64}
+                        className="w-16 h-16 object-contain animate-pulse"
                       />
                     </div>
                   )}
