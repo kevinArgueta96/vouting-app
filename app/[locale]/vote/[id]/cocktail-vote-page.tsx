@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { LoadingEmojis } from "../../../components/ui/loading-emojis";
 import CocktailDetail from "./cocktail-detail";
 import {
   cocktailService,
@@ -48,6 +49,9 @@ export default function CocktailVotePage({ id }: Props) {
 
     const loadData = async () => {
       try {
+        // Agregamos un delay artificial para mostrar la animación
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
         const cocktailData = await cocktailService.getCocktailById(Number(id), locale);
 
         if (mounted) {
@@ -176,11 +180,7 @@ export default function CocktailVotePage({ id }: Props) {
   };
 
   if (loading) {
-    return (
-      <main className="min-h-screen bg-[#F9F6F0] text-black flex items-center justify-center">
-        <div className="text-center text-xl">{t("loading")}</div>
-      </main>
-    );
+    return <LoadingEmojis />;
   }
 
   if (!cocktail) {

@@ -71,10 +71,54 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
+        "cascade-fall": {
+          "0%": { 
+            opacity: "0",
+            transform: "translate(-50%, -300%) scale(var(--scale, 1))"
+          },
+          "40%": {
+            opacity: "1",
+            transform: "translate(-50%, -150%) scale(var(--scale, 1))"
+          },
+          "70%": {
+            transform: "translate(-50%, -30%) scale(var(--scale, 1))"
+          },
+          "85%": {
+            transform: "translate(-50%, -60%) scale(var(--scale, 1))"
+          },
+          "100%": { 
+            transform: "translate(-50%, -50%) scale(var(--scale, 1))"
+          }
+        },
+        "float-1": {
+          "0%": { transform: "translate(-50%, -50%) scale(var(--scale, 1))" },
+          "50%": { transform: "translate(-50%, -55%) scale(var(--scale, 1))" },
+          "100%": { transform: "translate(-50%, -50%) scale(var(--scale, 1))" }
+        },
+        "float-2": {
+          "0%": { transform: "translate(-50%, -50%) scale(var(--scale, 1))" },
+          "50%": { transform: "translate(-52%, -53%) scale(var(--scale, 1))" },
+          "100%": { transform: "translate(-50%, -50%) scale(var(--scale, 1))" }
+        },
+        "float-3": {
+          "0%": { transform: "translate(-50%, -50%) scale(var(--scale, 1))" },
+          "50%": { transform: "translate(-48%, -54%) scale(var(--scale, 1))" },
+          "100%": { transform: "translate(-50%, -50%) scale(var(--scale, 1))" }
+        },
+        "float-4": {
+          "0%": { transform: "translate(-50%, -50%) scale(var(--scale, 1))" },
+          "50%": { transform: "translate(-51%, -52%) scale(var(--scale, 1))" },
+          "100%": { transform: "translate(-50%, -50%) scale(var(--scale, 1))" }
+        }
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
+        "cascade-fall": "cascade-fall 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards",
+        "float-1": "float-1 3s ease-in-out infinite 0.8s",
+        "float-2": "float-2 3.2s ease-in-out infinite 0.8s",
+        "float-3": "float-3 3.4s ease-in-out infinite 0.8s",
+        "float-4": "float-4 3.6s ease-in-out infinite 0.8s"
       },
     },
   },
