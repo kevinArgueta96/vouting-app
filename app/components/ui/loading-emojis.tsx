@@ -13,7 +13,8 @@ export const LoadingEmojis = () => {
     style: {
       left: string;
       top: string;
-      scale: number;
+      size: number;
+      zIndex: number;
     };
   }>>([]);
 
@@ -28,30 +29,36 @@ export const LoadingEmojis = () => {
 
   // Generate emoji positions with dense, non-linear distribution
   useEffect(() => {
-    const rows = 12;
-    const columns = 15;
+    const rows = 8;
+    const columns = 12;
     const totalEmojis = rows * columns;
     const newEmojis = [];
+
+    // Specific size variations
+    const sizes = [80, 120, 160];
 
     // Create a grid of emojis
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < columns; col++) {
         const i = row * columns + col;
         
-        // Calculate base positions
-        const baseX = (col / (columns - 1)) * 100;
-        const baseY = (row / (rows - 1)) * 100;
+        // Calculate base positions with increased overlap
+        const baseX = ((col / (columns - 1)) * 85) + 7.5; // Spread across 85% of width
+        const baseY = ((row / (rows - 1)) * 85) + 7.5; // Spread across 85% of height
         
-        // Add slight randomness to positions
-        const randomX = (Math.random() - 0.5) * 4; // Reduced randomness
-        const randomY = (Math.random() - 0.5) * 2; // Even less vertical randomness
+        // Add more randomness for overlap
+        const randomX = (Math.random() - 0.5) * 15; // ±7.5% horizontal variation
+        const randomY = (Math.random() - 0.5) * 15; // ±7.5% vertical variation
         
         // Final positions
-        const x = Math.max(2, Math.min(98, baseX + randomX));
-        const y = Math.max(2, Math.min(98, baseY + randomY));
+        const x = Math.max(0, Math.min(100, baseX + randomX));
+        const y = Math.max(0, Math.min(100, baseY + randomY));
         
-        // Random size variation
-        const scale = 0.9 + Math.random() * 0.2; // 0.9 to 1.1
+        // Random size from predefined options
+        const size = sizes[Math.floor(Math.random() * sizes.length)];
+        
+        // Z-index variation for better layering
+        const zIndex = Math.floor(Math.random() * 10) + (row * 10);
         
         newEmojis.push({
           id: i,
@@ -60,13 +67,22 @@ export const LoadingEmojis = () => {
           style: {
             left: `${x}%`,
             top: `${y}%`,
-            scale,
+            size,
+            zIndex,
           },
         });
       }
     }
 
-    setEmojis(newEmojis);
+    // Randomize the order within each row for more natural overlap
+    const sortedEmojis = newEmojis.sort((a, b) => {
+      if (a.row === b.row) {
+        return Math.random() - 0.5;
+      }
+      return a.row - b.row;
+    });
+
+    setEmojis(sortedEmojis);
   }, []);
 
   // Progressive addition of emojis by rows
@@ -83,7 +99,7 @@ export const LoadingEmojis = () => {
         currentRow++;
         
         // Accelerating cascade effect for rows
-        const nextDelay = Math.max(50, 200 - (currentRow * 15));
+        const nextDelay = Math.max(30, 150 - (currentRow * 15));
         setTimeout(addRow, nextDelay);
       }
     };
@@ -102,15 +118,16 @@ export const LoadingEmojis = () => {
             style={{
               left: style.left,
               top: style.top,
-              transform: `translate(-50%, -50%) scale(${style.scale})`,
+              zIndex: style.zIndex,
+              width: `${style.size}px`,
+              height: `${style.size}px`,
             }}
           >
             <Image
               src={`/images/emoji_${emojiNum}.png`}
               alt={`Emoji ${emojiNum}`}
-              width={100}
-              height={100}
-              className="w-20 h-20 md:w-24 md:h-24"
+              fill
+              className="object-contain"
               priority={true}
             />
           </div>
