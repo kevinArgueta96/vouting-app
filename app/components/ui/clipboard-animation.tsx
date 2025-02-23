@@ -39,7 +39,7 @@ export const ClipboardAnimation = () => {
       <div
         className={`absolute top-8 left-0 lg:w-[400px] lg:h-[400px] w-[250px] h-[250px] transition-all duration-1000 ease-in-out ${
           stage === 'enter'
-            ? 'translate-x-[30%] opacity-100'
+            ? 'translate-x[-10%] opacity-100'
             : stage === 'background'
               ? '-translate-x-full opacity-0'
               : stage === 'exit'
@@ -60,7 +60,7 @@ export const ClipboardAnimation = () => {
       <div
         className={`absolute lg:top-[60%] top-[55%] right-0 lg:w-[400px] lg:h-[400px] w-[250px] h-[250px] transition-all duration-1000 ease-in-out ${
           stage === 'enter'
-            ? 'translate-x-[-30%] opacity-100'
+            ? 'translate-x-[+15%] opacity-100'
             : stage === 'background'
               ? 'translate-x-full opacity-0'
               : stage === 'exit'
