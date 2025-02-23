@@ -35,6 +35,7 @@ export const ClipboardAnimation = () => {
         stage === 'complete' ? 'opacity-0 pointer-events-none' : 'opacity-100'
       }`}
     >
+      {/* Top clipboard - left to right */}
       <div
         className={`absolute top-8 left-0 lg:w-[400px] lg:h-[400px] w-[250px] h-[250px] transition-all duration-1000 ease-in-out ${
           stage === 'enter'
@@ -48,7 +49,28 @@ export const ClipboardAnimation = () => {
       >
         <Image
           src="/images/clipboard.png"
-          alt="Clipboard"
+          alt="Clipboard Top"
+          fill
+          className="object-contain"
+          priority
+        />
+      </div>
+
+      {/* Bottom clipboard - right to left */}
+      <div
+        className={`absolute lg:top-[60%] top-[55%] right-0 lg:w-[400px] lg:h-[400px] w-[250px] h-[250px] transition-all duration-1000 ease-in-out ${
+          stage === 'enter'
+            ? 'translate-x-[-30%] opacity-100'
+            : stage === 'background'
+              ? 'translate-x-full opacity-0'
+              : stage === 'exit'
+                ? 'translate-x-full opacity-0'
+                : 'translate-x-[-30%] opacity-0'
+        }`}
+      >
+        <Image
+          src="/images/clipboard_2.png"
+          alt="Clipboard Bottom"
           fill
           className="object-contain"
           priority
