@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useTranslations, useLocale } from "next-intl";
 import { routes } from "@/app/config/routes";
 import { useEffect, useState, useCallback } from "react";
+import ClipboardAnimation from "@/app/components/ui/clipboard-animation";
 
 function useOptimalSize() {
   const [size, setSize] = useState({ width: 320, height: 400 });
@@ -91,6 +92,7 @@ export default function ThanksPage() {
 
   return (
     <main className="min-h-screen bg-[#334798] relative flex flex-col">
+      <ClipboardAnimation />
       {/* Main logo */}
       <div className="flex justify-center mt-2 lg:mb-12 mb-3">
         <div
