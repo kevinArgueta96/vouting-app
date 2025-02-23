@@ -48,7 +48,7 @@ export const ClipboardAnimation = () => {
         }`}
       >
         <Image
-          src="/images/clipboard.png"
+          src="/images/entrance_left_thanks.png"
           alt="Clipboard Top"
           fill
           className="object-contain"
@@ -69,7 +69,7 @@ export const ClipboardAnimation = () => {
         }`}
       >
         <Image
-          src="/images/clipboard_2.png"
+          src="/images/entrance_rigth_thanks.png"
           alt="Clipboard Bottom"
           fill
           className="object-contain"
