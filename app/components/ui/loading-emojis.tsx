@@ -31,7 +31,6 @@ export const LoadingEmojis = () => {
   useEffect(() => {
     const rows = 8;
     const columns = 12;
-    const totalEmojis = rows * columns;
     const newEmojis = [];
 
     // Specific size variations
