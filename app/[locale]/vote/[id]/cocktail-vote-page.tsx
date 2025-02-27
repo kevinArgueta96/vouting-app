@@ -179,6 +179,19 @@ export default function CocktailVotePage({ id }: Props) {
     }
   };
 
+  const [showDetail, setShowDetail] = useState(false);
+
+  useEffect(() => {
+    if (!loading && cocktail) {
+      // Add a small delay to start the animation after the emojis disappear
+      const timer = setTimeout(() => {
+        setShowDetail(true);
+      }, 500);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [loading, cocktail]);
+
   if (loading) {
     return <LoadingEmojis />;
   }
@@ -194,10 +207,16 @@ export default function CocktailVotePage({ id }: Props) {
   return (
     <main className="min-h-screen bg-[#F9F6F0] relative">
       {/* Main Content */}
-      <CocktailDetail 
-        cocktail={cocktail} 
-        onSubmit={handleRatingSubmit}
-      />
+      <div 
+        className={`transition-all duration-700 ease-out transform ${
+          showDetail ? 'translate-y-0 opacity-100' : 'translate-y-32 opacity-0'
+        }`}
+      >
+        <CocktailDetail 
+          cocktail={cocktail} 
+          onSubmit={handleRatingSubmit}
+        />
+      </div>
       
       {/* Error Modal */}
       <Modal
