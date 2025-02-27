@@ -54,7 +54,7 @@ export default function RaffleEmail({
         color: '#666666',
         fontSize: '14px',
       }}>
-        <p style={{ marginBottom: '15px' }}>{translations.goodLuck}</p>
+        <p style={{ marginBottom: '15px' }} dangerouslySetInnerHTML={{ __html: translations.goodLuck }}></p>
         <p>
           {translations.regards}<br/>
           {translations.company}

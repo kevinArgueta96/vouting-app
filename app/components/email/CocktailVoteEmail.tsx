@@ -8,12 +8,12 @@ type Cocktail = Database['public']['Tables']['cocktails']['Row'] & {
 
 interface EmailTranslations {
   title: string;
-  cocktailDetails: string;
-  name: string;
-  brand: string;
-  description: string;
+  thankYou: string;
   recipe: string;
-  appreciation: string;
+  enjoyMessage: string;
+  followUs: string;
+  regards: string;
+  company: string;
 }
 
 interface CocktailVoteEmailProps {
@@ -36,48 +36,32 @@ export default function CocktailVoteEmail({
       maxWidth: '600px',
       margin: '0 auto',
     }}>
-      <h1 style={{
-        textAlign: 'center',
-        color: '#1a1a1a',
-        fontSize: '24px',
-        marginBottom: '20px',
-      }}>
-        {translations.title.replace('{cocktailName}', cocktail.name)}
-      </h1>
-
       <div style={{
         backgroundColor: '#ffffff',
         padding: '20px',
         borderRadius: '8px',
         marginBottom: '20px',
       }}>
+        <p style={{ marginBottom: '15px' }}>
+          {translations.thankYou}
+        </p>
+        
         <h2 style={{
           fontSize: '20px',
           color: '#1a1a1a',
-          marginBottom: '15px',
+          marginBottom: '5px',
+          textTransform: 'uppercase',
         }}>
-          {translations.cocktailDetails}
+          {cocktail.name}
         </h2>
         
-        <p style={{ marginBottom: '15px' }}>
-          <strong>{translations.name}:</strong> {cocktail.name}
-        </p>
-        
-        <p style={{ marginBottom: '15px' }}>
-          <strong>{translations.brand}:</strong> {cocktail.brand}
-        </p>
-        
-        <p style={{ marginBottom: '15px' }}>
-          <strong>{translations.description}:</strong> {cocktail.description}
+        <p style={{ marginBottom: '15px', fontSize: '14px' }}>
+          By {cocktail.brand}
         </p>
         
         <div style={{
           marginTop: '20px',
           marginBottom: '20px',
-          padding: '15px',
-          backgroundColor: '#f5f5f5',
-          borderRadius: '5px',
-          border: '1px solid #e0e0e0'
         }}>
           <h3 style={{
             fontSize: '18px',
@@ -86,19 +70,27 @@ export default function CocktailVoteEmail({
           }}>
             {translations.recipe}
           </h3>
-          <p style={{ lineHeight: '1.5' }}>
+          <p style={{ lineHeight: '1.5', whiteSpace: 'pre-line' }}>
             {cocktail.translations?.find((t) => t.locale === locale)?.recipe}
           </p>
         </div>
+        
+        <p style={{ marginBottom: '15px' }}>
+          {translations.enjoyMessage}
+        </p>
       </div>
 
-      <p style={{
+      <div style={{
         textAlign: 'center',
         color: '#666666',
         fontSize: '14px',
       }}>
-        {translations.appreciation}
-      </p>
+        <p style={{ marginBottom: '15px' }} dangerouslySetInnerHTML={{ __html: translations.followUs }}></p>
+        <p>
+          {translations.regards}<br/>
+          {translations.company}
+        </p>
+      </div>
     </div>
   );
 }

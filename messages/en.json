@@ -45,33 +45,32 @@
   },
   "EmailTemplates": {
     "vote": {
-      "title": "Thank you for voting for {cocktailName}!",
-      "cocktailDetails": "Cocktail Details",
-      "name": "Name",
-      "brand": "Brand",
-      "description": "Description",
+      "title": "{cocktailName}",
+      "thankYou": "Thank you for voting! Here's the recipe you requested:",
       "recipe": "Recipe",
-      "appreciation": "We appreciate your participation in voting for our cocktails!"
+      "enjoyMessage": "Enjoy your cocktail!",
+      "followUs": "👉 Craving more? Follow us on Instagram <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> for cocktail inspo, insider bar tips in Helsinki, and sneak peeks at upcoming events!",
+      "regards": "Best regards,",
+      "company": "Helsinki Drink Festival Team"
     },
     "raffle": {
-      "title": "Thank You for Participating in Our Raffle!",
-      "message": "We've received your entry for the raffle. Thank you for participating!",
-      "entryConfirm": "Your entry has been successfully registered. Winners will be notified directly via email.",
-      "goodLuck": "Good luck!",
+      "title": "Thank You for Voting – Raffle Entry Confirmed!",
+      "message": "Thank you for voting and participating in our raffle!",
+      "entryConfirm": "Your entry has been successfully registered. Winners will be notified via email.",
+      "goodLuck": "Good luck! 👉 Stay in the loop and follow us on Instagram <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> for tasty cocktail inspiration, the coolest bar tips in Helsinki, and updates on future events!",
       "regards": "Best regards,",
-      "company": "Helsinki Distilling Company"
+      "company": "Helsinki Drink Festival Team"
     },
     "combined": {
-      "title": "Thank You for Your Interest!",
+      "title": "Raffle Entry Confirmed & Your Requested Recipe: {cocktailName}",
       "message": "Thank you for voting and participating in our raffle!",
-      "recipeTitle": "Your Requested Recipe: {cocktailName}",
-      "description": "Description",
+      "raffleMessage": "Your raffle entry has been successfully registered. Winners will be notified via email.",
+      "recipeIntro": "Meanwhile, enjoy the recipe you requested:",
       "recipe": "Recipe",
-      "raffleTitle": "Raffle Entry Confirmation",
-      "raffleMessage": "Your entry for the raffle has been successfully registered. Winners will be notified directly via email.",
       "finalMessage": "Good luck with the raffle and enjoy your cocktail!",
+      "followUs": "👉 Don't miss out! Follow us on Instagram <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> for more cocktails, Helsinki bar tips, and updates on future events.",
       "regards": "Best regards,",
-      "company": "Helsinki Distilling Company"
+      "company": "Helsinki Drink Festival Team"
     }
   },
   "QRCode": {

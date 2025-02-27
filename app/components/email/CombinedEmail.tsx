@@ -9,12 +9,11 @@ type Cocktail = Database['public']['Tables']['cocktails']['Row'] & {
 interface EmailTranslations {
   title: string;
   message: string;
-  recipeTitle: string;
-  description: string;
-  recipe: string;
-  raffleTitle: string;
   raffleMessage: string;
+  recipeIntro: string;
+  recipe: string;
   finalMessage: string;
+  followUs: string;
   regards: string;
   company: string;
 }
@@ -39,85 +38,56 @@ export default function CombinedEmail({
       maxWidth: '600px',
       margin: '0 auto',
     }}>
-      <h1 style={{
-        textAlign: 'center',
-        color: '#1a1a1a',
-        fontSize: '24px',
-        marginBottom: '20px',
-      }}>
-        {translations.title}
-      </h1>
-
-      <p style={{
-        textAlign: 'center',
-        marginBottom: '20px',
-      }}>
-        {translations.message}
-      </p>
-
       <div style={{
         backgroundColor: '#ffffff',
         padding: '20px',
         borderRadius: '8px',
         marginBottom: '20px',
       }}>
+        <p style={{ marginBottom: '15px' }}>
+          {translations.message}
+        </p>
+        
+        <p style={{ marginBottom: '20px' }}>
+          {translations.raffleMessage}
+        </p>
+        
+        <p style={{ marginBottom: '15px' }}>
+          {translations.recipeIntro}
+        </p>
+        
         <h2 style={{
           fontSize: '20px',
           color: '#1a1a1a',
-          marginBottom: '15px',
+          marginBottom: '5px',
+          textTransform: 'uppercase',
         }}>
-          {translations.recipeTitle.replace('{cocktailName}', cocktail.name)}
+          {cocktail.name}
         </h2>
         
-        <p style={{ marginBottom: '15px' }}>
-          <strong>Brand:</strong> {cocktail.brand}
+        <p style={{ marginBottom: '15px', fontSize: '14px' }}>
+          By {cocktail.brand}
         </p>
         
-        <div style={{ marginBottom: '20px' }}>
+        <div style={{
+          marginTop: '20px',
+          marginBottom: '20px',
+        }}>
           <h3 style={{
             fontSize: '18px',
             color: '#1a1a1a',
-            marginBottom: '10px',
+            marginBottom: '10px'
           }}>
-            {translations.description}
+            {translations.recipe}
           </h3>
-          <p>{cocktail.description}</p>
-          <div style={{
-            marginTop: '20px',
-            marginBottom: '20px',
-            padding: '15px',
-            backgroundColor: '#f5f5f5',
-            borderRadius: '5px',
-            border: '1px solid #e0e0e0'
-          }}>
-            <h3 style={{
-              fontSize: '18px',
-              color: '#1a1a1a',
-              marginBottom: '10px'
-            }}>
-              {translations.recipe}
-            </h3>
-            <p style={{ lineHeight: '1.5' }}>
-              {cocktail.translations?.find((t) => t.locale === locale)?.recipe}
-            </p>
-          </div>
+          <p style={{ lineHeight: '1.5', whiteSpace: 'pre-line' }}>
+            {cocktail.translations?.find((t) => t.locale === locale)?.recipe}
+          </p>
         </div>
-      </div>
-
-      <div style={{
-        backgroundColor: '#ffffff',
-        padding: '20px',
-        borderRadius: '8px',
-        marginBottom: '20px',
-      }}>
-        <h2 style={{
-          fontSize: '20px',
-          color: '#1a1a1a',
-          marginBottom: '15px',
-        }}>
-          {translations.raffleTitle}
-        </h2>
-        <p>{translations.raffleMessage}</p>
+        
+        <p style={{ marginBottom: '15px' }}>
+          {translations.finalMessage}
+        </p>
       </div>
 
       <div style={{
@@ -125,7 +95,7 @@ export default function CombinedEmail({
         color: '#666666',
         fontSize: '14px',
       }}>
-        <p style={{ marginBottom: '15px' }}>{translations.finalMessage}</p>
+        <p style={{ marginBottom: '15px' }} dangerouslySetInnerHTML={{ __html: translations.followUs }}></p>
         <p>
           {translations.regards}<br/>
           {translations.company}

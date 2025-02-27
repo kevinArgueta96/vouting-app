@@ -44,33 +44,32 @@
   },
   "EmailTemplates": {
     "vote": {
-      "title": "Kiitos äänestämisestä {cocktailName}!",
-      "cocktailDetails": "Cocktailin tiedot",
-      "name": "Nimi",
-      "brand": "Brändi",
-      "description": "Kuvaus",
+      "title": "Pyytämäsi resepti: {cocktailName}",
+      "thankYou": "Kiitos äänestämisestä! Tässä pyytämäsi resepti:",
       "recipe": "Resepti",
-      "appreciation": "Arvostamme osallistumistasi cocktailien äänestykseen!"
+      "enjoyMessage": "Nauti cocktailistasi!",
+      "followUs": "👉 Haluatko lisää inspiraatiota? Seuraa meitä Instagramissa <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> – löydät cocktailreseptejä, parhaat baarivinkit ja tietoa tulevista tapahtumista!",
+      "regards": "Ystävällisin terveisin,",
+      "company": "Helsinki Drink Festival -tiimi"
     },
     "raffle": {
-      "title": "Kiitos osallistumisestasi arvontaan!",
-      "message": "Olemme vastaanottaneet arvontaosallistumisesi. Kiitos osallistumisesta!",
-      "entryConfirm": "Osallistumisesi on rekisteröity onnistuneesti. Voittajille ilmoitetaan suoraan sähköpostitse.",
-      "goodLuck": "Onnea arvontaan!",
+      "title": "Kiitos äänestämisestä – Arvontaosallistumisesi on vahvistettu!",
+      "message": "Kiitos äänestämisestä ja osallistumisestasi arvontaan!",
+      "entryConfirm": "Osallistumisesi on rekisteröity onnistuneesti. Voittajille ilmoitetaan sähköpostitse.",
+      "goodLuck": "Onnea arvontaan! 👉 Pysy ajan tasalla ja seuraa meitä Instagramissa <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> – löydät herkullisia cocktailvinkkejä, parhaat baarisuositukset Helsingissä ja infoa tulevista tapahtumista!",
       "regards": "Ystävällisin terveisin,",
-      "company": "Helsinki Distilling Company"
+      "company": "Helsinki Drink Festival -tiimi"
     },
     "combined": {
-      "title": "Kiitos kiinnostuksestasi!",
-      "message": "Kiitos äänestyksestä ja arvontaan osallistumisesta!",
-      "recipeTitle": "Pyytämäsi resepti: {cocktailName}",
-      "description": "Kuvaus",
+      "title": "Arvontaosallistuminen vahvistettu & pyytämäsi resepti: {cocktailName}",
+      "message": "Kiitos äänestämisestä ja osallistumisestasi arvontaan!",
+      "raffleMessage": "Osallistumisesi on rekisteröity onnistuneesti. Voittajille ilmoitetaan sähköpostitse.",
+      "recipeIntro": "Sillä välin, tässä pyytämäsi resepti:",
       "recipe": "Resepti",
-      "raffleTitle": "Arvontaosallistumisen vahvistus",
-      "raffleMessage": "Osallistumisesi arvontaan on rekisteröity onnistuneesti. Voittajille ilmoitetaan suoraan sähköpostitse.",
       "finalMessage": "Onnea arvontaan ja nauti cocktailistasi!",
+      "followUs": "👉 Älä jää paitsi – seuraa meitä Instagramissa <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> ja nappaa parhaat cocktailideat, Helsingin baarivinkit ja tiedot tulevista tapahtumista!",
       "regards": "Ystävällisin terveisin,",
-      "company": "Helsinki Distilling Company"
+      "company": "Helsinki Drink Festival -tiimi"
     }
   },
   "QRCode": {

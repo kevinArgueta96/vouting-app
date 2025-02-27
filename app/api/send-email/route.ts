@@ -15,23 +15,23 @@ type Cocktail = Database['public']['Tables']['cocktails']['Row'] & {
 interface CombinedEmailTranslations {
   title: string;
   message: string;
-  recipeTitle: string;
-  description: string;
-  raffleTitle: string;
   raffleMessage: string;
+  recipeIntro: string;
+  recipe: string;
   finalMessage: string;
+  followUs: string;
   regards: string;
   company: string;
 }
 
 interface CocktailVoteEmailTranslations {
   title: string;
-  cocktailDetails: string;
-  name: string;
-  brand: string;
-  description: string;
+  thankYou: string;
   recipe: string;
-  appreciation: string;
+  enjoyMessage: string;
+  followUs: string;
+  regards: string;
+  company: string;
 }
 
 interface RaffleEmailTranslations {
@@ -109,16 +109,25 @@ export async function POST(request: Request) {
       let EmailComponent: ElementType;
       let emailProps: { cocktail?: Cocktail; translations: unknown; locale?: string };
 
+      // Helper function to sanitize subject line
+      const sanitizeSubject = (subject: string) => {
+        // Remove newlines and trim whitespace
+        return subject.replace(/\n/g, ' ').trim();
+      };
+
+      // Handle case where cocktail name might be null
+      const cocktailName = cocktail?.name || 'Cocktail';
+
       if (wantRecipe && wantRaffle) {
-        emailSubject = emailTemplates.combined.title;
+        emailSubject = sanitizeSubject(emailTemplates.combined.title.replace('{cocktailName}', cocktailName));
         EmailComponent = CombinedEmail as ComponentType<{ cocktail: Cocktail; translations: CombinedEmailTranslations; locale: string }>;
         emailProps = { cocktail, translations: emailTemplates.combined, locale: body.locale || 'en' };
       } else if (wantRecipe) {
-        emailSubject = emailTemplates.vote.title.replace('{cocktailName}', cocktail.name);
+        emailSubject = sanitizeSubject(emailTemplates.vote.title.replace('{cocktailName}', cocktailName));
         EmailComponent = CocktailVoteEmail as ComponentType<{ cocktail: Cocktail; translations: CocktailVoteEmailTranslations; locale: string }>;
         emailProps = { cocktail, translations: emailTemplates.vote, locale: body.locale || 'en' };
       } else if (wantRaffle) {
-        emailSubject = emailTemplates.raffle.title;
+        emailSubject = sanitizeSubject(emailTemplates.raffle.title);
         EmailComponent = RaffleEmail as ComponentType<{ translations: RaffleEmailTranslations }>;
         emailProps = { translations: emailTemplates.raffle };
       } else {
