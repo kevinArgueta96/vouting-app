@@ -127,7 +127,7 @@ export async function POST(request: Request) {
         EmailComponent = CocktailVoteEmail as ComponentType<{ cocktail: Cocktail; translations: CocktailVoteEmailTranslations; locale: string }>;
         emailProps = { cocktail, translations: emailTemplates.vote, locale: body.locale || 'en' };
       } else if (wantRaffle) {
-        emailSubject = sanitizeSubject(emailTemplates.raffle.title);
+        emailSubject = sanitizeSubject(emailTemplates.raffle.subject);
         EmailComponent = RaffleEmail as ComponentType<{ translations: RaffleEmailTranslations }>;
         emailProps = { translations: emailTemplates.raffle };
       } else {

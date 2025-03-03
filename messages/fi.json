@@ -52,14 +52,15 @@
       "regards": "Ystävällisin terveisin,",
       "company": "Helsinki Drink Festival -tiimi"
     },
-    "raffle": {
-      "title": "Kiitos äänestämisestä – Arvontaosallistumisesi on vahvistettu!",
-      "message": "Kiitos äänestämisestä ja osallistumisestasi arvontaan!",
-      "entryConfirm": "Osallistumisesi on rekisteröity onnistuneesti. Voittajille ilmoitetaan sähköpostitse.",
-      "goodLuck": "Onnea arvontaan! 👉 Pysy ajan tasalla ja seuraa meitä Instagramissa <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> – löydät herkullisia cocktailvinkkejä, parhaat baarisuositukset Helsingissä ja infoa tulevista tapahtumista!",
-      "regards": "Ystävällisin terveisin,",
+  "raffle": {
+      "subject": "Kiitos äänestämisestä – Arvontalippu vahvistettu!",
+      "title": "KIITOS ÄÄNESTÄMISESTÄ JA OSALLISTUMISESTA ARVONTAAMME!",
+      "message": "Osallistumisesi on rekisteröity onnistuneesti. Voittajille ilmoitetaan sähköpostitse.",
+      "entryConfirm": "Onnea arvontaan!",
+      "goodLuck": "👉 Pysy ajan tasalla ja seuraa meitä Instagramissa @helsinkidrinkfestival saadaksesi herkullisia cocktail-inspiraatioita, Helsingin parhaat baarivinkit ja päivityksiä tulevista tapahtumista!",
+      "regards": "Parhain terveisin,",
       "company": "Helsinki Drink Festival -tiimi"
-    },
+  },
     "combined": {
       "title": "Arvontaosallistuminen vahvistettu & pyytämäsi resepti: {cocktailName}",
       "message": "Kiitos äänestämisestä ja osallistumisestasi arvontaan!",
