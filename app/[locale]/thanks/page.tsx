@@ -119,7 +119,7 @@ export default function ThanksPage() {
               width: `${width}px`,
               height: `${height}px`,
               margin: "0 auto",
-              top: isDesktop ? "0" : "-15%",
+              top: isDesktop ? "5%" : "-15%",
             }}
           >
             <Image
@@ -155,11 +155,11 @@ export default function ThanksPage() {
           </div>
 
           {/* Overlay Content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-start lg:p-22 p-20">
+          <div className="absolute inset-0 flex flex-col items-center justify-start lg:justify-center lg:p-22 p-20">
             {/* Thank you text */}
             <div className="lg:mb-8 mb-10">
               <div
-                className="mx-auto text-white text-center uppercase mt-9 lg:mt-20 lg:h-[80px]"
+                className="mx-auto text-white text-center uppercase mt-9 lg:mt-10 lg:h-[80px]"
                 style={{
                   fontFamily: "Russo One",
                   fontSize: "clamp(1.8rem, 0.9vw, 2.7rem)",
