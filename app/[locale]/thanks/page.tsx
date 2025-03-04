@@ -175,9 +175,10 @@ export default function ThanksPage() {
             </div>
 
             {/* Options Container */}
+          
             <div className="lg:w-[320px] w-[180px] overflow-hidden mx-auto">
               <div className="flex flex-col items-center justify-center lg:gap-4 gap-2">
-                <Link
+               {/* <Link
                   href={routes.vote.list(locale)}
                   className="grid lg:grid-cols-[60px_180px] grid-cols-[40px_100px] lg:w-[280px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
                 >
@@ -195,8 +196,8 @@ export default function ThanksPage() {
                       {t('seeAllCocktails')}
                     </span>
                   </div>
-                </Link>
-
+                </Link> */}
+                
                 <Link
                   href="#"
                   className="grid lg:grid-cols-[60px_180px] grid-cols-[40px_100px] lg:w-[280px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
