@@ -222,20 +222,22 @@ export default function CocktailDetail({
                   onChange={(e) => setWantRaffle(e.target.checked)}
                   className="w-4 h-4 rounded border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4]"
                 />
-                <label htmlFor="raffle-checkbox" className="text-sm flex items-center">
-                  <span>{t("participateRaffle").split("Read more")[0]}</span>
-                  {t("participateRaffle").includes("Read more") && (
-                    <>
-                      <a 
-                        href={`https://${t("drawRulesUrl")}`} 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
-                        className="text-[#FFD4D4] hover:underline ml-1"
-                      >
-                        Read more about the rules here
-                      </a>
-                    </>
-                  )}
+                <label htmlFor="raffle-checkbox" className="text-sm flex items-center flex-wrap">
+                  <span>{t("participateRaffle")}</span>
+                  <a 
+                    href={`https://${t("drawRulesUrl")}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="text-[#FFD4D4] hover:text-white hover:underline ml-1 inline-flex items-center group transition-colors duration-300"
+                  >
+                    <span className="relative">
+                      {t("readMoreRules")}
+                      <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#FFD4D4] group-hover:w-full transition-all duration-300"></span>
+                    </span>
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    </svg>
+                  </a>
                 </label>
               </div>
             </div>
