@@ -2,8 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations, useLocale } from "next-intl";
-import { routes } from "@/app/config/routes";
+import { useTranslations } from "next-intl";
 import { useEffect, useState, useCallback } from "react";
 import ClipboardAnimation from "@/app/components/ui/clipboard-animation";
 
@@ -87,7 +86,6 @@ function debounce<T extends (...args: unknown[]) => void>(
 
 export default function ThanksPage() {
   const t = useTranslations("Thanks");
-  const locale = useLocale();
   const { width, height, isDesktop } = useOptimalSize();
 
   return (
@@ -196,8 +194,8 @@ export default function ThanksPage() {
                       {t('seeAllCocktails')}
                     </span>
                   </div>
-                </Link> */}
-                
+                </Link> 
+
                 <Link
                   href="#"
                   className="grid lg:grid-cols-[60px_180px] grid-cols-[40px_100px] lg:w-[280px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
@@ -234,6 +232,28 @@ export default function ThanksPage() {
                   <div className="text-left lg:w-[180px] w-[100px]">
                     <span className="lg:text-base text-sm font-medium leading-tight block whitespace-normal">
                       {t('seeEventMap')}
+                    </span>
+                  </div>
+                </Link>  */}
+
+<Link
+                  href="https://www.facebook.com/helsinkidrinkfestival"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="grid lg:grid-cols-[60px_180px] grid-cols-[40px_100px] lg:w-[280px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
+                >
+                  <div className="flex items-center justify-center lg:w-14 w-10 lg:h-14 h-10">
+                    <Image
+                      src={`/svg/facebook_logo.svg`}
+                      alt="Instagram"
+                      width={28}
+                      height={28}
+                      className="object-contain lg:w-9 w-7 lg:h-9 h-7"
+                    />
+                  </div>
+                  <div className="text-left lg:w-[180px] w-[100px]">
+                    <span className="lg:text-base text-sm font-medium leading-tight block whitespace-normal">
+                      {t('followUs')}
                     </span>
                   </div>
                 </Link>
