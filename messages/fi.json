@@ -26,8 +26,11 @@
       "closeButton": "Selvä"
     },
     "by": "tekijä",
-    "sendRecipe": "Lähetä cocktailin resepti sähköpostiini",
-    "participateRaffle": "Osallistu arvontaan",
+    "sendRecipe": "Lähetä tämän cocktailin resepti sähköpostiini",
+    "participateRaffle": "Osallistu arvontaan ja voita 4 lippua Wine Festivaliin by HDF. Lue lisää säännöistä täältä.",
+    "privacyPolicy": "Lue tietosuojakäytäntö ja käyttöehdot täältä",
+    "drawRulesUrl": "hdf.fi/draw-rules",
+    "conditionsUrl": "hdf.fi/conditions",
     "email": "Sähköposti",
     "emailPlaceholder": "sinun@email.com",
     "enterEmail": "Anna sähköpostiosoitteesi",
@@ -53,7 +56,7 @@
       "regards": "Ystävällisin terveisin,",
       "company": "Helsinki Drink Festival -tiimi"
     },
-  "raffle": {
+    "raffle": {
       "subject": "Kiitos äänestämisestä – Arvontalippu vahvistettu!",
       "title": "KIITOS ÄÄNESTÄMISESTÄ JA OSALLISTUMISESTA ARVONTAAMME!",
       "message": "Osallistumisesi on rekisteröity onnistuneesti. Voittajille ilmoitetaan sähköpostitse.",
@@ -61,7 +64,7 @@
       "goodLuck": "👉 Pysy ajan tasalla ja seuraa meitä Instagramissa <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> saadaksesi herkullisia cocktail-inspiraatioita, Helsingin parhaat baarivinkit ja päivityksiä tulevista tapahtumista!",
       "regards": "Parhain terveisin,",
       "company": "Helsinki Drink Festival -tiimi"
-  },
+    },
     "combined": {
       "title": "KIITOS ÄÄNESTÄMÄSTÄSI JA OSALLISTUMISESTASI ARVONNASSA!",
       "message": "Kiitos äänestämisestä ja osallistumisestasi arvontaan!",

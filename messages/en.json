@@ -26,15 +26,17 @@
       "closeButton": "Got it"
     },
     "by": "by",
-    "sendRecipe": "Send the recipe of the cocktail to my email",
-    "participateRaffle": "Participate to the draffle",
+    "sendRecipe": "Send the recipe of this cocktail to my email",
+    "participateRaffle": "Participate to the draw and win 4 tickets to Wine Festival by HDF. Read more about the rules here.",
+    "privacyPolicy": "Read the privacy policy and terms and conditions here",
+    "drawRulesUrl": "hdf.fi/draw-rules",
+    "conditionsUrl": "hdf.fi/conditions",
     "email": "Email",
     "emailPlaceholder": "your@email.com",
     "enterEmail": "Enter your email",
     "invalidEmail": "Please enter a valid email",
     "submitVote": "Submit Vote",
     "submitting": "Submitting..."
-
   },
   "CocktailDetail": {
     "ingredients": "Ingredients",
