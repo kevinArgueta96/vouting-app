@@ -45,7 +45,8 @@
   "EmailTemplates": {
     "vote": {
       "title": "Pyytämäsi resepti: {cocktailName}",
-      "thankYou": "Kiitos äänestämisestä! Tässä pyytämäsi resepti:",
+      "thankYou": "KIITOS ÄÄNESTÄMISESTÄ!",
+      "recipeRequested": "TÄSSÄ PYYTÄMÄSI RESEPTI:",
       "recipe": "Resepti",
       "enjoyMessage": "Nauti cocktailistasi!",
       "followUs": "👉 Haluatko lisää inspiraatiota? Seuraa meitä Instagramissa <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> – löydät cocktailreseptejä, parhaat baarivinkit ja tietoa tulevista tapahtumista!",
@@ -57,12 +58,12 @@
       "title": "KIITOS ÄÄNESTÄMISESTÄ JA OSALLISTUMISESTA ARVONTAAMME!",
       "message": "Osallistumisesi on rekisteröity onnistuneesti. Voittajille ilmoitetaan sähköpostitse.",
       "entryConfirm": "Onnea arvontaan!",
-      "goodLuck": "👉 Pysy ajan tasalla ja seuraa meitä Instagramissa @helsinkidrinkfestival saadaksesi herkullisia cocktail-inspiraatioita, Helsingin parhaat baarivinkit ja päivityksiä tulevista tapahtumista!",
+      "goodLuck": "👉 Pysy ajan tasalla ja seuraa meitä Instagramissa <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> saadaksesi herkullisia cocktail-inspiraatioita, Helsingin parhaat baarivinkit ja päivityksiä tulevista tapahtumista!",
       "regards": "Parhain terveisin,",
       "company": "Helsinki Drink Festival -tiimi"
   },
     "combined": {
-      "title": "Arvontaosallistuminen vahvistettu & pyytämäsi resepti: {cocktailName}",
+      "title": "KIITOS ÄÄNESTÄMÄSTÄSI JA OSALLISTUMISESTASI ARVONNASSA!",
       "message": "Kiitos äänestämisestä ja osallistumisestasi arvontaan!",
       "raffleMessage": "Osallistumisesi on rekisteröity onnistuneesti. Voittajille ilmoitetaan sähköpostitse.",
       "recipeIntro": "Sillä välin, tässä pyytämäsi resepti:",

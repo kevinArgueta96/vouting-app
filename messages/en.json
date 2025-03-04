@@ -46,7 +46,8 @@
   "EmailTemplates": {
     "vote": {
       "title": "{cocktailName}",
-      "thankYou": "Thank you for voting! Here's the recipe you requested:",
+      "thankYou": "THANK YOU FOR VOTING!",
+      "recipeRequested": "HERE'S THE RECIPE YOU REQUESTED:",
       "recipe": "Recipe",
       "enjoyMessage": "Enjoy your cocktail!",
       "followUs": "👉 Craving more? Follow us on Instagram <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> for cocktail inspo, insider bar tips in Helsinki, and sneak peeks at upcoming events!",
@@ -58,12 +59,12 @@
       "title": "THANK YOU FOR VOTING AND PARTICIPATINGIN OUR RAFFLE!",
       "message": "Your entry has been successfully registered. Winners will be notified via email.",
       "entryConfirm": "Good luck!",
-      "goodLuck": "👉 Stay in the loop and follow us on Instagram @helsinkidrinkfestival for tasty cocktail inspiration, the coolest bar tips in Helsinki, and updates on future events!",
+      "goodLuck": "👉 Stay in the loop and follow us on Instagram <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> for tasty cocktail inspiration, the coolest bar tips in Helsinki, and updates on future events!",
       "regards": "Best regards,",
       "company": "Helsinki Drink Festival Team"
     },
     "combined": {
-      "title": "Raffle Entry Confirmed & Your Requested Recipe: {cocktailName}",
+      "title": "THANK YOU FOR VOTING AND PARTICIPATING IN OUR RAFFLE!",
       "message": "Thank you for voting and participating in our raffle!",
       "raffleMessage": "Your raffle entry has been successfully registered. Winners will be notified via email.",
       "recipeIntro": "Meanwhile, enjoy the recipe you requested:",
