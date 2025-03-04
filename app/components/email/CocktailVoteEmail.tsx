@@ -208,15 +208,17 @@ export default function CocktailVoteEmail({
                               }}>
                                 {translations.recipe}:
                               </h3>
-                              <p style={{
-                                fontSize: '16px',
-                                color: '#334798',
-                                lineHeight: '1.5',
-                                margin: '0',
-                                whiteSpace: 'pre-line',
-                              }}>
-                                {cocktail.translations?.find((t) => t.locale === locale)?.recipe}
-                              </p>
+                              <div 
+                                style={{
+                                  fontSize: '16px',
+                                  color: '#334798',
+                                  lineHeight: '1.5',
+                                  margin: '0',
+                                }}
+                                dangerouslySetInnerHTML={{ 
+                                  __html: cocktail.translations?.find((t) => t.locale === locale)?.recipe || '' 
+                                }}
+                              />
                             </td>
                           </tr>
                         </tbody>
