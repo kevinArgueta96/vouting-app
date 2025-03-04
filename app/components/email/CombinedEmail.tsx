@@ -57,6 +57,7 @@ export default function CombinedEmail({
                         <tbody>
                           <tr>
                             <td align="center" valign="middle" style={{ height: '108px' }}>
+                              {/* eslint-disable-next-line @next/next/no-img-element */}
                               <img 
                                 src="https://cjdbnnncevpbeqeafmde.supabase.co/storage/v1/object/public/images/logo-mail.png"
                                 alt="mail-logo"
