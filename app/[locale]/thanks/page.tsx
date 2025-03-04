@@ -159,10 +159,10 @@ export default function ThanksPage() {
             {/* Thank you text */}
             <div className="lg:mb-8 mb-10">
               <div
-                className="mx-auto text-white text-center uppercase mt-1 lg:mt-8 lg:h-[80px]"
+                className="mx-auto text-white text-center uppercase mt-9 lg:mt-20 lg:h-[80px]"
                 style={{
                   fontFamily: "Russo One",
-                  fontSize: "clamp(2rem, 1vw, 3rem)",
+                  fontSize: "clamp(1.8rem, 0.9vw, 2.7rem)",
                   width: "100%",
                   letterSpacing: "-0.35px",
                   lineHeight: "1.1",
