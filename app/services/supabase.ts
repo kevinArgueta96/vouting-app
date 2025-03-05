@@ -191,9 +191,9 @@ export const ratingService = {
     )
 
     return {
-      appearance: stats.appearance / stats.total_ratings,
-      taste: stats.taste / stats.total_ratings,
-      innovativeness: stats.innovativeness / stats.total_ratings,
+      appearance: stats.appearance,
+      taste: stats.taste,
+      innovativeness: stats.innovativeness,
       total_ratings: stats.total_ratings
     }
   }

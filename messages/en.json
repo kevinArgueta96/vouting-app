@@ -1,4 +1,26 @@
 {
+  "Dashboard": {
+    "title": "Cocktail Voting Dashboard",
+    "totalVotes": "Total Votes",
+    "mostVoted": "Most Voted Cocktail",
+    "highestRated": "Highest Rated Cocktail",
+    "votesDistribution": "Votes Distribution",
+    "averageRatings": "Total  ",
+    "detailedResults": "Detailed Results",
+    "cocktail": "Cocktail",
+    "brand": "Brand",
+    "totalVotes": "Total Votes",
+    "appearance": "Appearance",
+    "taste": "Taste",
+    "innovativeness": "Innovativeness",
+    "overall": "Overall",
+    "votes": "votes",
+    "sortBy": "Sort by",
+    "bestAppearance": "Best Appearance",
+    "bestTaste": "Best Taste",
+    "bestInnovativeness": "Most Innovative",
+    "bestOverall": "Best Overall"
+  },
   "Index": {
     "title": "Welcome to Cocktail Voting",
     "description": "Rate and vote for your favorite cocktails",

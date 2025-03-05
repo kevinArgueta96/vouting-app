@@ -1,4 +1,26 @@
 {
+  "Dashboard": {
+    "title": "Cocktail-äänestyksen kojelauta",
+    "totalVotes": "Ääniä yhteensä",
+    "mostVoted": "Eniten äänestetty cocktail",
+    "highestRated": "Parhaiten arvioitu cocktail",
+    "votesDistribution": "Äänten jakautuminen",
+    "averageRatings": "Keskimääräiset arviot",
+    "detailedResults": "Yksityiskohtaiset tulokset",
+    "cocktail": "Cocktail",
+    "brand": "Brändi",
+    "totalVotes": "Ääniä yhteensä",
+    "appearance": "Ulkonäkö",
+    "taste": "Maku",
+    "innovativeness": "Innovatiivisuus",
+    "overall": "Kokonaisarvio",
+    "votes": "ääntä",
+    "sortBy": "Järjestä",
+    "bestAppearance": "Paras Ulkonäkö",
+    "bestTaste": "Paras Maku",
+    "bestInnovativeness": "Innovatiivisin",
+    "bestOverall": "Paras Kokonaisuus"
+  },
   "Index": {
     "title": "Tervetuloa Cocktail-äänestykseen",
     "description": "Arvioi ja äänestä suosikkicocktailiasi",

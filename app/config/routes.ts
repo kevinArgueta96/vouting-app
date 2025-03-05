@@ -6,6 +6,7 @@ export const routes = {
   },
   thanks: (locale: string) => `/${locale}/thanks`,
   qr: (locale: string) => `/${locale}/qr`,
+  dashboard: (locale: string) => `/${locale}/dashboard`,
 } as const;
 
 // Helper function to ensure all routes are properly formatted with locale

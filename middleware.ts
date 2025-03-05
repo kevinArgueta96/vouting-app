@@ -9,6 +9,7 @@ const validPaths = [
   /^\/[^/]+\/vote\/[^/]+\/?$/, // vote detail: /{locale}/vote/{id}
   /^\/[^/]+\/thanks\/?$/, // thanks: /{locale}/thanks
   /^\/[^/]+\/qr\/?$/, // qr code generator: /{locale}/qr
+  /^\/[^/]+\/dashboard\/?$/, // dashboard: /{locale}/dashboard
 ];
 
 const intlMiddleware = createMiddleware({
