@@ -29,14 +29,12 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [totalVotes, setTotalVotes] = useState(0);
   const [mostVotedCocktail, setMostVotedCocktail] = useState<CocktailWithStats | null>(null);
-  const [leastVotedCocktail, setLeastVotedCocktail] = useState<CocktailWithStats | null>(null);
   const [highestRatedCocktail, setHighestRatedCocktail] = useState<CocktailWithStats | null>(null);
   const [bestAppearanceCocktail, setBestAppearanceCocktail] = useState<CocktailWithStats | null>(null);
   const [bestTasteCocktail, setBestTasteCocktail] = useState<CocktailWithStats | null>(null);
   const [bestInnovativenessCocktail, setBestInnovativenessCocktail] = useState<CocktailWithStats | null>(null);
   const [sortField, setSortField] = useState<SortField>('totalVotes');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
-  const [totalAppearance, setTotalAppearance] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,26 +63,16 @@ export default function DashboardPage() {
         // Sort by different criteria
         const sortedByVotes = [...cocktailsWithStats].sort((a, b) => b.totalVotes - a.totalVotes);
         const sortedByOverall = [...cocktailsWithStats].sort((a, b) => b.averageOverall - a.averageOverall);
-        const sortedByAppearance = [...cocktailsWithStats].sort((a, b) => b.averageAppearance - a.averageAppearance);
-        const sortedByTaste = [...cocktailsWithStats].sort((a, b) => b.averageTaste - a.averageTaste);
-        const sortedByInnovativeness = [...cocktailsWithStats].sort((a, b) => b.averageInnovativeness - a.averageInnovativeness);
         
         // Calculate total votes
         const totalVotesCount = cocktailsWithStats.reduce((sum, cocktail) => sum + cocktail.totalVotes, 0);
-        
-        // Calculate total appearance (average of all cocktails)
-        const totalAppearanceValue = cocktailsWithStats.length > 0 
-          ? cocktailsWithStats.reduce((sum, cocktail) => sum + cocktail.averageAppearance, 0) / cocktailsWithStats.length
-          : 0;
         
         // Filter out cocktails with no votes for best ratings
         const cocktailsWithVotes = cocktailsWithStats.filter(c => c.totalVotes > 0);
         
         setCocktails(cocktailsWithStats);
         setTotalVotes(totalVotesCount);
-        setTotalAppearance(totalAppearanceValue);
         setMostVotedCocktail(sortedByVotes[0] || null);
-        setLeastVotedCocktail(sortedByVotes[sortedByVotes.length - 1] || null);
         setHighestRatedCocktail(sortedByOverall[0] || null);
         
         // Make sure we're using the filtered list for best ratings
