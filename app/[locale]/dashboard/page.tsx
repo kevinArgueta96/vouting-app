@@ -6,6 +6,7 @@ import { cocktailService, ratingService } from '@/app/services/supabase';
 import { PieChart } from '@/app/components/ui/pie-chart';
 import { BarChart } from '@/app/components/ui/bar-chart';
 import { StatCard } from '@/app/components/ui/stat-card';
+import * as XLSX from 'xlsx';
 
 interface CocktailWithStats {
   id: number;
@@ -201,27 +202,50 @@ export default function DashboardPage() {
         <div className="bg-white p-6 rounded-xl shadow-md overflow-x-auto">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-2xl font-semibold text-[#334798]">{t('detailedResults')}</h2>
-            <div className="flex items-center space-x-2">
-              <span className="text-sm text-gray-500">{t('sortBy')}:</span>
-              <select 
-                className="border rounded px-2 py-1 text-sm"
-                value={sortField}
-                onChange={(e) => setSortField(e.target.value as SortField)}
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => {
+                  const ws = XLSX.utils.json_to_sheet(
+                    cocktails.map(c => ({
+                      [t('cocktail')]: c.name,
+                      [t('brand')]: c.brand,
+                      [t('totalVotes')]: c.totalVotes,
+                      [t('appearance')]: c.averageAppearance,
+                      [t('taste')]: c.averageTaste,
+                      [t('innovativeness')]: c.averageInnovativeness,
+                      [t('overall')]: c.averageOverall.toFixed(1)
+                    }))
+                  );
+                  const wb = XLSX.utils.book_new();
+                  XLSX.utils.book_append_sheet(wb, ws, 'Cocktails');
+                  XLSX.writeFile(wb, 'cocktails-report.xlsx');
+                }}
+                className="bg-[#334798] text-white px-4 py-2 rounded hover:bg-[#2a3a7a] transition-colors"
               >
-                <option value="name">{t('cocktail')}</option>
-                <option value="brand">{t('brand')}</option>
-                <option value="totalVotes">{t('totalVotes')}</option>
-                <option value="averageAppearance">{t('appearance')}</option>
-                <option value="averageTaste">{t('taste')}</option>
-                <option value="averageInnovativeness">{t('innovativeness')}</option>
-                <option value="averageOverall">{t('overall')}</option>
-              </select>
-              <button 
-                className="border rounded p-1"
-                onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
-              >
-                {sortDirection === 'asc' ? '↑' : '↓'}
+                📥 {t('downloadExcel')}
               </button>
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-gray-500">{t('sortBy')}:</span>
+                <select 
+                  className="border rounded px-2 py-1 text-sm"
+                  value={sortField}
+                  onChange={(e) => setSortField(e.target.value as SortField)}
+                >
+                  <option value="name">{t('cocktail')}</option>
+                  <option value="brand">{t('brand')}</option>
+                  <option value="totalVotes">{t('totalVotes')}</option>
+                  <option value="averageAppearance">{t('appearance')}</option>
+                  <option value="averageTaste">{t('taste')}</option>
+                  <option value="averageInnovativeness">{t('innovativeness')}</option>
+                  <option value="averageOverall">{t('overall')}</option>
+                </select>
+                <button 
+                  className="border rounded p-1"
+                  onClick={() => setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')}
+                >
+                  {sortDirection === 'asc' ? '↑' : '↓'}
+                </button>
+              </div>
             </div>
           </div>
           <table className="min-w-full divide-y divide-gray-200">

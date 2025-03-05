@@ -19,7 +19,8 @@
     "bestAppearance": "Best Appearance",
     "bestTaste": "Best Taste",
     "bestInnovativeness": "Most Innovative",
-    "bestOverall": "Best Overall"
+    "bestOverall": "Best Overall",
+    "downloadExcel": "Download Excel"
   },
   "Index": {
     "title": "Welcome to Cocktail Voting",

@@ -5,7 +5,7 @@
     "mostVoted": "Eniten äänestetty cocktail",
     "highestRated": "Parhaiten arvioitu cocktail",
     "votesDistribution": "Äänten jakautuminen",
-    "averageRatings": "Keskimääräiset arviot",
+    "averageRatings": "Yhteensä",
     "detailedResults": "Yksityiskohtaiset tulokset",
     "cocktail": "Cocktail",
     "brand": "Brändi",
@@ -19,7 +19,8 @@
     "bestAppearance": "Paras Ulkonäkö",
     "bestTaste": "Paras Maku",
     "bestInnovativeness": "Innovatiivisin",
-    "bestOverall": "Paras Kokonaisuus"
+    "bestOverall": "Paras Kokonaisuus",
+    "downloadExcel": "Download Excel"
   },
   "Index": {
     "title": "Tervetuloa Cocktail-äänestykseen",
