@@ -18,6 +18,65 @@ export default function RaffleEmail({
 }: RaffleEmailProps) {
   // Email-safe version with more compatible styling for email clients
   return (
+    <html>
+      <head>
+        {/* Prevent Apple Mail from reformatting styles */}
+        <meta name="x-apple-disable-message-reformatting" />
+        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
+        
+        {/* Email-safe font embedding */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          @import url('https://fonts.googleapis.com/css2?family=Russo+One&family=Poppins:wght@400;500;700&display=swap');
+          
+          /* Fallback font definitions */
+          @font-face {
+            font-family: 'Russo One';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://fonts.gstatic.com/s/russoone/v14/Z9XUDmZRWg6M1LvRYsHOy8mJrrg.woff2) format('woff2');
+            mso-font-alt: 'Arial';
+          }
+          
+          @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 400;
+            src: url(https://fonts.gstatic.com/s/poppins/v20/pxiEyp8kv8JHgFVrJJfecg.woff2) format('woff2');
+            mso-font-alt: 'Arial';
+          }
+          
+          @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 500;
+            src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLGT9Z1xlFQ.woff2) format('woff2');
+            mso-font-alt: 'Arial';
+          }
+          
+          @font-face {
+            font-family: 'Poppins';
+            font-style: normal;
+            font-weight: 700;
+            src: url(https://fonts.gstatic.com/s/poppins/v20/pxiByp8kv8JHgFVrLCz7Z1xlFQ.woff2) format('woff2');
+            mso-font-alt: 'Arial';
+          }
+        `}} />
+        
+        {/* Outlook-specific font definitions */}
+        {/* Using conditional comments for Outlook */}
+        <meta name="if:outlook" content="mso" />
+        {/* This will be ignored by most email clients but used by Outlook */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          .font-russo {
+            font-family: Arial, sans-serif !important;
+            font-weight: bold !important;
+          }
+          .font-poppins {
+            font-family: Arial, sans-serif !important;
+          }
+        `}} />
+      </head>
+      <body style={{ margin: 0, padding: 0 }}>
     <div style={{ backgroundColor: '#334798', width: '100%', maxWidth: '793px', margin: '0 auto' }}>
       <table cellPadding={0} cellSpacing={0} border={0} width="100%" style={{
         backgroundColor: '#334798',
@@ -78,7 +137,7 @@ export default function RaffleEmail({
                         display: 'block',
                         color: '#FFD4D4',
                         fontSize: '31px',
-                        fontFamily: 'Russo One, Regular',
+                        fontFamily: '"Russo One", "Trebuchet MS", Helvetica, Arial, sans-serif',
                         fontWeight: 'bold',
                         lineHeight: '38px',
                         letterSpacing: '0px',
@@ -130,7 +189,8 @@ export default function RaffleEmail({
                         display: 'block',
                         color: '#FFD4D4',
                         fontSize: '18px',
-                        fontFamily: 'Arial, Helvetica, sans-serif',
+                        fontFamily: '"Poppins", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+                        fontWeight: '500',
                         textAlign: 'center',
                       }}>
                         {translations.entryConfirm}
@@ -198,5 +258,7 @@ export default function RaffleEmail({
         </tbody>
       </table>
     </div>
+    </body>
+    </html>
   );
 }

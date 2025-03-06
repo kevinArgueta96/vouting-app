@@ -173,11 +173,17 @@ export async function POST(request: Request) {
         locale: body.locale
       });
 
+      // Configure Resend options with proper font handling
       const response = await resend.emails.send({
         from: process.env.RESEND_FROM_EMAIL,
         to,
         subject: emailSubject,
-        react: React.createElement(EmailComponent, emailProps)
+        react: React.createElement(EmailComponent, emailProps),
+        text: '', // Provide a fallback plain text version
+        headers: {
+          'X-Entity-Ref-ID': `${new Date().getTime()}`, // Unique ID to prevent caching issues
+          'X-Priority': '1', // High priority to ensure proper rendering
+        }
       });
 
       if (!response.data?.id) {
