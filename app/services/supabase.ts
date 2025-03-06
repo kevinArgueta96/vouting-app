@@ -91,10 +91,25 @@ export const cocktailService = {
   },
 
   async getCocktailVotes(cocktailId: number) {
-    const { count, error } = await supabase
+    // Create a query to count votes for the specified cocktail
+    let query = supabase
       .from('cocktail_ratings')
       .select('*', { count: 'exact', head: true })
       .eq('cocktail_id', cocktailId)
+    
+    // Apply time filtering if voting time restriction is enabled
+    if (votingTimeConfig.enforceVotingTime) {
+      const startTime = new Date(votingTimeConfig.startTime);
+      const endTime = new Date(votingTimeConfig.endTime);
+      
+      // Filter votes that were created within the voting time period
+      query = query
+        .gte('created_at', startTime.toISOString())
+        .lte('created_at', endTime.toISOString())
+    }
+    
+    // Execute the query
+    const { count, error } = await query
 
     if (error) throw error
     return count || 0
@@ -125,6 +140,8 @@ export const featureFlagService = {
     }
   }
 }
+
+import { votingTimeConfig } from '../config/voting-time'
 
 export const ratingService = {
   async checkExistingVote(cocktailId: number, userUuid: string) {
@@ -157,10 +174,25 @@ export const ratingService = {
   },
 
   async getRatingStats(cocktailId: number) {
-    const { data, error } = await supabase
+    // Create a query to get ratings for the specified cocktail
+    let query = supabase
       .from('cocktail_ratings')
-      .select('appearance, taste, innovativeness')
+      .select('appearance, taste, innovativeness, created_at')
       .eq('cocktail_id', cocktailId)
+    
+    // Apply time filtering if voting time restriction is enabled
+    if (votingTimeConfig.enforceVotingTime) {
+      const startTime = new Date(votingTimeConfig.startTime);
+      const endTime = new Date(votingTimeConfig.endTime);
+      
+      // Filter votes that were created within the voting time period
+      query = query
+        .gte('created_at', startTime.toISOString())
+        .lte('created_at', endTime.toISOString())
+    }
+    
+    // Execute the query
+    const { data, error } = await query
 
     if (error) throw error
 

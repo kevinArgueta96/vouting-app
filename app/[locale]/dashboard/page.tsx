@@ -6,6 +6,9 @@ import { cocktailService, ratingService } from '@/app/services/supabase';
 import { PieChart } from '@/app/components/ui/pie-chart';
 import { BarChart } from '@/app/components/ui/bar-chart';
 import { StatCard } from '@/app/components/ui/stat-card';
+import { VotingTimeSelector } from '@/app/components/ui/voting-time-selector';
+import { getVotingPeriodInfo } from '@/app/lib/voting-time';
+import { votingTimeService } from '@/app/services/voting-time';
 import * as XLSX from 'xlsx';
 
 interface CocktailWithStats {
@@ -35,17 +38,50 @@ export default function DashboardPage() {
   const [bestInnovativenessCocktail, setBestInnovativenessCocktail] = useState<CocktailWithStats | null>(null);
   const [sortField, setSortField] = useState<SortField>('totalVotes');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [votingPeriodInfo, setVotingPeriodInfo] = useState(getVotingPeriodInfo(locale));
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+
+  // Function to handle voting time range changes
+  const handleTimeRangeChange = async (startTime: string, endTime: string) => {
+    try {
+      await votingTimeService.updateTimeRange(startTime, endTime);
+      // Update the voting period info and refresh data
+      setVotingPeriodInfo(getVotingPeriodInfo(locale));
+      setRefreshTrigger(prev => prev + 1);
+    } catch (error) {
+      console.error('Error updating voting time range:', error);
+      alert('Failed to update voting time range. Please try again.');
+    }
+  };
+
+  // Function to handle toggling the voting time restriction
+  const handleToggleTimeRestriction = async (enabled: boolean) => {
+    try {
+      await votingTimeService.toggleTimeRestriction(enabled);
+      // Update the voting period info and refresh data
+      setVotingPeriodInfo(getVotingPeriodInfo(locale));
+      setRefreshTrigger(prev => prev + 1);
+    } catch (error) {
+      console.error('Error toggling voting time restriction:', error);
+      alert('Failed to toggle voting time restriction. Please try again.');
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setLoading(true);
+        
+        // Update voting period info first
+        setVotingPeriodInfo(getVotingPeriodInfo(locale));
+        
+        // Then fetch cocktail data
         const cocktailsData = await cocktailService.getAllCocktails(locale);
         const cocktailsWithStats = await Promise.all(
           cocktailsData.map(async (cocktail) => {
             const stats = await ratingService.getRatingStats(cocktail.id);
             const totalVotes = stats.total_ratings;
           
-
             return {
               id: cocktail.id,
               name: cocktail.name,
@@ -58,7 +94,6 @@ export default function DashboardPage() {
             };
           })
         );
-        console.log(cocktailsWithStats)
 
         // Sort by different criteria
         const sortedByVotes = [...cocktailsWithStats].sort((a, b) => b.totalVotes - a.totalVotes);
@@ -80,11 +115,9 @@ export default function DashboardPage() {
         const filteredSortedByTaste = [...cocktailsWithVotes].sort((a, b) => b.averageTaste - a.averageTaste);
         const filteredSortedByInnovativeness = [...cocktailsWithVotes].sort((a, b) => b.averageInnovativeness - a.averageInnovativeness);
         
-    
         setBestAppearanceCocktail(filteredSortedByAppearance.length > 0 ? filteredSortedByAppearance[0] : null);
         setBestTasteCocktail(filteredSortedByTaste.length > 0 ? filteredSortedByTaste[0] : null);
         setBestInnovativenessCocktail(filteredSortedByInnovativeness.length > 0 ? filteredSortedByInnovativeness[0] : null);
-
       } catch (error) {
         console.error('Error fetching dashboard data:', error);
       } finally {
@@ -93,7 +126,7 @@ export default function DashboardPage() {
     };
 
     fetchData();
-  }, [locale]);
+  }, [locale, refreshTrigger]); // Add refreshTrigger to dependencies to reload data when voting time changes
 
   if (loading) {
     return (
@@ -106,9 +139,50 @@ export default function DashboardPage() {
   return (
     <main className="flex min-h-screen flex-col items-center p-6 relative bg-[#F9F6F0]">
       <div className="w-full max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold mb-8 text-center text-[#334798]">
+        <h1 className="text-4xl font-bold mb-4 text-center text-[#334798]">
           {t('title')}
         </h1>
+        
+        {/* Voting Time Selector */}
+        <VotingTimeSelector
+          locale={locale}
+          onTimeRangeChange={handleTimeRangeChange}
+          onToggleTimeRestriction={handleToggleTimeRestriction}
+          isTimeRestrictionEnabled={votingPeriodInfo.isTimeRestrictionEnabled}
+        />
+        
+        {/* Voting Time Information */}
+        {votingPeriodInfo.isTimeRestrictionEnabled && (
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8 text-center">
+            <h2 className="text-xl font-semibold text-[#334798] mb-2">
+              Voting Period Information
+            </h2>
+            <p className="text-gray-700 mb-1">
+              <span className="font-medium">Start:</span> {votingPeriodInfo.formattedStartTime}
+            </p>
+            <p className="text-gray-700 mb-2">
+              <span className="font-medium">End:</span> {votingPeriodInfo.formattedEndTime}
+            </p>
+            <div className="mt-2">
+              {votingPeriodInfo.hasVotingEnded ? (
+                <span className="inline-block bg-gray-200 text-gray-800 px-3 py-1 rounded-full text-sm font-medium">
+                  Voting has ended
+                </span>
+              ) : votingPeriodInfo.isVotingActive ? (
+                <span className="inline-block bg-green-200 text-green-800 px-3 py-1 rounded-full text-sm font-medium">
+                  Voting is active
+                </span>
+              ) : (
+                <span className="inline-block bg-yellow-200 text-yellow-800 px-3 py-1 rounded-full text-sm font-medium">
+                  Voting has not started yet
+                </span>
+              )}
+            </div>
+            <p className="text-sm text-gray-500 mt-2">
+              Only votes cast during this period are counted in the results.
+            </p>
+          </div>
+        )}
         
         {/* Summary Cards - First Row */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
