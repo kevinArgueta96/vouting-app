@@ -3,10 +3,10 @@
 
 export const votingTimeConfig = {
   // Start time of the voting period (in Finnish timezone)
-  startTime: "2025-03-06T07:41:00+02:00", // Example: March 9, 2025, 10:00 AM Finnish time
+  startTime: "2025-03-06T07:45:00+02:00", // Example: March 9, 2025, 10:00 AM Finnish time
   
   // End time of the voting period (in Finnish timezone)
-  endTime: "2025-03-16T14:00:00+02:00",   // Example: March 9, 2025, 6:00 PM Finnish time
+  endTime: "2025-03-06T23:45:00+02:00",   // Example: March 9, 2025, 6:00 PM Finnish time
   
   // Whether to enforce the voting time restriction
   enforceVotingTime: true

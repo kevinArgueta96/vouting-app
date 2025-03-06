@@ -69,6 +69,7 @@ export async function POST(request: NextRequest) {
           );
         }
       } catch (error) {
+        console.error('Error parsing start time:', error);
         return NextResponse.json(
           { error: 'Invalid start time format' },
           { status: 400 }
@@ -92,6 +93,7 @@ export async function POST(request: NextRequest) {
           );
         }
       } catch (error) {
+        console.error('Error parsing end time:', error);
         return NextResponse.json(
           { error: 'Invalid end time format' },
           { status: 400 }

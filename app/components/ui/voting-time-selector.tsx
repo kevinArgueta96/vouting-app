@@ -27,7 +27,7 @@ export function VotingTimeSelector({
         return new Date(); // Return current date as fallback
       }
       
-      const [_, year, month, day, hours, minutes, seconds] = match;
+      const [year, month, day, hours, minutes, seconds] = match;
       
       // Create a date object with the extracted parts
       return new Date(
@@ -69,8 +69,6 @@ export function VotingTimeSelector({
     const [hours, minutes] = timePart.split(':').map(Number);
     
     // Create a date object (in local timezone)
-    const date = new Date(year, month - 1, day, hours, minutes);
-    
     // Create a string in ISO format with the Finnish timezone offset
     // We'll keep the date and time exactly as entered by the user, just add the Finnish timezone
     const pad = (num: number) => String(num).padStart(2, '0');
