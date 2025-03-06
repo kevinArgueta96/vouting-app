@@ -20,13 +20,13 @@ export default function Header() {
   
   return (
     <header className={`w-full p-4 flex justify-between items-center ${isDarkHeader ? 'bg-vouting-blue' : 'bg-[#F9F6F0]'}`}>
-      <Link href={routes.home(locale)} className="relative">
+      {/* <Link href={routes.home(locale)} className="relative"> */}
         {isDarkHeader ? (
           <HDFLogoWhite width={92} height={28} />
         ) : (
           <HDFLogo width={92} height={28} />
         )}
-      </Link>
+      {/* </Link> */}
       <button 
         onClick={() => setIsDrawerOpen(true)}
         aria-label="Open menu"
