@@ -1,9 +1,7 @@
 'use client'
 
-import Link from 'next/link'
 import { useLocale } from 'next-intl'
 import { usePathname } from 'next/navigation'
-import { routes } from '../config/routes'
 import { useState } from 'react'
 import Drawer from './ui/drawer'
 

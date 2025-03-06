@@ -7,7 +7,6 @@ import CombinedEmail from '../../components/email/CombinedEmail';
 import { Database } from '../../types/supabase';
 
 // Full database type
-type CocktailTranslation = Database['public']['Tables']['cocktails_translations']['Row'];
 
 // Simplified translation type for email purposes
 type EmailTranslation = {
