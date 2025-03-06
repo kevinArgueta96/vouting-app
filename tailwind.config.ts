@@ -18,6 +18,14 @@ const config = {
       },
     },
     extend: {
+      letterSpacing: {
+        'super-tight': '-0.03em', // Reduced from -0.15em for better readability
+      },
+      lineHeight: {
+        'custom-35': '35px',
+        'custom-34': '34px',
+        'custom-17': '17px',
+      },
       colors: {
         vouting: {
           blue: "#334798", // Medium-dark blue color

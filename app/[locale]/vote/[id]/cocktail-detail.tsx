@@ -140,10 +140,10 @@ export default function CocktailDetail({
         <div className="max-w-[600px] mx-auto">
           {/* Cocktail Info */}
           <div className="text-white space-y-2 mb-12">
-            <h2 className="text-4xl font-bold uppercase text-left">
+            <h2 className="text-[41px] font-normal uppercase text-left text-[#F7F4EA] font-['Russo_One'] tracking-super-tight leading-custom-35">
               {cocktail.name}
             </h2>
-            <h3 className="text-xl uppercase tracking-wide text-left">
+            <h3 className="text-[18px] font-semibold uppercase text-left text-[#F7F4EA] font-['Montserrat'] leading-custom-34">
               {cocktail.brand}
             </h3>
             <p className="text-sm text-left ">
@@ -154,7 +154,7 @@ export default function CocktailDetail({
           <div className="space-y-8">
             {characteristics.map((characteristic) => (
               <div key={characteristic.id} className="text-center">
-                <h4 className="text-2xl uppercase mb-4 tracking-wide text-white">
+                <h4 className="text-[12px] font-medium uppercase mb-4 text-[#F7F4EA] font-['Montserrat'] leading-custom-17">
                   {characteristic.label}
                 </h4>
                 <div className="relative h-16">

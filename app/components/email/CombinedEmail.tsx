@@ -31,6 +31,18 @@ export default function CombinedEmail({
 }: CombinedEmailProps) {
   // Email-safe version with more compatible styling for email clients
   return (
+    <html>
+      <head>
+        {/* Evita que Apple Mail reformatee estilos */}
+        <meta name="x-apple-disable-message-reformatting" />
+        
+        {/* Vincula la fuente de Google Fonts */}
+        <link
+          href="https://fonts.googleapis.com/css2?family=Russo+One&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body style={{ margin: 0, padding: 0 }}>
     <div style={{ backgroundColor: '#334798', width: '100%', maxWidth: '793px', margin: '0 auto' }}>
       <table cellPadding={0} cellSpacing={0} border={0} width="100%" style={{
         backgroundColor: '#334798',
@@ -307,5 +319,7 @@ export default function CombinedEmail({
         </tbody>
       </table>
     </div>
+    </body>
+    </html> 
   );
 }
