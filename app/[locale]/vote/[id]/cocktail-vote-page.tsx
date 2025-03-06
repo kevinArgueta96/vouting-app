@@ -26,7 +26,18 @@ type Rating = {
   wantRaffle?: boolean;
 };
 
-type Cocktail = Database["public"]["Tables"]["cocktails"]["Row"];
+// Full database type
+type CocktailTranslation = Database["public"]["Tables"]["cocktails_translations"]["Row"];
+
+// Simplified translation type for email purposes
+type EmailTranslation = {
+  locale: string;
+  recipe: string | null;
+};
+
+type Cocktail = Database["public"]["Tables"]["cocktails"]["Row"] & {
+  translations?: EmailTranslation[];
+};
 
 interface Props {
   id: string;
@@ -109,18 +120,40 @@ export default function CocktailVotePage({ id }: Props) {
       if (ratings.user_email && cocktail) {
         try {
           console.log("Sending email to:", ratings.user_email);
+          
+          // Ensure the cocktail has the translations property with the recipe
+          // This is important because the email templates expect this structure
+          const emailCocktail = {
+            ...cocktail,
+            translations: cocktail.translations || [
+              {
+                locale: locale,
+                recipe: cocktail.description // Fallback to description if recipe is not available
+              }
+            ]
+          };
+          
+          // Make sure the translations array has the current locale
+          if (emailCocktail.translations && 
+              !emailCocktail.translations.some(t => t.locale === locale)) {
+            emailCocktail.translations.push({
+              locale: locale,
+              recipe: cocktail.description // Fallback to description if recipe is not available
+            });
+          }
+          
           const emailResponse = await fetch("/api/send-email", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-              body: JSON.stringify({
-                to: ratings.user_email as string,
-                cocktail,
-                wantRecipe: ratings.wantRecipe,
-                wantRaffle: ratings.wantRaffle,
-                locale
-              }),
+            body: JSON.stringify({
+              to: ratings.user_email as string,
+              cocktail: emailCocktail,
+              wantRecipe: ratings.wantRecipe,
+              wantRaffle: ratings.wantRaffle,
+              locale
+            }),
           });
 
           const emailResult = await emailResponse.json();

@@ -1,9 +1,14 @@
 import * as React from 'react';
 import { Database } from '../../types/supabase';
 
-type CocktailTranslation = Database['public']['Tables']['cocktails_translations']['Row'];
+// Simplified translation type for email purposes
+type EmailTranslation = {
+  locale: string;
+  recipe: string | null;
+};
+
 type Cocktail = Database['public']['Tables']['cocktails']['Row'] & {
-  translations?: CocktailTranslation[];
+  translations?: EmailTranslation[];
 };
 
 interface EmailTranslations {

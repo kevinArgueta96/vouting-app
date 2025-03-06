@@ -6,9 +6,17 @@ import RaffleEmail from '../../components/email/RaffleEmail';
 import CombinedEmail from '../../components/email/CombinedEmail';
 import { Database } from '../../types/supabase';
 
+// Full database type
 type CocktailTranslation = Database['public']['Tables']['cocktails_translations']['Row'];
+
+// Simplified translation type for email purposes
+type EmailTranslation = {
+  locale: string;
+  recipe: string | null;
+};
+
 type Cocktail = Database['public']['Tables']['cocktails']['Row'] & {
-  translations?: CocktailTranslation[];
+  translations?: EmailTranslation[];
 };
 
 // Translation interfaces for each email type
@@ -90,15 +98,35 @@ export async function POST(request: Request) {
 
     const { to, cocktail, wantRecipe, wantRaffle } = body as EmailRequestBody;
 
-    // Validate required fields
-    if (!to || !cocktail || (wantRecipe === undefined) || (wantRaffle === undefined)) {
-      console.error('Missing required fields');
-      return NextResponse.json(
-        { success: false, error: 'Missing required fields' },
-        { status: 400 }
-      );
-    }
-    console.log('Attempting to send email to:', to);
+      // Validate required fields
+      if (!to || !cocktail || (wantRecipe === undefined) || (wantRaffle === undefined)) {
+        console.error('Missing required fields');
+        return NextResponse.json(
+          { success: false, error: 'Missing required fields' },
+          { status: 400 }
+        );
+      }
+      
+      // Validate cocktail data structure
+      if (!cocktail.name || !cocktail.brand) {
+        console.error('Invalid cocktail data structure:', cocktail);
+        return NextResponse.json(
+          { success: false, error: 'Invalid cocktail data structure' },
+          { status: 400 }
+        );
+      }
+      
+      // Validate translations for recipe emails
+      if (wantRecipe && (!cocktail.translations || cocktail.translations.length === 0)) {
+        console.error('Missing cocktail translations for recipe email');
+        // Instead of failing, we'll create a default translation using the description
+        cocktail.translations = [{
+          locale: body.locale || 'en',
+          recipe: cocktail.description || 'Recipe information not available'
+        }];
+      }
+      
+      console.log('Attempting to send email to:', to);
 
     try {
       // Get translations based on locale
