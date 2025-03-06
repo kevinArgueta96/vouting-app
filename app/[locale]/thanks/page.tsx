@@ -190,7 +190,7 @@ export default function ThanksPage() {
                     />
                   </div>
                   <div className="text-left lg:w-[180px] w-[100px]">
-                    <span className="lg:text-base text-sm font-medium leading-tight block whitespace-normal">
+                    <span className="text-[14px] font-bold font-montserrat leading-[19px] block whitespace-normal uppercase">
                       {t('seeAllCocktails')}
                     </span>
                   </div>
@@ -252,7 +252,7 @@ export default function ThanksPage() {
                     />
                   </div>
                   <div className="text-left lg:w-[180px] w-[100px]">
-                    <span className="lg:text-base text-sm font-medium leading-tight block whitespace-normal">
+                    <span className="text-[14px] font-bold font-montserrat leading-[19px] block whitespace-normal uppercase">
                       {t('followUs')}
                     </span>
                   </div>
@@ -274,7 +274,7 @@ export default function ThanksPage() {
                     />
                   </div>
                   <div className="text-left lg:w-[180px] w-[100px]">
-                    <span className="lg:text-base text-sm font-medium leading-tight block whitespace-normal">
+                    <span className="text-[14px] font-bold font-montserrat leading-[19px] block whitespace-normal uppercase">
                       {t('followUs')}
                     </span>
                   </div>
