@@ -87,22 +87,7 @@ function debounce<T extends (...args: unknown[]) => void>(
 export default function ThanksPage() {
   const t = useTranslations("Thanks");
   const { width, height, isDesktop } = useOptimalSize();
-  const [viewportWidth, setViewportWidth] = useState(1024);
   
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    // Set initial viewport width
-    setViewportWidth(window.innerWidth);
-    
-    const handleResize = () => {
-      setViewportWidth(window.innerWidth);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
   return (
     <main className="min-h-screen bg-[#334798] relative flex flex-col">
       <ClipboardAnimation />
