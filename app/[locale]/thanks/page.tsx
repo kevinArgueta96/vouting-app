@@ -87,6 +87,21 @@ function debounce<T extends (...args: unknown[]) => void>(
 export default function ThanksPage() {
   const t = useTranslations("Thanks");
   const { width, height, isDesktop } = useOptimalSize();
+  const [viewportWidth, setViewportWidth] = useState(1024);
+  
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    // Set initial viewport width
+    setViewportWidth(window.innerWidth);
+    
+    const handleResize = () => {
+      setViewportWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   return (
     <main className="min-h-screen bg-[#334798] relative flex flex-col">
@@ -110,16 +125,17 @@ export default function ThanksPage() {
       </div>
 
       {/* Content section */}
-      <div className="relative flex-grow">
+      <div className="relative flex-grow min-h-[300px] lg:min-h-[600px]">
         {/* Background SVG Container */}
         <div className="absolute inset-0 flex items-center justify-center overflow-hidden z-0">
           <div
-            className="relative transition-all duration-300 ease-in-out transform lg:-mt-[28rem] -mt-[32rem]"
+            className="relative transition-all duration-300 ease-in-out transform lg:-mt-[28rem] -mt-[28rem]"
             style={{
               width: `${width}px`,
               height: `${height}px`,
               margin: "0 auto",
-              top: isDesktop ? "5%" : "-15%",
+              top: isDesktop ? "5%" : "0%",
+              marginTop: isDesktop ? "0" : "30px",
             }}
           >
             <Image
@@ -141,7 +157,7 @@ export default function ThanksPage() {
               alt="Thanks cocktail"
               width={150}
               height={150}
-              className="absolute lg:top-[10%] top-[10%] lg:right-[80%] z-1 lg:w-[100px] w-[70px]"
+              className="absolute lg:top-[10%] top-[20%] lg:right-[80%] right-[75%] z-1 lg:w-[100px] w-[70px]"
               priority
             />
             <Image
@@ -149,32 +165,32 @@ export default function ThanksPage() {
               alt="Thanks hand"
               width={150}
               height={150}
-              className="absolute lg:top-[65%] top-[70%] lg:left-[65%] left-[60%] z-10 lg:w-[250px] w-[180px]"
+              className="absolute lg:top-[60%] top-[60%] lg:left-[65%] left-[60%] z-10 lg:w-[250px] w-[180px]"
               priority
             />
           </div>
 
           {/* Overlay Content */}
-          <div className="absolute inset-0 flex flex-col items-center justify-start lg:justify-center lg:p-22 p-20">
+          <div className="absolute inset-0 flex flex-col items-center justify-center lg:justify-center lg:p-22 p-10 pt-30">
             {/* Thank you text */}
-            <div className="lg:mb-8 mb-10">
+            <div className="lg:mb-8 mb-6">
               <div
                 className="mx-auto text-white text-center uppercase mt-9 lg:mt-10 lg:h-[80px]"
                 style={{
                   fontFamily: "Russo One",
-                  fontSize: "clamp(1.8rem, 0.9vw, 2.7rem)",
+                  fontSize: isDesktop ? "clamp(1.8rem, 0.9vw, 2.7rem)" : "1.5rem",
                   width: "100%",
                   letterSpacing: "-0.35px",
                   lineHeight: "1.1",
                 }}
               >
-                <span className="lg:max-w-[90%]  block mx-auto">{t('thankYouForVoting')}</span>
+                <span className="lg:max-w-[90%] max-w-[80%] block mx-auto">{t('thankYouForVoting')}</span>
               </div>
             </div>
 
             {/* Options Container */}
           
-            <div className="lg:w-[320px] w-[180px] overflow-hidden mx-auto">
+            <div className="lg:w-[320px] w-[160px] overflow-hidden mx-auto">
               <div className="flex flex-col items-center justify-center lg:gap-4 gap-2">
                {/* <Link
                   href={routes.vote.list(locale)}
@@ -235,24 +251,23 @@ export default function ThanksPage() {
                     </span>
                   </div>
                 </Link>  */}
-
-<Link
+                <Link
                   href="https://www.facebook.com/helsinkidrinkfestival"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="grid lg:grid-cols-[60px_180px] grid-cols-[40px_100px] lg:w-[280px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
+                  className="grid lg:grid-cols-[60px_180px] grid-cols-[35px_90px] lg:w-[280px] w-[140px] items-center text-white hover:opacity-80 transition-opacity gap-2 justify-center"
                 >
-                  <div className="flex items-center justify-center lg:w-14 w-10 lg:h-14 h-10">
+                  <div className="flex items-center justify-center lg:w-14 w-8 lg:h-14 h-8">
                     <Image
                       src={`/svg/facebook_logo.svg`}
-                      alt="Instagram"
+                      alt="Facebook"
                       width={28}
                       height={28}
-                      className="object-contain lg:w-9 w-7 lg:h-9 h-7"
+                      className="object-contain lg:w-9 w-6 lg:h-9 h-6"
                     />
                   </div>
-                  <div className="text-left lg:w-[180px] w-[100px]">
-                    <span className="text-[14px] font-bold font-montserrat leading-[19px] block whitespace-normal uppercase">
+                  <div className="text-left lg:w-[180px] w-[90px]">
+                    <span className="text-[12px] lg:text-[14px] font-bold font-montserrat leading-tight block whitespace-normal uppercase">
                       {t('followUs')}
                     </span>
                   </div>
@@ -262,19 +277,19 @@ export default function ThanksPage() {
                   href="https://www.instagram.com/helsinkidrinkfestival"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="grid lg:grid-cols-[60px_180px] grid-cols-[40px_100px] lg:w-[280px] w-[180px] items-center text-white hover:opacity-80 transition-opacity gap-3 justify-center"
+                  className="grid lg:grid-cols-[60px_180px] grid-cols-[35px_90px] lg:w-[280px] w-[140px] items-center text-white hover:opacity-80 transition-opacity gap-2 justify-center"
                 >
-                  <div className="flex items-center justify-center lg:w-14 w-10 lg:h-14 h-10">
+                  <div className="flex items-center justify-center lg:w-14 w-8 lg:h-14 h-8">
                     <Image
                       src={`/svg/instagram-fill.svg`}
                       alt="Instagram"
                       width={28}
                       height={28}
-                      className="object-contain lg:w-9 w-7 lg:h-9 h-7"
+                      className="object-contain lg:w-9 w-6 lg:h-9 h-6"
                     />
                   </div>
-                  <div className="text-left lg:w-[180px] w-[100px]">
-                    <span className="text-[14px] font-bold font-montserrat leading-[19px] block whitespace-normal uppercase">
+                  <div className="text-left lg:w-[180px] w-[90px]">
+                    <span className="text-[12px] lg:text-[14px] font-bold font-montserrat leading-tight block whitespace-normal uppercase">
                       {t('followUs')}
                     </span>
                   </div>
