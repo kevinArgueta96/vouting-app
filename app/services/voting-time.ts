@@ -4,9 +4,11 @@
 import { supabase } from '../lib/supabase';
 import { Database } from '../types/supabase';
 
+/* eslint-disable @typescript-eslint/no-unused-vars */
 type VoteTimeWindow = Database['public']['Tables']['vote_time_window']['Row'];
 type VoteTimeWindowInsert = Database['public']['Tables']['vote_time_window']['Insert'];
 type VoteTimeWindowUpdate = Database['public']['Tables']['vote_time_window']['Update'];
+/* eslint-enable @typescript-eslint/no-unused-vars */
 
 interface VotingTimeConfig {
   startTime: string;

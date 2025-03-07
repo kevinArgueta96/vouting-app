@@ -121,7 +121,7 @@ export default function CocktailVoteEmail({
                         <tbody>
                           <tr>
                             <td align="center" valign="middle" style={{ height: '108px' }}> */}
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
+                              {/* Image element would go here */}
                               {/* <img 
                                 src="https://cjdbnnncevpbeqeafmde.supabase.co/storage/v1/object/public/images/logo-mail.png"
                                 alt="mail-logo"
