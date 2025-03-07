@@ -38,7 +38,25 @@ export default function DashboardPage() {
   const [bestInnovativenessCocktail, setBestInnovativenessCocktail] = useState<CocktailWithStats | null>(null);
   const [sortField, setSortField] = useState<SortField>('totalVotes');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
-  const [votingPeriodInfo, setVotingPeriodInfo] = useState(getVotingPeriodInfo(locale));
+  const [votingPeriodInfo, setVotingPeriodInfo] = useState<{
+    startTime: Date;
+    endTime: Date;
+    formattedStartTime: string;
+    formattedEndTime: string;
+    isVotingActive: boolean;
+    hasVotingStarted: boolean;
+    hasVotingEnded: boolean;
+    isTimeRestrictionEnabled: boolean;
+  }>({
+    startTime: new Date(),
+    endTime: new Date(),
+    formattedStartTime: '',
+    formattedEndTime: '',
+    isVotingActive: false,
+    hasVotingStarted: false,
+    hasVotingEnded: false,
+    isTimeRestrictionEnabled: false
+  });
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   // Function to handle voting time range changes
@@ -46,7 +64,8 @@ export default function DashboardPage() {
     try {
       await votingTimeService.updateTimeRange(startTime, endTime);
       // Update the voting period info and refresh data
-      setVotingPeriodInfo(getVotingPeriodInfo(locale));
+      const periodInfo = await getVotingPeriodInfo(locale);
+      setVotingPeriodInfo(periodInfo);
       setRefreshTrigger(prev => prev + 1);
     } catch (error) {
       console.error('Error updating voting time range:', error);
@@ -59,7 +78,8 @@ export default function DashboardPage() {
     try {
       await votingTimeService.toggleTimeRestriction(enabled);
       // Update the voting period info and refresh data
-      setVotingPeriodInfo(getVotingPeriodInfo(locale));
+      const periodInfo = await getVotingPeriodInfo(locale);
+      setVotingPeriodInfo(periodInfo);
       setRefreshTrigger(prev => prev + 1);
     } catch (error) {
       console.error('Error toggling voting time restriction:', error);
@@ -73,7 +93,8 @@ export default function DashboardPage() {
         setLoading(true);
         
         // Update voting period info first
-        setVotingPeriodInfo(getVotingPeriodInfo(locale));
+        const periodInfo = await getVotingPeriodInfo(locale);
+        setVotingPeriodInfo(periodInfo);
         
         // Then fetch cocktail data
         const cocktailsData = await cocktailService.getAllCocktails(locale);

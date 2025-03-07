@@ -9,6 +9,32 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
+      vote_time_window: {
+        Row: {
+          id: string
+          start_time: string
+          end_time: string
+          active: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          start_time: string
+          end_time: string
+          active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          start_time?: string
+          end_time?: string
+          active?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
       cocktails_translations: {
         Row: {
           id: number

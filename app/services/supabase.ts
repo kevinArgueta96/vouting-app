@@ -91,28 +91,46 @@ export const cocktailService = {
   },
 
   async getCocktailVotes(cocktailId: number) {
-    // Create a query to count votes for the specified cocktail
-    let query = supabase
-      .from('cocktail_ratings')
-      .select('*', { count: 'exact', head: true })
-      .eq('cocktail_id', cocktailId)
-    
-    // Apply time filtering if voting time restriction is enabled
-    if (votingTimeConfig.enforceVotingTime) {
-      const startTime = new Date(votingTimeConfig.startTime);
-      const endTime = new Date(votingTimeConfig.endTime);
+    try {
+      // First, check if time restriction is enabled by getting the active time window
+      const { data: timeWindow, error: timeWindowError } = await supabase
+        .from('vote_time_window')
+        .select('*')
+        .eq('active', true)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
       
-      // Filter votes that were created within the voting time period
-      query = query
-        .gte('created_at', startTime.toISOString())
-        .lte('created_at', endTime.toISOString())
-    }
-    
-    // Execute the query
-    const { count, error } = await query
+      // Create a query to count votes for the specified cocktail
+      let query = supabase
+        .from('cocktail_ratings')
+        .select('*', { count: 'exact', head: true })
+        .eq('cocktail_id', cocktailId);
+      
+      // Apply time filtering if an active time window exists
+      if (!timeWindowError && timeWindow) {
+        // Filter votes that were created within the voting time period
+        query = query
+          .gte('created_at', timeWindow.start_time)
+          .lte('created_at', timeWindow.end_time);
+      }
+      
+      // Execute the query
+      const { count, error } = await query;
 
-    if (error) throw error
-    return count || 0
+      if (error) throw error;
+      return count || 0;
+    } catch (error) {
+      console.error('Error getting cocktail votes:', error);
+      // If there's an error with the time window, return votes without time filtering
+      const { count, error: countError } = await supabase
+        .from('cocktail_ratings')
+        .select('*', { count: 'exact', head: true })
+        .eq('cocktail_id', cocktailId);
+      
+      if (countError) throw countError;
+      return count || 0;
+    }
   }
 }
 
@@ -140,8 +158,6 @@ export const featureFlagService = {
     }
   }
 }
-
-import { votingTimeConfig } from '../config/voting-time'
 
 export const ratingService = {
   async checkExistingVote(cocktailId: number, userUuid: string) {
@@ -174,59 +190,109 @@ export const ratingService = {
   },
 
   async getRatingStats(cocktailId: number) {
-    // Create a query to get ratings for the specified cocktail
-    let query = supabase
-      .from('cocktail_ratings')
-      .select('appearance, taste, innovativeness, created_at')
-      .eq('cocktail_id', cocktailId)
-    
-    // Apply time filtering if voting time restriction is enabled
-    if (votingTimeConfig.enforceVotingTime) {
-      const startTime = new Date(votingTimeConfig.startTime);
-      const endTime = new Date(votingTimeConfig.endTime);
+    try {
+      // First, check if time restriction is enabled by getting the active time window
+      const { data: timeWindow, error: timeWindowError } = await supabase
+        .from('vote_time_window')
+        .select('*')
+        .eq('active', true)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
       
-      // Filter votes that were created within the voting time period
-      query = query
-        .gte('created_at', startTime.toISOString())
-        .lte('created_at', endTime.toISOString())
-    }
-    
-    // Execute the query
-    const { data, error } = await query
-
-    if (error) throw error
-
-    if (!data.length) {
-      return {
-        appearance: 0,
-        taste: 0,
-        innovativeness: 0,
-        total_ratings: 0
+      // Create a query to get ratings for the specified cocktail
+      let query = supabase
+        .from('cocktail_ratings')
+        .select('appearance, taste, innovativeness, created_at')
+        .eq('cocktail_id', cocktailId);
+      
+      // Apply time filtering if an active time window exists
+      if (!timeWindowError && timeWindow) {
+        // Filter votes that were created within the voting time period
+        query = query
+          .gte('created_at', timeWindow.start_time)
+          .lte('created_at', timeWindow.end_time);
       }
-    }
+      
+      // Execute the query
+      const { data, error } = await query;
 
-    type Stats = {
-      appearance: number;
-      taste: number;
-      innovativeness: number;
-      total_ratings: number;
-    }
+      if (error) throw error;
 
-    const stats = data.reduce<Stats>(
-      (acc, curr) => ({
-        appearance: acc.appearance + curr.appearance,
-        taste: acc.taste + curr.taste,
-        innovativeness: acc.innovativeness + curr.innovativeness,
-        total_ratings: acc.total_ratings + 1
-      }),
-      { appearance: 0, taste: 0, innovativeness: 0, total_ratings: 0 }
-    )
+      if (!data.length) {
+        return {
+          appearance: 0,
+          taste: 0,
+          innovativeness: 0,
+          total_ratings: 0
+        };
+      }
 
-    return {
-      appearance: stats.appearance,
-      taste: stats.taste,
-      innovativeness: stats.innovativeness,
-      total_ratings: stats.total_ratings
+      type Stats = {
+        appearance: number;
+        taste: number;
+        innovativeness: number;
+        total_ratings: number;
+      }
+
+      const stats = data.reduce<Stats>(
+        (acc, curr) => ({
+          appearance: acc.appearance + curr.appearance,
+          taste: acc.taste + curr.taste,
+          innovativeness: acc.innovativeness + curr.innovativeness,
+          total_ratings: acc.total_ratings + 1
+        }),
+        { appearance: 0, taste: 0, innovativeness: 0, total_ratings: 0 }
+      );
+
+      return {
+        appearance: stats.appearance,
+        taste: stats.taste,
+        innovativeness: stats.innovativeness,
+        total_ratings: stats.total_ratings
+      };
+    } catch (error) {
+      console.error('Error getting rating stats:', error);
+      // If there's an error with the time window, return stats without time filtering
+      const { data, error: ratingsError } = await supabase
+        .from('cocktail_ratings')
+        .select('appearance, taste, innovativeness')
+        .eq('cocktail_id', cocktailId);
+      
+      if (ratingsError) throw ratingsError;
+      
+      if (!data.length) {
+        return {
+          appearance: 0,
+          taste: 0,
+          innovativeness: 0,
+          total_ratings: 0
+        };
+      }
+      
+      type Stats = {
+        appearance: number;
+        taste: number;
+        innovativeness: number;
+        total_ratings: number;
+      }
+      
+      const stats = data.reduce<Stats>(
+        (acc, curr) => ({
+          appearance: acc.appearance + curr.appearance,
+          taste: acc.taste + curr.taste,
+          innovativeness: acc.innovativeness + curr.innovativeness,
+          total_ratings: acc.total_ratings + 1
+        }),
+        { appearance: 0, taste: 0, innovativeness: 0, total_ratings: 0 }
+      );
+      
+      return {
+        appearance: stats.appearance,
+        taste: stats.taste,
+        innovativeness: stats.innovativeness,
+        total_ratings: stats.total_ratings
+      };
     }
   }
 }

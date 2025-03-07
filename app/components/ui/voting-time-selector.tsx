@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
-import { votingTimeConfig } from '@/app/config/voting-time';
+import { useState, useEffect } from 'react';
 import { formatFinnishDate } from '@/app/lib/voting-time';
+import { votingTimeService } from '@/app/services/voting-time';
 
 interface VotingTimeSelectorProps {
   locale: string;
@@ -37,10 +37,33 @@ export function VotingTimeSelector({
     }
   };
 
-  const [startTime, setStartTime] = useState(parseIsoDate(votingTimeConfig.startTime));
-  const [endTime, setEndTime] = useState(parseIsoDate(votingTimeConfig.endTime));
+  const [startTime, setStartTime] = useState<Date>(new Date());
+  const [endTime, setEndTime] = useState<Date>(new Date());
   const [isLoading, setIsLoading] = useState(false);
   const [showSelector, setShowSelector] = useState(false);
+  const [currentStartTimeStr, setCurrentStartTimeStr] = useState<string>('');
+  const [currentEndTimeStr, setCurrentEndTimeStr] = useState<string>('');
+
+  // Fetch the current configuration when the component mounts
+  useEffect(() => {
+    const fetchConfig = async () => {
+      try {
+        setIsLoading(true);
+        const config = await votingTimeService.getConfig();
+        
+        setStartTime(parseIsoDate(config.startTime));
+        setEndTime(parseIsoDate(config.endTime));
+        setCurrentStartTimeStr(config.startTime);
+        setCurrentEndTimeStr(config.endTime);
+      } catch (error) {
+        console.error('Error fetching voting time configuration:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    fetchConfig();
+  }, []);
 
   // Format date to YYYY-MM-DDThh:mm format for datetime-local input
   const formatDateForInput = (date: Date) => {
@@ -193,8 +216,8 @@ export function VotingTimeSelector({
         <div className="text-sm text-gray-600">
           <p>
             <span className="font-medium">Current voting period:</span>{' '}
-            {formatFinnishDate(new Date(votingTimeConfig.startTime), locale)} to{' '}
-            {formatFinnishDate(new Date(votingTimeConfig.endTime), locale)}
+            {currentStartTimeStr ? formatFinnishDate(parseIsoDate(currentStartTimeStr), locale) : '...'} to{' '}
+            {currentEndTimeStr ? formatFinnishDate(parseIsoDate(currentEndTimeStr), locale) : '...'}
           </p>
           <p className="mt-1 text-xs text-gray-500">
             {isTimeRestrictionEnabled

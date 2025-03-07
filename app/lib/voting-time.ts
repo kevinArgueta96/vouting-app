@@ -1,4 +1,4 @@
-import { votingTimeConfig } from '../config/voting-time';
+import { votingTimeService } from '../services/voting-time';
 
 /**
  * Formats a date in Finnish timezone for display
@@ -39,23 +39,44 @@ export function formatFinnishDate(date: Date, locale: string): string {
  * @param locale The locale to use for formatting dates
  * @returns Object with voting period information
  */
-export function getVotingPeriodInfo(locale: string) {
-  const startTime = new Date(votingTimeConfig.startTime);
-  const endTime = new Date(votingTimeConfig.endTime);
-  const now = new Date();
-  
-  const isVotingActive = now >= startTime && now <= endTime;
-  const hasVotingStarted = now >= startTime;
-  const hasVotingEnded = now > endTime;
-  
-  return {
-    startTime,
-    endTime,
-    formattedStartTime: formatFinnishDate(startTime, locale),
-    formattedEndTime: formatFinnishDate(endTime, locale),
-    isVotingActive,
-    hasVotingStarted,
-    hasVotingEnded,
-    isTimeRestrictionEnabled: votingTimeConfig.enforceVotingTime
-  };
+export async function getVotingPeriodInfo(locale: string) {
+  try {
+    const config = await votingTimeService.getConfig();
+    
+    const startTime = new Date(config.startTime);
+    const endTime = new Date(config.endTime);
+    const now = new Date();
+    
+    const isVotingActive = now >= startTime && now <= endTime;
+    const hasVotingStarted = now >= startTime;
+    const hasVotingEnded = now > endTime;
+    
+    return {
+      startTime,
+      endTime,
+      formattedStartTime: formatFinnishDate(startTime, locale),
+      formattedEndTime: formatFinnishDate(endTime, locale),
+      isVotingActive,
+      hasVotingStarted,
+      hasVotingEnded,
+      isTimeRestrictionEnabled: config.enforceVotingTime
+    };
+  } catch (error) {
+    console.error('Error getting voting period info:', error);
+    // Return default values in case of error
+    const now = new Date();
+    const tomorrow = new Date(now);
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    
+    return {
+      startTime: now,
+      endTime: tomorrow,
+      formattedStartTime: formatFinnishDate(now, locale),
+      formattedEndTime: formatFinnishDate(tomorrow, locale),
+      isVotingActive: true,
+      hasVotingStarted: true,
+      hasVotingEnded: false,
+      isTimeRestrictionEnabled: false
+    };
+  }
 }
