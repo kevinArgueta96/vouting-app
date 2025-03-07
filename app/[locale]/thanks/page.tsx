@@ -150,7 +150,7 @@ export default function ThanksPage() {
               alt="Thanks hand"
               width={150}
               height={150}
-              className="absolute lg:top-[60%] top-[60%] lg:left-[65%] left-[60%] z-10 lg:w-[250px] w-[180px]"
+              className="absolute lg:top-[60%] top-[70%] lg:left-[60%] left-[60%] z-10 lg:w-[150px] w-[120px]"
               priority
             />
           </div>

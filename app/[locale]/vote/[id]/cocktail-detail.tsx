@@ -125,12 +125,12 @@ export default function CocktailDetail({
   return (
     <form onSubmit={handleSubmit} className="flex flex-col items-center overflow-hidden">
       {/* Cocktail Image - Large at the top */}
-      <div className="w-full max-w-[500px] px-4 relative z-10 mb-[-100px]">
+      <div className="w-full max-w-[400px] px-8 relative z-10 mb-[-70px]">
         <Image
           src="/images/cocktail-image-vote.png"
           alt="Cocktail"
-          width={500}
-          height={500}
+          width={400}
+          height={400}
           className="w-full h-auto"
         />
       </div>
