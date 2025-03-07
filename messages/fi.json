@@ -73,7 +73,7 @@
     "vote": {
       "title": "Pyytämäsi resepti: {cocktailName}",
       "thankYou": "KIITOS ÄÄNESTÄMISESTÄ!",
-      "recipeRequested": "KIITOS ÄÄNESTÄMISESTÄ! TÄSSÄ PYYTÄMÄSI RESEPTI:",
+      "recipeRequested": "TÄSSÄ PYYTÄMÄSI RESEPTI:",
       "recipe": "Resepti",
       "enjoyMessage": "Nauti cocktailistasi!",
       "followUs": "👉 Haluatko lisää inspiraatiota? Seuraa meitä Instagramissa <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> – löydät cocktailreseptejä, parhaat baarivinkit ja tietoa tulevista tapahtumista!",
@@ -91,7 +91,7 @@
     },
     "combined": {
       "title": "Raffle Entry Confirmed & Your Requested Recipe: {cocktailName}",
-      "message": "Kiitos äänestämisestä ja osallistumisestasi arvontaan!",
+      "message": "KIITOS ÄÄNESTÄMISESTÄ JA OSALLISTUMISESTASI ARVONTAAN!",
       "raffleMessage": "Osallistumisesi on rekisteröity onnistuneesti. Voittajille ilmoitetaan sähköpostitse.",
       "recipeIntro": "Sillä välin, tässä pyytämäsi resepti:",
       "recipe": "Resepti",

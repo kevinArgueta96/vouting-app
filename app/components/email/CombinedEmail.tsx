@@ -162,7 +162,7 @@ export default function CombinedEmail({
                         textTransform: 'uppercase',
                         textAlign: 'center',
                       }}>
-                        {translations.title.replace('{cocktailName}', cocktail.name)}
+                        {translations.message}
                       </span>
                     </td>
                   </tr>
