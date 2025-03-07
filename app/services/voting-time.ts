@@ -54,6 +54,8 @@ export const votingTimeService = {
    * @param enabled Whether to enable or disable the voting time restriction
    */
   async toggleTimeRestriction(enabled: boolean): Promise<void> {
+    console.log('Toggling voting time restriction to:', enabled);
+    
     const response = await fetch('/api/voting-time', {
       method: 'POST',
       headers: {
@@ -64,7 +66,11 @@ export const votingTimeService = {
 
     if (!response.ok) {
       const error = await response.json();
+      console.error('Error toggling time restriction:', error);
       throw new Error(error.error || 'Failed to toggle voting time restriction');
     }
+    
+    const result = await response.json();
+    console.log('Toggle result:', result);
   },
 };

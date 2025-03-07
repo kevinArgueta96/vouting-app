@@ -20,24 +20,17 @@ export function VotingTimeSelector({
   // Parse the ISO date strings with timezone info to local Date objects
   const parseIsoDate = (isoString: string): Date => {
     try {
-      // Extract date parts from the ISO string (ignoring timezone)
-      const match = isoString.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})/);
-      if (!match) {
+      // Create a date object directly from the ISO string
+      // This properly handles the timezone information
+      const date = new Date(isoString);
+      
+      // Check if the date is valid
+      if (isNaN(date.getTime())) {
         console.error('Invalid date format:', isoString);
         return new Date(); // Return current date as fallback
       }
       
-      const [year, month, day, hours, minutes, seconds] = match;
-      
-      // Create a date object with the extracted parts
-      return new Date(
-        parseInt(year),
-        parseInt(month) - 1, // Month is 0-based in JavaScript
-        parseInt(day),
-        parseInt(hours),
-        parseInt(minutes),
-        parseInt(seconds)
-      );
+      return date;
     } catch (error) {
       console.error('Error parsing date:', error);
       return new Date(); // Return current date as fallback
@@ -103,7 +96,11 @@ export function VotingTimeSelector({
   const handleToggleTimeRestriction = async () => {
     setIsLoading(true);
     try {
-      await onToggleTimeRestriction(!isTimeRestrictionEnabled);
+      // Pass the opposite of the current state to toggle it
+      const newState = !isTimeRestrictionEnabled;
+      console.log('Toggling time restriction to:', newState);
+      
+      await onToggleTimeRestriction(newState);
       
       // Show success message
       alert('Voting time restriction setting updated. The page will reload to apply changes.');

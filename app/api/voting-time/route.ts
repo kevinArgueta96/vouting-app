@@ -38,7 +38,10 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { startTime, endTime, enforceVotingTime } = await request.json();
+    const body = await request.json();
+    const { startTime, endTime, enforceVotingTime } = body;
+    
+    console.log('Received POST request with body:', body);
     
     // Validate inputs
     if (
@@ -46,6 +49,7 @@ export async function POST(request: NextRequest) {
       (endTime && typeof endTime !== 'string') ||
       (enforceVotingTime !== undefined && typeof enforceVotingTime !== 'boolean')
     ) {
+      console.error('Invalid input types:', { startTime, endTime, enforceVotingTime });
       return NextResponse.json(
         { error: 'Invalid input types' },
         { status: 400 }
@@ -129,7 +133,15 @@ export async function POST(request: NextRequest) {
     // Write the updated configuration back to the file
     fs.writeFileSync(configPath, configContent, 'utf8');
     
-    return NextResponse.json({ success: true });
+    console.log('Configuration updated successfully');
+    return NextResponse.json({ 
+      success: true,
+      updated: {
+        startTime: startTime !== undefined,
+        endTime: endTime !== undefined,
+        enforceVotingTime: enforceVotingTime !== undefined
+      }
+    });
   } catch (error) {
     console.error('Error updating voting time configuration:', error);
     return NextResponse.json(
