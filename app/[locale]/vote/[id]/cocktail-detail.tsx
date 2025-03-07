@@ -201,40 +201,40 @@ export default function CocktailDetail({
           {/* Email and Recipe Options */}
           <div className="mt-12 space-y-4 text-white">
             <div className="flex flex-col gap-3">
-              <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg">
+              <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg min-h-[64px]">
                 <input
                   type="checkbox"
                   id="recipe-checkbox"
                   checked={wantRecipe}
                   onChange={(e) => setWantRecipe(e.target.checked)}
-                  className="w-4 h-4 rounded border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4]"
+                  className="w-4 h-4 rounded border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4] flex-shrink-0"
                 />
-                <label htmlFor="recipe-checkbox" className="text-sm">
-                  {t("sendRecipe")}
+                <label htmlFor="recipe-checkbox" className="text-sm flex items-start flex-wrap">
+                  <span className="inline-block">{t("sendRecipe")}</span>
                 </label>
               </div>
 
-              <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg">
+              <div className="flex items-center gap-3 bg-white/10 p-3 rounded-lg min-h-[64px]">
                 <input
                   type="checkbox"
                   id="raffle-checkbox"
                   checked={wantRaffle}
                   onChange={(e) => setWantRaffle(e.target.checked)}
-                  className="w-4 h-4 rounded border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4]"
+                  className="w-4 h-4 rounded border-2 border-[#FFD4D4] checked:bg-[#FFD4D4] accent-[#FFD4D4] flex-shrink-0"
                 />
-                <label htmlFor="raffle-checkbox" className="text-sm flex items-center flex-wrap">
-                  <span>{t("participateRaffle")}</span>
+                <label htmlFor="raffle-checkbox" className="text-sm flex items-start flex-wrap">
+                  <span className="inline-block">{t("participateRaffle")}</span>
                   <a 
                     href={`https://${t("drawRulesUrl")}`} 
                     target="_blank" 
                     rel="noopener noreferrer" 
                     className="text-[#FFD4D4] hover:text-white hover:underline ml-1 inline-flex items-center group transition-colors duration-300"
                   >
-                    <span className="relative">
+                    <span className="relative whitespace-nowrap">
                       {t("readMoreRules")}
                       <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-[#FFD4D4] group-hover:w-full transition-all duration-300"></span>
                     </span>
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform duration-300 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                     </svg>
                   </a>
