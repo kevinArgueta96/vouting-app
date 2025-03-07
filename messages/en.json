@@ -73,7 +73,7 @@
     "vote": {
       "title": "{cocktailName}",
       "thankYou": "THANK YOU FOR VOTING!",
-      "recipeRequested": "HERE'S THE RECIPE YOU REQUESTED:",
+      "recipeRequested": "THANK YOU FOR VOTING! HERE’S THE RECIPE YOU REQUESTED:",
       "recipe": "Recipe",
       "enjoyMessage": "Enjoy your cocktail!",
       "followUs": "👉 Craving more? Follow us on Instagram <a href=\"https://www.instagram.com/helsinkidrinkfestival\" style=\"color: #3B4992; text-decoration: underline;\">@helsinkidrinkfestival</a> for cocktail inspo, insider bar tips in Helsinki, and sneak peeks at upcoming events!",
@@ -90,7 +90,7 @@
       "company": "Helsinki Drink Festival Team"
     },
     "combined": {
-      "title": "THANK YOU FOR VOTING AND PARTICIPATING IN OUR RAFFLE!",
+      "title": "Raffle Entry Confirmed & Your Requested Recipe: {cocktailName}",
       "message": "Thank you for voting and participating in our raffle!",
       "raffleMessage": "Your raffle entry has been successfully registered. Winners will be notified via email.",
       "recipeIntro": "Meanwhile, enjoy the recipe you requested:",

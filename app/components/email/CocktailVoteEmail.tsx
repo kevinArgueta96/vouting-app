@@ -104,10 +104,11 @@ export default function CocktailVoteEmail({
         borderCollapse: 'collapse',
       }}>
         <tbody>
+{/*           
           <tr>
             <td align="center" style={{ padding: '33px 0 0 0' }}>
               {/* Logo container - simplified for email clients */}
-              <table cellPadding={0} cellSpacing={0} border={0} width="238">
+              {/* <table cellPadding={0} cellSpacing={0} border={0} width="238">
                 <tbody>
                   <tr>
                     <td align="center" valign="middle" style={{
@@ -119,9 +120,9 @@ export default function CocktailVoteEmail({
                       <table cellPadding={0} cellSpacing={0} border={0} width="100%">
                         <tbody>
                           <tr>
-                            <td align="center" valign="middle" style={{ height: '108px' }}>
+                            <td align="center" valign="middle" style={{ height: '108px' }}> */}
                               {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img 
+                              {/* <img 
                                 src="https://cjdbnnncevpbeqeafmde.supabase.co/storage/v1/object/public/images/logo-mail.png"
                                 alt="mail-logo"
                                 width="238"
@@ -142,7 +143,8 @@ export default function CocktailVoteEmail({
               </table>
             </td>
           </tr>
-          
+           */}
+           
           <tr>
             <td align="center" style={{ padding: '40px 20px 0 20px' }}>
               {/* Title */}
