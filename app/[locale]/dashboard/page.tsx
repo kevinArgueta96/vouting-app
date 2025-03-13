@@ -38,6 +38,8 @@ export default function DashboardPage() {
   const [bestInnovativenessCocktail, setBestInnovativenessCocktail] = useState<CocktailWithStats | null>(null);
   const [sortField, setSortField] = useState<SortField>('totalVotes');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
+  const [uniqueEmails, setUniqueEmails] = useState<string[]>([]);
+  const [selectedEmail, setSelectedEmail] = useState<string>('');
   const [votingPeriodInfo, setVotingPeriodInfo] = useState<{
     startTime: Date;
     endTime: Date;
@@ -96,6 +98,10 @@ export default function DashboardPage() {
         const periodInfo = await getVotingPeriodInfo(locale);
         setVotingPeriodInfo(periodInfo);
         
+        // Fetch unique emails
+        const emails = await ratingService.getUniqueEmails();
+        setUniqueEmails(emails);
+
         // Then fetch cocktail data
         const cocktailsData = await cocktailService.getAllCocktails(locale);
         const cocktailsWithStats = await Promise.all(
@@ -474,6 +480,62 @@ export default function DashboardPage() {
               </tr>
             </tbody>
           </table>
+        </div>
+
+        {/* Email Selection Section */}
+        <div className="bg-white rounded-xl shadow-md mb-8">
+          <div 
+            className="p-6 flex justify-between items-center cursor-pointer hover:bg-gray-50"
+            onClick={() => setSelectedEmail(selectedEmail === '' ? 'open' : '')} // Toggle accordion
+          >
+            <div className="flex items-center space-x-3">
+              <span className="text-xl">{selectedEmail === '' ? '▼' : '▶'}</span>
+              <h2 className="text-2xl font-semibold text-[#334798]">Unique Voters</h2>
+            </div>
+            <div className="flex items-center space-x-4">
+              <div className="text-sm text-gray-500">
+                Total unique voters: {uniqueEmails.length}
+              </div>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevent accordion from toggling
+                  const ws = XLSX.utils.json_to_sheet(
+                    uniqueEmails.map(email => ({ Email: email }))
+                  );
+                  const wb = XLSX.utils.book_new();
+                  XLSX.utils.book_append_sheet(wb, ws, 'Unique Voters');
+                  XLSX.writeFile(wb, 'unique-voters.xlsx');
+                }}
+                className="bg-[#334798] text-white px-4 py-2 rounded hover:bg-[#2a3a7a] transition-colors"
+              >
+                📥 Download Excel
+              </button>
+            </div>
+          </div>
+          {selectedEmail === '' && (
+            <div className="px-6 pb-6">
+              <div className="overflow-x-auto">
+                <table className="min-w-full divide-y divide-gray-200">
+                  <thead className="bg-gray-50">
+                    <tr>
+                      <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Email
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody className="bg-white divide-y divide-gray-200">
+                    {uniqueEmails.map((email) => (
+                      <tr key={email}>
+                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                          {email}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </main>

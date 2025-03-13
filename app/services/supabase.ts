@@ -160,6 +160,45 @@ export const featureFlagService = {
 }
 
 export const ratingService = {
+  async getUniqueEmails() {
+    try {
+      // First, check if time restriction is enabled by getting the active time window
+      const { data: timeWindow, error: timeWindowError } = await supabase
+        .from('vote_time_window')
+        .select('*')
+        .eq('active', true)
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+      
+      // Create a query to get unique emails
+      let query = supabase
+        .from('cocktail_ratings')
+        .select('user_email')
+        .not('user_email', 'is', null);
+      
+      // Apply time filtering if an active time window exists
+      if (!timeWindowError && timeWindow) {
+        // Filter votes that were created within the voting time period
+        query = query
+          .gte('created_at', timeWindow.start_time)
+          .lte('created_at', timeWindow.end_time);
+      }
+      
+      const { data, error } = await query;
+
+      if (error) throw error;
+
+      // Get unique emails
+      const uniqueEmails = [...new Set(data.map(rating => rating.user_email))];
+      return uniqueEmails;
+      
+    } catch (error) {
+      console.error('Error getting unique emails:', error);
+      throw error;
+    }
+  },
+
   async checkExistingVote(cocktailId: number, userUuid: string) {
     const { count, error } = await supabase
       .from('cocktail_ratings')

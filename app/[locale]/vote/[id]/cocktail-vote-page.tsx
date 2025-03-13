@@ -60,7 +60,7 @@ export default function CocktailVotePage({ id }: Props) {
     const loadData = async () => {
       try {
         // Agregamos un delay artificial para mostrar la animación
-        await new Promise(resolve => setTimeout(resolve, 3000));
+        await new Promise(resolve => setTimeout(resolve, 1800));
         
         const cocktailData = await cocktailService.getCocktailById(Number(id), locale);
 
