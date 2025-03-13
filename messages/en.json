@@ -45,6 +45,7 @@
       "alreadyVotedMessage": "We've noticed that you've already rated this cocktail. To ensure fair voting, each person can only submit one rating per cocktail.",
       "errorTitle": "Oops! Something went wrong",
       "errorMessage": "We couldn't process your vote at this time. Please try again in a moment.",
+      "votingTimeError": "Voting is only allowed during the specified time window. Please try again during the allowed voting hours.",
       "emailError": "We couldn't send the recipe to your email. Please check that the email address is correct and try again.",
       "closeButton": "Got it"
     },

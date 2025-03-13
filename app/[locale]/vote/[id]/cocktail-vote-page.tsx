@@ -15,6 +15,7 @@ import { Modal } from "../../../components/ui/modal";
 import { Database } from "../../../types/supabase";
 import { useTranslations, useLocale } from "next-intl";
 import { routes, getRoute } from "../../../config/routes";
+import { votingTimeService } from "../../../services/voting-time";
 
 type Rating = {
   [key: string]: number | string | boolean | undefined;
@@ -85,6 +86,24 @@ export default function CocktailVotePage({ id }: Props) {
 
   const handleRatingSubmit = async (ratings: Rating) => {
     try {
+      // Check voting time window
+      const votingConfig = await votingTimeService.getConfig();
+      
+      if (votingConfig.enforceVotingTime) {
+        const now = new Date();
+        const startTime = new Date(votingConfig.startTime);
+        const endTime = new Date(votingConfig.endTime);
+        
+        if (now < startTime || now > endTime) {
+          setErrorModal({
+            isOpen: true,
+            title: t("modal.errorTitle"),
+            message: t("modal.votingTimeError"),
+          });
+          return;
+        }
+      }
+
       const userUuid = await getUserUuid();
       
       // Check if user session exists
