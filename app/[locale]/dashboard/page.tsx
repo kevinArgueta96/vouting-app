@@ -402,6 +402,12 @@ export default function DashboardPage() {
                 </th>
                 <th 
                   scope="col" 
+                  className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                >
+                  Total Ratings
+                </th>
+                <th 
+                  scope="col" 
                   className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer"
                   onClick={() => {
                     setSortField('averageOverall');
@@ -449,6 +455,9 @@ export default function DashboardPage() {
                     {cocktail.averageInnovativeness}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {(cocktail.averageAppearance + cocktail.averageTaste + cocktail.averageInnovativeness).toFixed(1)}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {cocktail.averageOverall.toFixed(1)}
                   </td>
                 </tr>
@@ -475,7 +484,10 @@ export default function DashboardPage() {
                   {(cocktails.reduce((sum, c) => sum + c.averageInnovativeness, 0))}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {(cocktails.reduce((sum, c) => sum + c.averageOverall, 0))}
+                  {(cocktails.reduce((sum, c) => sum + c.averageOverall, 0)).toFixed(1)}
+                </td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {(cocktails.reduce((sum, c) => sum + c.averageAppearance + c.averageTaste + c.averageInnovativeness, 0)).toFixed(1)}
                 </td>
               </tr>
             </tbody>
